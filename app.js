@@ -42,7 +42,7 @@ async function carregarClientes() {
 
     try {
 
-        const resposta = await fetch("data/clientes.json");
+        const resposta = await fetch("clientes.json");
 
         if (!resposta.ok) {
 
