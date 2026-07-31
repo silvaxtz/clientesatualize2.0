@@ -69,51 +69,41 @@ async function carregarClientes() {
 
 carregarClientes();
 
-// ======================================
-// PESQUISAR CLIENTE
-// ======================================
-
-btnPesquisar.addEventListener("click", pesquisarCliente);
-
-campoPesquisa.addEventListener("keydown", (e) => {
-
-    if (e.key === "Enter") {
-
-        pesquisarCliente();
-
-    }
-
-});
-
 function pesquisarCliente() {
 
     const termo = campoPesquisa.value.trim().toLowerCase();
 
-    if (!termo) return;
+    if (!termo) {
+
+        clienteNome.textContent = "---";
+        clienteIp.textContent = "---";
+        clientePainel.textContent = "---";
+        clienteSinal.textContent = "---";
+        clienteSSID.textContent = "---";
+
+        return;
+
+    }
 
     const cliente = clientes.find(c => {
 
-    const ppoe = String(c.ppoe).toLowerCase();
-    const ip = formatarIP(String(c.ip)).toLowerCase();
-    const ipOriginal = String(c.ip).toLowerCase();
-    const ssid = String(c.ssid || "").toLowerCase();
-    const painel = String(c.painel || "").toLowerCase();
+        const ppoe = String(c.ppoe || "").toLowerCase();
+        const ip = formatarIP(String(c.ip || "")).toLowerCase();
+        const ipOriginal = String(c.ip || "").toLowerCase();
+        const ssid = String(c.ssid || "").toLowerCase();
+        const painel = String(c.painel || "").toLowerCase();
 
-    return (
+        return (
 
-        ppoe.includes(termo) ||
+            ppoe.includes(termo) ||
+            ip.includes(termo) ||
+            ipOriginal.includes(termo) ||
+            ssid.includes(termo) ||
+            painel.includes(termo)
 
-        ip.includes(termo) ||
+        );
 
-        ipOriginal.includes(termo) ||
-
-        ssid.includes(termo) ||
-
-        painel.includes(termo)
-
-    );
-
-});
+    });
 
     if (!cliente) {
 
@@ -121,6 +111,7 @@ function pesquisarCliente() {
         clienteIp.textContent = "---";
         clientePainel.textContent = "---";
         clienteSinal.textContent = "---";
+        clienteSSID.textContent = "---";
 
         return;
 
@@ -130,6 +121,8 @@ function pesquisarCliente() {
     clienteIp.textContent = formatarIP(cliente.ip);
     clientePainel.textContent = cliente.painel;
     clienteSinal.textContent = cliente.sinal;
+    clienteSSID.textContent = cliente.ssid || "---";
+
     salvarHistorico(cliente.ppoe);
 
 }
