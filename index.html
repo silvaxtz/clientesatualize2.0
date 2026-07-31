@@ -9,6 +9,8 @@
 
 <title>Atualize Telecom</title>
 
+<meta name="theme-color" content="#00B050">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,129 +29,147 @@
 
 <aside class="sidebar">
 
-    <div class="sidebar-header">
+<div class="logo-area">
 
-        <img src="assets/logo.svg" alt="Atualize">
+<img src="logo.svg" alt="Atualize">
 
-        <div>
+<h2>Atualize</h2>
 
-            <h2>Atualize</h2>
+<p>Pesquisa de Clientes</p>
 
-            <span>Telecom</span>
+</div>
 
-        </div>
+<nav>
 
-    </div>
+<a href="#" class="active">
 
-    <nav>
+<i data-lucide="house"></i>
 
-        <a href="#" class="active">
+<span>Início</span>
 
-            <i data-lucide="house"></i>
+</a>
 
-            Início
+<a href="#">
 
-        </a>
+<i data-lucide="search"></i>
 
-        <a href="#">
+<span>Pesquisar</span>
 
-            <i data-lucide="search"></i>
+</a>
 
-            Pesquisa
+<a href="#">
 
-        </a>
+<i data-lucide="layout-dashboard"></i>
 
-        <a href="#">
+<span>Dashboard</span>
 
-            <i data-lucide="layout-dashboard"></i>
+</a>
 
-            Dashboard
+<a href="#">
 
-        </a>
+<i data-lucide="file-up"></i>
 
-        <a href="#">
+<span>Importar Excel</span>
 
-            <i data-lucide="file-up"></i>
+</a>
 
-            Importar Excel
+<a href="#">
 
-        </a>
+<i data-lucide="download"></i>
 
-        <a href="#">
+<span>Exportar JSON</span>
 
-            <i data-lucide="download"></i>
+</a>
 
-            Exportar JSON
+<a href="#">
 
-        </a>
+<i data-lucide="settings"></i>
 
-        <a href="#">
+<span>Configurações</span>
 
-            <i data-lucide="settings"></i>
+</a>
 
-            Configurações
+<a href="#" class="logout">
 
-        </a>
+<i data-lucide="log-out"></i>
 
-        <a href="#" class="logout">
+<span>Sair</span>
 
-            <i data-lucide="log-out"></i>
+</a>
 
-            Sair
-
-        </a>
-
-    </nav>
+</nav>
 
 </aside>
 
 <div class="app">
 
-<header class="topbar">
+<header>
 
-<div class="brand">
+<div class="header-left">
 
-<img src="assets/logo.svg" alt="Atualize">
-
-<div>
-
-<h1>Atualize</h1>
-
-<span>Pesquisa de Clientes</span>
-
-</div>
-
-</div>
-
-<button class="menu-btn" id="menuBtn">
+<button id="menuBtn">
 
 <i data-lucide="menu"></i>
 
 </button>
 
+<div>
+
+<h1>Pesquisa de Clientes</h1>
+
+<p>Atualize Telecom</p>
+
+</div>
+
+</div>
+
+<div class="user">
+
+<div class="avatar">
+
+A
+
+</div>
+
+<div>
+
+<strong>Administrador</strong>
+
+<span>Online</span>
+
+</div>
+
+</div>
+
 </header>
 
-<main>
+<section class="hero">
 
-<section class="search-card">
+<h2>
 
-<h2>Pesquisar Cliente</h2>
+Encontre qualquer cliente em segundos
+
+</h2>
 
 <p>
 
-Pesquise por PPOE, IP ou SSID
+Pesquise utilizando PPOE, IP ou SSID.
 
 </p>
 
-<div class="search">
+<div class="search-box">
 
 <i data-lucide="search"></i>
 
 <input
-type="text"
-placeholder="Digite aqui...">
 
-<button>
+id="pesquisa"
+
+type="text"
+
+placeholder="Digite PPOE, IP ou SSID...">
+
+<button id="btnPesquisar">
 
 Buscar
 
@@ -161,15 +181,31 @@ Buscar
 
 <section class="history">
 
-<h3>Últimas pesquisas</h3>
+<h3>
 
-<div class="chips">
+Últimas pesquisas
 
-<button>Cliente 1</button>
+</h3>
 
-<button>Cliente 2</button>
+<div class="history-list">
 
-<button>Cliente 3</button>
+<button>
+
+Cliente 01
+
+</button>
+
+<button>
+
+Cliente 02
+
+</button>
+
+<button>
+
+Cliente 03
+
+</button>
 
 </div>
 
@@ -177,57 +213,73 @@ Buscar
 
 <section class="result">
 
-    <div class="result-header">
+    <div class="section-title">
 
-        <h3>Resultado</h3>
+        <h3>Resultado da Pesquisa</h3>
 
-        <span class="status online">
+        <span class="badge success">
 
-            Online
+            Aguardando pesquisa
 
         </span>
 
     </div>
 
-    <div class="info-grid">
+    <div class="result-grid">
 
-        <div class="info-card">
+        <div class="card">
 
-            <i data-lucide="user"></i>
+            <div class="card-icon">
 
-            <small>Cliente</small>
+                <i data-lucide="user"></i>
 
-            <strong>----------</strong>
+            </div>
 
-        </div>
+            <span>Cliente</span>
 
-        <div class="info-card">
-
-            <i data-lucide="network"></i>
-
-            <small>IP</small>
-
-            <strong>----------</strong>
+            <strong id="clienteNome">---</strong>
 
         </div>
 
-        <div class="info-card">
+        <div class="card">
 
-            <i data-lucide="router"></i>
+            <div class="card-icon">
 
-            <small>Painel</small>
+                <i data-lucide="network"></i>
 
-            <strong>----------</strong>
+            </div>
+
+            <span>IP</span>
+
+            <strong id="clienteIp">---</strong>
 
         </div>
 
-        <div class="info-card">
+        <div class="card">
 
-            <i data-lucide="wifi"></i>
+            <div class="card-icon">
 
-            <small>Sinal</small>
+                <i data-lucide="router"></i>
 
-            <strong>----------</strong>
+            </div>
+
+            <span>Painel</span>
+
+            <strong id="clientePainel">---</strong>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-icon">
+
+                <i data-lucide="wifi"></i>
+
+            </div>
+
+            <span>Sinal</span>
+
+            <strong id="clienteSinal">---</strong>
 
         </div>
 
@@ -235,7 +287,7 @@ Buscar
 
     <div class="actions">
 
-        <button class="btn secondary">
+        <button>
 
             <i data-lucide="copy"></i>
 
@@ -243,7 +295,7 @@ Buscar
 
         </button>
 
-        <button class="btn secondary">
+        <button>
 
             <i data-lucide="copy"></i>
 
@@ -251,7 +303,7 @@ Buscar
 
         </button>
 
-        <button class="btn secondary">
+        <button>
 
             <i data-lucide="copy"></i>
 
@@ -263,19 +315,32 @@ Buscar
 
 </section>
 
-</main>
+<footer>
+
+    <span>
+
+        Atualize Telecom
+
+    </span>
+
+    <small>
+
+        Versão 2.0
+
+    </small>
+
+</footer>
 
 </div>
+
+<script src="app.js"></script>
 
 <script>
 
 lucide.createIcons();
 
 </script>
-    
-<script src="
-    app.js"></script>
-    
+
 </body>
 
 </html>
