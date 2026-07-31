@@ -185,17 +185,6 @@ renderizarHistorico();
 
 campoPesquisa.addEventListener("input", () => {
 
-    if (campoPesquisa.value.trim() === "") {
-
-        clienteNome.textContent = "---";
-        clienteIp.textContent = "---";
-        clientePainel.textContent = "---";
-        clienteSinal.textContent = "---";
-
-        return;
-
-    }
-
     pesquisarCliente();
 
 });
@@ -228,11 +217,15 @@ if ("serviceWorker" in navigator) {
 
 function formatarIP(ip){
 
-    ip = String(ip).replace(/\D/g, "");
+    ip = String(ip);
 
     if(ip.includes(".")){
+
         return ip;
+
     }
+
+    ip = ip.replace(/\D/g,"");
 
     if(ip.length === 11){
 
