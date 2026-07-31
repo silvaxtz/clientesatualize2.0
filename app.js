@@ -113,5 +113,58 @@ function pesquisarCliente() {
     clienteIp.textContent = cliente.ip;
     clientePainel.textContent = cliente.painel;
     clienteSinal.textContent = cliente.sinal;
+    salvarHistorico(cliente.ppoe);
 
 }
+
+// ======================================
+// HISTÓRICO
+// ======================================
+
+const historyList = document.querySelector(".history-list");
+
+let historico = JSON.parse(localStorage.getItem("historico")) || [];
+
+function salvarHistorico(texto){
+
+    historico = historico.filter(item => item !== texto);
+
+    historico.unshift(texto);
+
+    if(historico.length > 8){
+
+        historico.pop();
+
+    }
+
+    localStorage.setItem("historico", JSON.stringify(historico));
+
+    renderizarHistorico();
+
+}
+
+function renderizarHistorico(){
+
+    historyList.innerHTML = "";
+
+    historico.forEach(item => {
+
+        const botao = document.createElement("button");
+
+        botao.textContent = item;
+
+        botao.onclick = () => {
+
+            campoPesquisa.value = item;
+
+            pesquisarCliente();
+
+        };
+
+        historyList.appendChild(botao);
+
+    });
+
+}
+
+renderizarHistorico();
