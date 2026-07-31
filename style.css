@@ -363,3 +363,125 @@ body{
     }
 
 }
+
+/* ==========================================
+   RESULTADO V2
+========================================== */
+
+.result-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.result-header h3{
+
+    font-size:22px;
+
+}
+
+.status{
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.status.online{
+
+    background:#DCFCE7;
+
+    color:#15803D;
+
+}
+
+.info-grid{
+
+    display:grid;
+
+    gap:15px;
+
+}
+
+.info-card{
+
+    background:#F8FAFC;
+
+    border:1px solid #E5E7EB;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    transition:.25s;
+
+}
+
+.info-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+
+}
+
+.info-card svg{
+
+    color:#00B050;
+
+    margin-bottom:12px;
+
+}
+
+.info-card small{
+
+    display:block;
+
+    color:#64748B;
+
+    margin-bottom:8px;
+
+}
+
+.info-card strong{
+
+    font-size:18px;
+
+}
+
+.actions{
+
+    display:grid;
+
+    gap:12px;
+
+    margin-top:24px;
+
+}
+
+.btn.secondary{
+
+    background:#F1F5F9;
+
+    color:#111827;
+
+    border:1px solid #E5E7EB;
+
+}
+
+.btn.secondary:hover{
+
+    background:#E2E8F0;
+
+}
