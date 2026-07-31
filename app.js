@@ -110,7 +110,7 @@ function pesquisarCliente() {
     }
 
     clienteNome.textContent = cliente.ppoe;
-    clienteIp.textContent = cliente.ip;
+    clienteIp.textContent = formatarIP(cliente.ip);
     clientePainel.textContent = cliente.painel;
     clienteSinal.textContent = cliente.sinal;
     salvarHistorico(cliente.ppoe);
@@ -213,5 +213,29 @@ if ("serviceWorker" in navigator) {
             });
 
     });
+
+}
+
+function formatarIP(ip){
+
+    ip = String(ip).replace(/\D/g, "");
+
+    if(ip.includes(".")){
+        return ip;
+    }
+
+    if(ip.length === 11){
+
+        return `${ip.slice(0,3)}.${ip.slice(3,6)}.${ip.slice(6,9)}.${ip.slice(9)}`;
+
+    }
+
+    if(ip.length === 10){
+
+        return `${ip.slice(0,2)}.${ip.slice(2,5)}.${ip.slice(5,8)}.${ip.slice(8)}`;
+
+    }
+
+    return ip;
 
 }
