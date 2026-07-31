@@ -90,13 +90,29 @@ function pesquisarCliente() {
 
     if (!termo) return;
 
-    const cliente = clientes.find(c =>
+    const cliente = clientes.find(c => {
 
-        c.ppoe.toLowerCase() === termo ||
+    const ppoe = String(c.ppoe).toLowerCase();
+    const ip = formatarIP(String(c.ip)).toLowerCase();
+    const ipOriginal = String(c.ip).toLowerCase();
+    const ssid = String(c.ssid || "").toLowerCase();
+    const painel = String(c.painel || "").toLowerCase();
 
-        c.ip.toLowerCase() === termo
+    return (
+
+        ppoe.includes(termo) ||
+
+        ip.includes(termo) ||
+
+        ipOriginal.includes(termo) ||
+
+        ssid.includes(termo) ||
+
+        painel.includes(termo)
 
     );
+
+});
 
     if (!cliente) {
 
