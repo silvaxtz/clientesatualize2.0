@@ -32,6 +32,7 @@ const clienteIp = document.getElementById("clienteIp");
 const clientePainel = document.getElementById("clientePainel");
 const clienteSinal = document.getElementById("clienteSinal");
 const clienteSSID = document.getElementById("clienteSSID");
+const clienteStatus = document.getElementById("clienteStatus");
 
 let clientes = [];
 
@@ -122,6 +123,7 @@ function pesquisarCliente() {
     clientePainel.textContent = cliente.painel;
     clienteSinal.textContent = cliente.sinal;
     clienteSSID.textContent = cliente.ssid || "---";
+    clienteStatus.textContent = calcularStatus(cliente.sinal);
 
     salvarHistorico(cliente.ppoe);
 
@@ -240,5 +242,33 @@ function formatarIP(ip){
     }
 
     return ip;
+
+}
+
+function calcularStatus(sinal){
+
+    sinal = parseInt(
+        String(sinal).replace(/[^\d-]/g, "")
+    );
+
+    if(isNaN(sinal)){
+
+        return "⚪ Desconhecido";
+
+    }
+
+    if(sinal >= -65){
+
+        return "🟢 Bom";
+
+    }
+
+    if(sinal >= -75){
+
+        return "🟡 Médio";
+
+    }
+
+    return "🔴 Ruim";
 
 }
