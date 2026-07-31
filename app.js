@@ -168,3 +168,24 @@ function renderizarHistorico(){
 }
 
 renderizarHistorico();
+
+// ======================================
+// PESQUISA EM TEMPO REAL
+// ======================================
+
+campoPesquisa.addEventListener("input", () => {
+
+    if (campoPesquisa.value.trim() === "") {
+
+        clienteNome.textContent = "---";
+        clienteIp.textContent = "---";
+        clientePainel.textContent = "---";
+        clienteSinal.textContent = "---";
+
+        return;
+
+    }
+
+    pesquisarCliente();
+
+});
