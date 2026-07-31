@@ -825,3 +825,39 @@ SIDEBAR
     color:#DC2626 !important;
 
 }
+
+/*==================================
+STATUS
+==================================*/
+
+.status-verde{
+
+    color:#16A34A;
+
+    font-weight:700;
+
+}
+
+.status-amarelo{
+
+    color:#CA8A04;
+
+    font-weight:700;
+
+}
+
+.status-vermelho{
+
+    color:#DC2626;
+
+    font-weight:700;
+
+}
+
+.status-cinza{
+
+    color:#64748B;
+
+    font-weight:700;
+
+}
