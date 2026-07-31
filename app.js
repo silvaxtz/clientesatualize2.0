@@ -31,6 +31,7 @@ const clienteNome = document.getElementById("clienteNome");
 const clienteIp = document.getElementById("clienteIp");
 const clientePainel = document.getElementById("clientePainel");
 const clienteSinal = document.getElementById("clienteSinal");
+const clienteSSID = document.getElementById("clienteSSID");
 
 let clientes = [];
 
