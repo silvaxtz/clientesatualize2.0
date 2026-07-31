@@ -123,7 +123,11 @@ function pesquisarCliente() {
     clientePainel.textContent = cliente.painel;
     clienteSinal.textContent = cliente.sinal;
     clienteSSID.textContent = cliente.ssid || "---";
-    clienteStatus.textContent = calcularStatus(cliente.sinal);
+    const status = calcularStatus(cliente.sinal);
+
+    clienteStatus.textContent = status.texto;
+
+    clienteStatus.className = status.classe;
 
     salvarHistorico(cliente.ppoe);
 
@@ -253,22 +257,36 @@ function calcularStatus(sinal){
 
     if(isNaN(sinal)){
 
-        return "⚪ Desconhecido";
+        return {
+            texto:"Desconhecido",
+            classe:"status-cinza"
+        };
 
     }
 
     if(sinal >= -65){
 
-        return "🟢 Bom";
+        return {
+            texto:"Bom",
+            classe:"status-verde"
+        };
 
     }
 
     if(sinal >= -75){
 
-        return "🟡 Médio";
+        return {
+            texto:"Médio",
+            classe:"status-amarelo"
+        };
 
     }
 
-    return "🔴 Ruim";
+    return {
+
+        texto:"Ruim",
+        classe:"status-vermelho"
+
+    };
 
 }
