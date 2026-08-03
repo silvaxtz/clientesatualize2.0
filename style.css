@@ -598,3 +598,18 @@ body.dark-theme .btn-historico {
         transform:translate(-50%,0);
     }
 }
+
+.titulo{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#00b050;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+}
+
+.titulo i{
+    font-size:16px;
+}
