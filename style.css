@@ -49,15 +49,29 @@ h1{
 
 #pesquisa{
     width:100%;
-    padding:16px;
-    border:2px solid #d1d5db;
-    border-radius:12px;
-    font-size:18px;
-    outline:none;
-    margin-bottom:20px;
-    transition:.2s;
+    height:58px;
+    padding:0 20px;
+    border:2px solid #e5e7eb;
+    border-radius:16px;
     background:#fff;
-    color:#111827;
+    color:#0f172a;
+    font-size:16px;
+    font-weight:500;
+    transition:.25s;
+    margin-bottom:24px;
+}
+
+#pesquisa::placeholder{
+    color:#94a3b8;
+}
+
+#pesquisa:hover{
+    border-color:#cbd5e1;
+}
+
+#pesquisa:focus{
+    border-color:#00b050;
+    box-shadow:0 0 0 5px rgba(0,176,80,.12);
 }
 
 #pesquisa:focus{
@@ -168,14 +182,25 @@ button:active{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
-    gap:10px;
-    flex-wrap:wrap;
+    margin-bottom:28px;
+    padding-bottom:18px;
+    border-bottom:1px solid #edf2f7;
 }
 
 #usuarioLogado{
-    font-weight:bold;
-    color:#0f172a;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#334155;
+
 }
 
 .topo div{
@@ -185,11 +210,23 @@ button:active{
 
 #btnAdmin,
 #btnSair{
+
     width:auto;
-    margin-top:0;
-    padding:10px 18px;
+
+    margin:0;
+
+    height:42px;
+
+    padding:0 18px;
+
+    border-radius:12px;
+
     font-size:14px;
+
+    font-weight:600;
+
 }
+
 .nao-encontrado{
     text-align:center;
     padding:25px;
