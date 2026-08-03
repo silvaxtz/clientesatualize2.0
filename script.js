@@ -191,31 +191,51 @@ if (!isNaN(sinalValor)) {
 }
 
     resultado.innerHTML = `
-    <div class="campo">
-        <div class="titulo">PPOE</div>
-        <div class="valor">${cliente.ppoe}</div>
+  <div class="campo">
+    <div class="titulo">
+        <i class="icon-user"></i>
+        PPOE
     </div>
-    <div class="campo">
-        <div class="titulo">Painel</div>
-        <div class="valor">${cliente.painel}</div>
+    <div class="valor">${cliente.ppoe}</div>
+</div>
+
+<div class="campo">
+    <div class="titulo">
+        <i class="icon-router"></i>
+        Painel
     </div>
-    <div class="campo">
-        <div class="titulo">IP</div>
-        <div class="valor">${formatarIP(cliente.ip)}</div>
+    <div class="valor">${cliente.painel}</div>
+</div>
+
+<div class="campo">
+    <div class="titulo">
+        <i class="icon-globe"></i>
+        IP
     </div>
-    <div class="campo">
-         <div class="titulo">SSID</div>
-        <div class="valor">${cliente.ssid || "Não informado"}</div>
+    <div class="valor">${formatarIP(cliente.ip)}</div>
+</div>
+
+<div class="campo">
+    <div class="titulo">
+        <i class="icon-wifi"></i>
+        SSID
     </div>
-    <div class="campo">
-        <div class="titulo">Última Medição</div>
-        <div class="valor">${cliente.sinal}</div>
+    <div class="valor">${cliente.ssid || "Não informado"}</div>
+</div>
+
+<div class="campo">
+    <div class="titulo">
+        <i class="icon-activity"></i>
+        Última Medição
     </div>
+    <div class="valor">${cliente.sinal}</div>
+</div>
     ${alertaHtml}
     <div class="campo">
-        <div class="titulo">Status</div>
-        <div class="${classe}">${status}</div>
-    <div>
+       <div class="titulo">
+    <i class="icon-circle-check"></i>
+    Status
+</div>
     <div class="botoes-copiar">
         <button onclick="copiarEsalvar('${formatarIP(cliente.ip)}', '${cliente.ppoe}')">
             📋 Copiar IP
