@@ -215,6 +215,7 @@ if (!isNaN(sinalValor)) {
     <div class="campo">
         <div class="titulo">Status</div>
         <div class="${classe}">${status}</div>
+    <div>
     <div class="botoes-copiar">
         <button onclick="copiarEsalvar('${formatarIP(cliente.ip)}', '${cliente.ppoe}')">
             📋 Copiar IP
