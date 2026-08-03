@@ -1,329 +1,167 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualize Telecom - Pesquisa de Clientes</title>
 
-<meta charset="UTF-8">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#00b050">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Biblioteca para ler Excel -->
+    <script src="xlsx.full.min.js"></script>
 
-<title>Atualize Telecom</title>
+    <style>
+        .historico-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
 
-<meta name="theme-color" content="#00B050">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://unpkg.com/lucide@latest"></script>
-
+        .btn-historico {
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            width: auto;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="overlay"></div>
+<!-- LOGIN -->
+<div id="loginTela" class="container">
+    <img src="logo.png" class="logo" alt="Atualize">
 
-<aside class="sidebar">
+    <input type="text" id="usuario" placeholder="Usuário" autocomplete="username">
+    <input type="password" id="senha" placeholder="Senha" autocomplete="current-password">
 
-<div class="logo-area">
+    <button id="btnLogin">Entrar</button>
 
-<img src="logo.png" alt="Atualize">
-
-<h2>Atualize</h2>
-
-<p>Pesquisa de Clientes</p>
-
+    <div id="erroLogin"></div>
 </div>
 
-<nav>
-
-<a href="#" class="active">
-
-<i data-lucide="house"></i>
-
-<span>Início</span>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="search"></i>
-
-<span>Pesquisar</span>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="layout-dashboard"></i>
-
-<span>Dashboard</span>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="file-up"></i>
-
-<span>Importar Excel</span>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="download"></i>
-
-<span>Exportar JSON</span>
-
-</a>
-
-<a href="#">
-
-<i data-lucide="settings"></i>
-
-<span>Configurações</span>
-
-</a>
-
-<a href="#" class="logout">
-
-<i data-lucide="log-out"></i>
-
-<span>Sair</span>
-
-</a>
-
-</nav>
-
-</aside>
-
-<div class="app">
-
-<header>
-
-<div class="header-left">
-
-<button id="menuBtn">
-
-<i data-lucide="menu"></i>
-
-</button>
-
-<div>
-
-<h1>Pesquisa de Clientes</h1>
-
-<p>Atualize Telecom</p>
-
-</div>
-
-</div>
-
-<div class="user">
-
-<div class="avatar">
-
-A
-
-</div>
-
-<div>
-
-<strong>Administrador</strong>
-
-<span>Online</span>
-
-</div>
-
-</div>
-
-</header>
-
-<section class="hero">
-
-<h2>
-
-Encontre qualquer cliente em segundos
-
-</h2>
-
-<p>
-
-Pesquise utilizando PPOE, IP ou SSID.
-
-</p>
-
-<div class="search-box">
-
-<i data-lucide="search"></i>
-
-<input
-
-id="pesquisa"
-
-type="text"
-
-placeholder="Digite PPOE, IP ou SSID...">
-
-<button id="btnPesquisar">
-
-Buscar
-
-</button>
-
-</div>
-
-</section>
-
-<section class="history">
-
-<h3>
-
-Últimas pesquisas
-
-</h3>
-
-<div class="history-list">
-
-<button>
-
-Cliente 01
-
-</button>
-
-<button>
-
-Cliente 02
-
-</button>
-
-<button>
-
-Cliente 03
-
-</button>
-
-</div>
-
-</section>
-
-<section class="result">
-
-    <div class="section-title">
-
-        <h3>Resultado da Pesquisa</h3>
-
-        <span class="badge success">
-
-            Aguardando pesquisa
-
-        </span>
-
-    </div>
-
- <div class="result-grid">
-
-    <div class="card">
-        ...
-        Cliente
-    </div>
-
-    <div class="card">
-        ...
-        IP
-    </div>
-
-    <div class="card">
-        ...
-        Painel
-    </div>
-
-    <div class="card">
-        ...
-        Sinal
-    </div>
-
-    <div class="card">
-        ...
-        SSID
-    </div>
-
-    <div class="card">
-
-        <div class="card-icon">
-
-            <i data-lucide="activity"></i>
-
+<!-- SISTEMA -->
+<div id="sistema" class="container" style="display:none;">
+
+    <div class="topo">
+        <span id="usuarioLogado"></span>
+
+        <div style="display:flex;gap:10px;align-items:center;">
+            <button id="btnAdmin" style="display:none;">Admin</button>
+            <button id="btnSair">Sair</button>
         </div>
 
-        <span>Status</span>
-
-        <strong id="clienteStatus">---</strong>
-
     </div>
+
+    <img src="logo.png" class="logo" alt="Atualize">
+
+    <h1>Pesquisa de Clientes</h1>
+
+    <input
+        type="text"
+        id="pesquisa"
+        placeholder="Digite o PPOE ou IP..."
+        autocomplete="off"
+    >
+
+    <div id="historicoPesquisas" class="historico-container"></div>
+
+    <div id="resultado"></div>
 
 </div>
 
-    <div class="actions">
+<!-- PAINEL ADMIN -->
+<div id="painelAdmin" class="container" style="display:none;">
 
-        <button>
+    <div class="topo">
+        <h2>Painel Administrativo</h2>
+        <button id="fecharAdmin">Fechar</button>
+    </div>
 
-            <i data-lucide="copy"></i>
+    <div class="cards-admin">
 
-            Copiar IP
+        <div class="card-admin">
+            <span>👥 Clientes</span>
+            <h2 id="totalClientes">0</h2>
+        </div>
 
-        </button>
+        <div class="card-admin">
+            <span>📡 Painéis</span>
+            <h2 id="totalPaineis">0</h2>
+        </div>
 
-        <button>
+        <div class="card-admin">
+            <span>🟢 Bom</span>
+            <h2 id="totalBom">0</h2>
+        </div>
 
-            <i data-lucide="copy"></i>
+        <div class="card-admin">
+            <span>🟡 Médio</span>
+            <h2 id="totalMedio">0</h2>
+        </div>
 
-            Copiar PPOE
+        <div class="card-admin">
+            <span>🔴 Ruim</span>
+            <h2 id="totalRuim">0</h2>
+        </div>
 
-        </button>
+    </div>
 
-        <button>
+    <hr style="margin:30px 0;">
 
-            <i data-lucide="copy"></i>
+    <h2>📈 Top Painéis</h2>
 
-            Copiar SSID
+    <div id="rankingPaineis"></div>
 
+    <hr style="margin:30px 0;">
+
+    <h2>🔄 Importar Planilha</h2>
+
+    <div style="margin-bottom:20px;">
+
+        <input
+            type="file"
+            id="inputExcel"
+            accept=".xlsx,.xls"
+            style="margin-bottom:10px;"
+        >
+
+        <br>
+
+        <button id="btnImportarExcel">
+            Carregar e Atualizar Dashboard
         </button>
 
     </div>
 
-</section>
+    <hr style="margin:30px 0;">
 
-<footer>
+    <button id="baixarJson">📥 Baixar clientes.json</button>
 
-    <span>
-
-        Atualize Telecom
-
-    </span>
-
-    <small>
-
-        Versão 2.0
-
-    </small>
-
-</footer>
+    <button id="copiarEstatisticas">
+        📋 Copiar Estatísticas
+    </button>
 
 </div>
 
-<script src="app.js"></script>
+<!-- BANNER DE ATUALIZAÇÃO -->
+<div id="updateBanner" class="update-banner">
+    <span>🚀 Nova versão disponível</span>
+    <button id="btnAtualizarApp">Atualizar</button>
+</div>
 
-<script>
+<!-- VERSÃO DO APLICATIVO -->
+<div id="versaoApp">Versão 1.0.0</div>
 
-lucide.createIcons();
-
-</script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
