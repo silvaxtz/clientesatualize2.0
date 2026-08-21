@@ -1584,6 +1584,15 @@ body.dark-mode .alerta-critico {
 
 }
 
+#resultado:empty {
+    display: none;
+}
+
+#resultado {
+    min-height: 0;
+    height: auto;
+}
+
 
 /* =========================================================
    ANIMAÇÕES
