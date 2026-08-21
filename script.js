@@ -1,8 +1,9 @@
+"use strict";
+
 /* =========================================================
-   ATUALIZE TELECOM — SCRIPT REMASTER 2.0
+   ATUALIZE TELECOM — SCRIPT REMASTER 3.0
 ========================================================= */
 
-"use strict";
 
 /* =========================================================
    CONFIGURAÇÃO
@@ -33,8 +34,11 @@ const CONFIG = {
 ========================================================= */
 
 let clientes = [];
+
 let usuarioAtual = null;
+
 let temaAtual = "light";
+
 let timerPesquisa = null;
 
 
@@ -81,47 +85,81 @@ const usuarios = {
    ELEMENTOS
 ========================================================= */
 
-const $ = id => document.getElementById(id);
+const $ = id =>
+    document.getElementById(id);
 
-const loginTela = $("loginTela");
-const sistema = $("sistema");
-const painelAdmin = $("painelAdmin");
 
-const usuarioInput = $("usuario");
-const senhaInput = $("senha");
+const loginTela =
+    $("loginTela");
 
-const btnLogin = $("btnLogin");
-const btnSair = $("btnSair");
-const btnAdmin = $("btnAdmin");
-const fecharAdmin = $("fecharAdmin");
+const sistema =
+    $("sistema");
 
-const pesquisa = $("pesquisa");
-const resultado = $("resultado");
+const painelAdmin =
+    $("painelAdmin");
 
-const btnTemaLogin = $("btnTemaLogin");
-const btnTemaSistema = $("btnTemaSistema");
-const btnTemaAdmin = $("btnTemaAdmin");
 
-const limparPesquisa = $("limparPesquisa");
+const usuarioInput =
+    $("usuario");
+
+const senhaInput =
+    $("senha");
+
+
+const btnLogin =
+    $("btnLogin");
+
+const btnSair =
+    $("btnSair");
+
+const btnAdmin =
+    $("btnAdmin");
+
+const fecharAdmin =
+    $("fecharAdmin");
+
+
+const pesquisa =
+    $("pesquisa");
+
+const resultado =
+    $("resultado");
+
+
+const btnTemaLogin =
+    $("btnTemaLogin");
+
+const btnTemaSistema =
+    $("btnTemaSistema");
+
+const btnTemaAdmin =
+    $("btnTemaAdmin");
+
+
+const limparPesquisa =
+    $("limparPesquisa");
 
 
 /* =========================================================
    INICIALIZAÇÃO
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    inicializarTema();
+        inicializarTema();
 
-    configurarEventos();
+        configurarEventos();
 
-    await carregarClientes();
+        await carregarClientes();
 
-    verificarSessao();
+        verificarSessao();
 
-    registrarServiceWorker();
+        registrarServiceWorker();
 
-});
+    }
+);
 
 
 /* =========================================================
@@ -130,46 +168,46 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function configurarEventos() {
 
-    /* LOGIN */
+    const loginForm =
+        $("loginForm");
 
-    const loginForm = $("loginForm");
 
     if (loginForm) {
 
-        loginForm.addEventListener("submit", event => {
+        loginForm.addEventListener(
+            "submit",
+            evento => {
 
-            event.preventDefault();
+                evento.preventDefault();
 
-            fazerLogin();
+                fazerLogin();
 
-        });
-
-    }
-
-
-    if (btnLogin) {
-
-        btnLogin.addEventListener(
-            "click",
-            fazerLogin
+            }
         );
 
     }
 
 
-    /* ENTER NOS CAMPOS */
+    /*
+       Não precisamos registrar outro
+       click no botão quando ele já é
+       submit do formulário.
+    */
+
 
     if (usuarioInput) {
 
         usuarioInput.addEventListener(
             "keydown",
-            event => {
+            evento => {
 
-                if (event.key === "Enter") {
+                if (
+                    evento.key === "Enter"
+                ) {
 
-                    event.preventDefault();
+                    evento.preventDefault();
 
-                    senhaInput.focus();
+                    senhaInput?.focus();
 
                 }
 
@@ -183,11 +221,13 @@ function configurarEventos() {
 
         senhaInput.addEventListener(
             "keydown",
-            event => {
+            evento => {
 
-                if (event.key === "Enter") {
+                if (
+                    evento.key === "Enter"
+                ) {
 
-                    event.preventDefault();
+                    evento.preventDefault();
 
                     fazerLogin();
 
@@ -199,8 +239,6 @@ function configurarEventos() {
     }
 
 
-    /* LOGOUT */
-
     if (btnSair) {
 
         btnSair.addEventListener(
@@ -210,8 +248,6 @@ function configurarEventos() {
 
     }
 
-
-    /* ADMIN */
 
     if (btnAdmin) {
 
@@ -233,39 +269,31 @@ function configurarEventos() {
     }
 
 
-    /* TEMA */
+    /*
+       TEMA
+    */
 
-    if (btnTemaLogin) {
+    [
+        btnTemaLogin,
+        btnTemaSistema,
+        btnTemaAdmin
+    ]
+        .filter(Boolean)
+        .forEach(
+            botao => {
 
-        btnTemaLogin.addEventListener(
-            "click",
-            alternarTema
+                botao.addEventListener(
+                    "click",
+                    alternarTema
+                );
+
+            }
         );
 
-    }
 
-
-    if (btnTemaSistema) {
-
-        btnTemaSistema.addEventListener(
-            "click",
-            alternarTema
-        );
-
-    }
-
-
-    if (btnTemaAdmin) {
-
-        btnTemaAdmin.addEventListener(
-            "click",
-            alternarTema
-        );
-
-    }
-
-
-    /* PESQUISA */
+    /*
+       PESQUISA
+    */
 
     if (pesquisa) {
 
@@ -274,11 +302,15 @@ function configurarEventos() {
             pesquisarComAtraso
         );
 
+
         pesquisa.addEventListener(
             "keydown",
-            event => {
+            evento => {
 
-                if (event.key === "Escape") {
+                if (
+                    evento.key ===
+                    "Escape"
+                ) {
 
                     limparBusca();
 
@@ -300,10 +332,13 @@ function configurarEventos() {
     }
 
 
-    /* IMPORTAÇÃO */
+    /*
+       EXCEL
+    */
 
     const btnImportarExcel =
         $("btnImportarExcel");
+
 
     if (btnImportarExcel) {
 
@@ -315,10 +350,13 @@ function configurarEventos() {
     }
 
 
-    /* DOWNLOAD */
+    /*
+       JSON
+    */
 
     const baixarJson =
         $("baixarJson");
+
 
     if (baixarJson) {
 
@@ -330,10 +368,13 @@ function configurarEventos() {
     }
 
 
-    /* COPIAR ESTATÍSTICAS */
+    /*
+       ESTATÍSTICAS
+    */
 
     const copiarEstatisticas =
         $("copiarEstatisticas");
+
 
     if (copiarEstatisticas) {
 
@@ -345,10 +386,13 @@ function configurarEventos() {
     }
 
 
-    /* ATUALIZAÇÃO */
+    /*
+       ATUALIZAÇÃO
+    */
 
     const btnAtualizarApp =
         $("btnAtualizarApp");
+
 
     if (btnAtualizarApp) {
 
@@ -370,8 +414,11 @@ function fazerLogin() {
 
     const usuario =
         usuarioInput
-            ? usuarioInput.value.trim().toLowerCase()
+            ? usuarioInput.value
+                .trim()
+                .toLowerCase()
             : "";
+
 
     const senha =
         senhaInput
@@ -379,11 +426,10 @@ function fazerLogin() {
             : "";
 
 
-    const erro =
-        $("erroLogin");
-
-
-    if (!usuario || !senha) {
+    if (
+        !usuario ||
+        !senha
+    ) {
 
         mostrarErroLogin(
             "Digite seu usuário e sua senha."
@@ -413,20 +459,32 @@ function fazerLogin() {
 
 
     usuarioAtual = {
-        nome: usuario,
-        admin: conta.admin
+
+        nome:
+            usuario,
+
+        admin:
+            conta.admin
+
     };
 
 
     localStorage.setItem(
         CONFIG.storage.usuario,
-        JSON.stringify(usuarioAtual)
+        JSON.stringify(
+            usuarioAtual
+        )
     );
+
+
+    const erro =
+        $("erroLogin");
 
 
     if (erro) {
 
-        erro.textContent = "";
+        erro.textContent =
+            "";
 
     }
 
@@ -436,14 +494,27 @@ function fazerLogin() {
 }
 
 
-function mostrarErroLogin(mensagem) {
+/* =========================================================
+   ERRO LOGIN
+========================================================= */
+
+function mostrarErroLogin(
+    mensagem
+) {
 
     const erro =
         $("erroLogin");
 
-    if (!erro) return;
 
-    erro.textContent = mensagem;
+    if (!erro) {
+
+        return;
+
+    }
+
+
+    erro.textContent =
+        mensagem;
 
 }
 
@@ -472,7 +543,9 @@ function verificarSessao() {
 
 
         const dados =
-            JSON.parse(salvo);
+            JSON.parse(
+                salvo
+            );
 
 
         if (
@@ -494,10 +567,13 @@ function verificarSessao() {
 
         usuarioAtual = {
 
-            nome: dados.nome,
+            nome:
+                dados.nome,
 
             admin:
-                usuarios[dados.nome].admin
+                usuarios[
+                    dados.nome
+                ].admin
 
         };
 
@@ -506,7 +582,7 @@ function verificarSessao() {
 
     }
 
-    catch (erro) {
+    catch {
 
         localStorage.removeItem(
             CONFIG.storage.usuario
@@ -527,19 +603,24 @@ function mostrarLogin() {
 
     if (loginTela) {
 
-        loginTela.style.display = "block";
+        loginTela.style.display =
+            "block";
 
     }
+
 
     if (sistema) {
 
-        sistema.style.display = "none";
+        sistema.style.display =
+            "none";
 
     }
 
+
     if (painelAdmin) {
 
-        painelAdmin.style.display = "none";
+        painelAdmin.style.display =
+            "none";
 
     }
 
@@ -550,19 +631,24 @@ function mostrarSistema() {
 
     if (loginTela) {
 
-        loginTela.style.display = "none";
+        loginTela.style.display =
+            "none";
 
     }
+
 
     if (sistema) {
 
-        sistema.style.display = "block";
+        sistema.style.display =
+            "block";
 
     }
 
+
     if (painelAdmin) {
 
-        painelAdmin.style.display = "none";
+        painelAdmin.style.display =
+            "none";
 
     }
 
@@ -574,7 +660,9 @@ function mostrarSistema() {
     if (usuarioLogado) {
 
         usuarioLogado.textContent =
-            capitalizar(usuarioAtual.nome);
+            capitalizar(
+                usuarioAtual.nome
+            );
 
     }
 
@@ -582,8 +670,9 @@ function mostrarSistema() {
     if (btnAdmin) {
 
         btnAdmin.style.display =
+            usuarioAtual &&
             usuarioAtual.admin
-                ? "flex"
+                ? "inline-flex"
                 : "none";
 
     }
@@ -600,21 +689,29 @@ function sair() {
         CONFIG.storage.usuario
     );
 
-    usuarioAtual = null;
+
+    usuarioAtual =
+        null;
+
 
     mostrarLogin();
 
+
     if (usuarioInput) {
 
-        usuarioInput.value = "";
+        usuarioInput.value =
+            "";
 
     }
+
 
     if (senhaInput) {
 
-        senhaInput.value = "";
+        senhaInput.value =
+            "";
 
     }
+
 
     if (usuarioInput) {
 
@@ -624,6 +721,10 @@ function sair() {
 
 }
 
+
+/* =========================================================
+   ADMIN
+========================================================= */
 
 function abrirAdmin() {
 
@@ -639,13 +740,16 @@ function abrirAdmin() {
 
     if (sistema) {
 
-        sistema.style.display = "none";
+        sistema.style.display =
+            "none";
 
     }
 
+
     if (painelAdmin) {
 
-        painelAdmin.style.display = "block";
+        painelAdmin.style.display =
+            "block";
 
     }
 
@@ -659,13 +763,16 @@ function fecharPainelAdmin() {
 
     if (painelAdmin) {
 
-        painelAdmin.style.display = "none";
+        painelAdmin.style.display =
+            "none";
 
     }
 
+
     if (sistema) {
 
-        sistema.style.display = "block";
+        sistema.style.display =
+            "block";
 
     }
 
@@ -684,22 +791,30 @@ function inicializarTema() {
         );
 
 
-    if (salvo === "dark") {
+    if (
+        salvo === "dark"
+    ) {
 
-        aplicarTema("dark");
+        aplicarTema(
+            "dark"
+        );
 
     }
 
     else {
 
-        aplicarTema("light");
+        aplicarTema(
+            "light"
+        );
 
     }
 
 }
 
 
-function aplicarTema(tema) {
+function aplicarTema(
+    tema
+) {
 
     temaAtual =
         tema === "dark"
@@ -707,21 +822,16 @@ function aplicarTema(tema) {
             : "light";
 
 
-    if (temaAtual === "dark") {
+    document.body.classList.toggle(
+        "dark-mode",
+        temaAtual === "dark"
+    );
 
-        document.body.classList.add(
-            "dark-theme"
-        );
 
-    }
-
-    else {
-
-        document.body.classList.remove(
-            "dark-theme"
-        );
-
-    }
+    document.body.classList.toggle(
+        "dark-theme",
+        temaAtual === "dark"
+    );
 
 
     localStorage.setItem(
@@ -738,9 +848,7 @@ function aplicarTema(tema) {
 function alternarTema() {
 
     aplicarTema(
-        document.body.classList.contains(
-            "dark-theme"
-        )
+        temaAtual === "dark"
             ? "light"
             : "dark"
     );
@@ -750,30 +858,28 @@ function alternarTema() {
 
 function atualizarBotoesTema() {
 
-    const botoes = [
+    [
         btnTemaLogin,
         btnTemaSistema,
         btnTemaAdmin
-    ];
+    ]
+        .filter(Boolean)
+        .forEach(
+            botao => {
+
+                botao.textContent =
+                    temaAtual === "dark"
+                        ? "☀️"
+                        : "🌙";
 
 
-    botoes.forEach(botao => {
+                botao.title =
+                    temaAtual === "dark"
+                        ? "Ativar modo claro"
+                        : "Ativar modo noite";
 
-        if (!botao) return;
-
-
-        botao.textContent =
-            temaAtual === "dark"
-                ? "☀️"
-                : "🌙";
-
-
-        botao.title =
-            temaAtual === "dark"
-                ? "Ativar modo claro"
-                : "Ativar modo noite";
-
-    });
+            }
+        );
 
 }
 
@@ -788,9 +894,10 @@ async function carregarClientes() {
 
         const resposta =
             await fetch(
-                CONFIG.arquivos.clientes,
+                `${CONFIG.arquivos.clientes}?v=30`,
                 {
-                    cache: "no-store"
+                    cache:
+                        "no-store"
                 }
             );
 
@@ -808,34 +915,43 @@ async function carregarClientes() {
             await resposta.json();
 
 
-        if (Array.isArray(dados)) {
+        if (
+            Array.isArray(dados)
+        ) {
 
-            clientes = dados;
+            clientes =
+                dados;
 
         }
 
         else if (
             dados &&
-            Array.isArray(dados.clientes)
+            Array.isArray(
+                dados.clientes
+            )
         ) {
 
-            clientes = dados.clientes;
+            clientes =
+                dados.clientes;
 
         }
 
         else {
 
-            clientes = [];
+            clientes =
+                [];
 
         }
 
 
         clientes =
-            clientes.map(normalizarCliente);
+            clientes.map(
+                normalizarCliente
+            );
 
 
         console.log(
-            `Clientes carregados: ${clientes.length}`
+            `📡 ${clientes.length} clientes carregados.`
         );
 
     }
@@ -843,11 +959,13 @@ async function carregarClientes() {
     catch (erro) {
 
         console.error(
-            "Erro ao carregar clientes.json:",
+            "Erro ao carregar clientes:",
             erro
         );
 
-        clientes = [];
+
+        clientes =
+            [];
 
     }
 
@@ -855,27 +973,27 @@ async function carregarClientes() {
 
 
 /* =========================================================
-   NORMALIZAÇÃO DOS CLIENTES
+   NORMALIZAÇÃO
 ========================================================= */
 
-function normalizarCliente(cliente) {
+function normalizarCliente(
+    cliente
+) {
 
-    if (!cliente || typeof cliente !== "object") {
+    if (
+        !cliente ||
+        typeof cliente !== "object"
+    ) {
 
         return {};
 
     }
 
 
-    const novo = {};
-
-
-    Object.keys(cliente).forEach(chave => {
-
-        novo[chave] =
-            cliente[chave];
-
-    });
+    const novo =
+        {
+            ...cliente
+        };
 
 
     novo.ppoe =
@@ -948,12 +1066,14 @@ function normalizarCliente(cliente) {
                 "IPPanel",
                 "ip painel",
                 "IP painel",
+                "ip do painel",
+                "IP do painel",
+                "ipdopainel",
+                "IPDOPAINEL",
                 "ip-do-painel"
             ]
         );
 
-
-    /* Caso o JSON use "ip do painel" */
 
     if (!novo.ipPainel) {
 
@@ -961,7 +1081,6 @@ function normalizarCliente(cliente) {
             encontrarCampoPorNome(
                 cliente,
                 [
-                    "ippainel",
                     "ippainel",
                     "ippanel",
                     "ipdopainel"
@@ -980,9 +1099,15 @@ function normalizarCliente(cliente) {
    CAMPOS
 ========================================================= */
 
-function pegarCampo(objeto, nomes) {
+function pegarCampo(
+    objeto,
+    nomes
+) {
 
-    for (const nome of nomes) {
+    for (
+        const nome
+        of nomes
+    ) {
 
         if (
             Object.prototype.hasOwnProperty.call(
@@ -1001,7 +1126,9 @@ function pegarCampo(objeto, nomes) {
                 String(valor).trim() !== ""
             ) {
 
-                return String(valor).trim();
+                return String(
+                    valor
+                ).trim();
 
             }
 
@@ -1021,10 +1148,15 @@ function encontrarCampoPorNome(
 ) {
 
     const chaves =
-        Object.keys(objeto);
+        Object.keys(
+            objeto
+        );
 
 
-    for (const chave of chaves) {
+    for (
+        const chave
+        of chaves
+    ) {
 
         const normalizada =
             chave
@@ -1041,7 +1173,9 @@ function encontrarCampoPorNome(
 
 
         if (
-            nomes.includes(normalizada)
+            nomes.includes(
+                normalizada
+            )
         ) {
 
             const valor =
@@ -1053,7 +1187,9 @@ function encontrarCampoPorNome(
                 valor !== undefined
             ) {
 
-                return String(valor).trim();
+                return String(
+                    valor
+                ).trim();
 
             }
 
@@ -1073,7 +1209,9 @@ function encontrarCampoPorNome(
 
 function pesquisarComAtraso() {
 
-    clearTimeout(timerPesquisa);
+    clearTimeout(
+        timerPesquisa
+    );
 
 
     timerPesquisa =
@@ -1097,7 +1235,11 @@ function pesquisarComAtraso() {
 
 function executarPesquisa() {
 
-    if (!pesquisa) return;
+    if (!pesquisa) {
+
+        return;
+
+    }
 
 
     const termo =
@@ -1130,33 +1272,39 @@ function executarPesquisa() {
 
 
     const encontrados =
-        clientes.filter(cliente => {
+        clientes.filter(
+            cliente => {
 
-            const ppoe =
-                String(
-                    cliente.ppoe || ""
-                ).toLowerCase();
-
-
-            const ip =
-                String(
-                    cliente.ip || ""
-                ).toLowerCase();
+                const ppoe =
+                    String(
+                        cliente.ppoe ||
+                        ""
+                    ).toLowerCase();
 
 
-            return (
-                ppoe.includes(termo) ||
-                ip.includes(termo)
-            );
+                const ip =
+                    String(
+                        cliente.ip ||
+                        ""
+                    ).toLowerCase();
 
-        });
+
+                return (
+                    ppoe.startsWith(
+                        termo
+                    ) ||
+                    ip.startsWith(
+                        termo
+                    )
+                );
+
+            }
+        );
 
 
-    /* =====================================================
-       APENAS UM CLIENTE POR VEZ
-    ===================================================== */
-
-    if (encontrados.length === 0) {
+    if (
+        encontrados.length === 0
+    ) {
 
         mostrarNaoEncontrado();
 
@@ -1165,31 +1313,32 @@ function executarPesquisa() {
     }
 
 
-    let cliente;
+    let cliente =
+        encontrados.find(
+            item => {
+
+                const ppoe =
+                    String(
+                        item.ppoe ||
+                        ""
+                    ).toLowerCase();
 
 
-    /*
-       Primeiro tenta encontrar correspondência exata.
-    */
-
-    cliente =
-        encontrados.find(item => {
-
-            return (
-                String(item.ppoe || "")
-                    .toLowerCase() === termo ||
-
-                String(item.ip || "")
-                    .toLowerCase() === termo
-            );
-
-        });
+                const ip =
+                    String(
+                        item.ip ||
+                        ""
+                    ).toLowerCase();
 
 
-    /*
-       Se não houver exato,
-       mostra somente o primeiro.
-    */
+                return (
+                    ppoe === termo ||
+                    ip === termo
+                );
+
+            }
+        );
+
 
     if (!cliente) {
 
@@ -1199,23 +1348,28 @@ function executarPesquisa() {
     }
 
 
-    mostrarCliente(cliente);
+    mostrarCliente(
+        cliente
+    );
 
 }
 
 
 /* =========================================================
-   LIMPAR
+   LIMPAR PESQUISA
 ========================================================= */
 
 function limparBusca() {
 
-    clearTimeout(timerPesquisa);
+    clearTimeout(
+        timerPesquisa
+    );
 
 
     if (pesquisa) {
 
-        pesquisa.value = "";
+        pesquisa.value =
+            "";
 
     }
 
@@ -1233,14 +1387,26 @@ function limparBusca() {
 }
 
 
+/* =========================================================
+   ESTADOS
+========================================================= */
+
 function mostrarEstadoInicial() {
 
-    if (!resultado) return;
+    if (!resultado) {
+
+        return;
+
+    }
 
 
     resultado.innerHTML = `
+
         <div class="nao-encontrado">
-            <div class="icone">📡</div>
+
+            <div class="icone">
+                📡
+            </div>
 
             <h2>
                 Pronto para pesquisar
@@ -1254,7 +1420,9 @@ function mostrarEstadoInicial() {
             <div class="dica">
                 A pesquisa mostra um cliente por vez.
             </div>
+
         </div>
+
     `;
 
 }
@@ -1264,12 +1432,20 @@ function mostrarMensagemPesquisa(
     mensagem
 ) {
 
-    if (!resultado) return;
+    if (!resultado) {
+
+        return;
+
+    }
 
 
     resultado.innerHTML = `
+
         <div class="nao-encontrado">
-            <div class="icone">🔎</div>
+
+            <div class="icone">
+                🔎
+            </div>
 
             <h2>
                 Continue digitando
@@ -1278,7 +1454,9 @@ function mostrarMensagemPesquisa(
             <p>
                 ${escaparHTML(mensagem)}
             </p>
+
         </div>
+
     `;
 
 }
@@ -1286,12 +1464,20 @@ function mostrarMensagemPesquisa(
 
 function mostrarNaoEncontrado() {
 
-    if (!resultado) return;
+    if (!resultado) {
+
+        return;
+
+    }
 
 
     resultado.innerHTML = `
+
         <div class="nao-encontrado">
-            <div class="icone">🔍</div>
+
+            <div class="icone">
+                🔍
+            </div>
 
             <h2>
                 Cliente não encontrado
@@ -1305,68 +1491,97 @@ function mostrarNaoEncontrado() {
             <div class="dica">
                 Confira os dados digitados e tente novamente.
             </div>
+
         </div>
+
     `;
 
 }
 
 
 /* =========================================================
-   MOSTRAR CLIENTE
+   CARD DO CLIENTE
 ========================================================= */
 
-function mostrarCliente(cliente) {
+function mostrarCliente(
+    cliente
+) {
 
-    if (!resultado) return;
+    if (!resultado) {
+
+        return;
+
+    }
 
 
     const status =
-        determinarStatus(cliente);
-
-
-    const classeStatus =
-        status.classe;
+        determinarStatus(
+            cliente
+        );
 
 
     const ppoe =
-        cliente.ppoe || "Não informado";
+        cliente.ppoe ||
+        "Não informado";
 
 
     const ip =
-        cliente.ip || "Não informado";
+        cliente.ip ||
+        "Não informado";
 
 
     const painel =
-        cliente.painel || "Não informado";
+        cliente.painel ||
+        "Não informado";
 
 
     const ipPainel =
         cliente.ipPainel ||
-        encontrarIPPainel(cliente) ||
+        encontrarIPPainel(
+            cliente
+        ) ||
         "Não informado";
 
 
     const sinal =
-        cliente.sinal || "Não informado";
+        cliente.sinal ||
+        "Não informado";
 
 
     resultado.innerHTML = `
 
-        <div class="cliente-card">
+        <article
+            class="cliente-card"
+        >
 
-            <div class="cliente-card-header">
 
-                <div class="cliente-identificacao">
+            <!-- CABEÇALHO -->
 
-                    <div class="cliente-avatar">
+            <header
+                class="cliente-card-header"
+            >
+
+                <div
+                    class="cliente-identificacao"
+                >
+
+                    <div
+                        class="cliente-avatar"
+                    >
                         📡
                     </div>
 
-                    <div>
 
-                        <span class="cliente-dado-label">
+                    <div
+                        class="cliente-identificacao-info"
+                    >
+
+                        <span
+                            class="cliente-dado-label"
+                        >
                             CLIENTE
                         </span>
+
 
                         <h2>
                             ${escaparHTML(ppoe)}
@@ -1378,90 +1593,145 @@ function mostrarCliente(cliente) {
 
 
                 <span
-                    class="cliente-status ${classeStatus}"
+                    class="
+                        cliente-status
+                        ${status.classe}
+                    "
                 >
-                    ${status.icone}
-                    ${escaparHTML(status.nome)}
+
+                    <span>
+                        ${status.icone}
+                    </span>
+
+                    ${escaparHTML(
+                        status.nome
+                    )}
+
                 </span>
 
-            </div>
+            </header>
 
 
-            <div class="cliente-dados">
+            <!-- DADOS -->
+
+            <div
+                class="cliente-dados"
+            >
 
 
-                <div class="cliente-dado">
+                <div
+                    class="cliente-dado"
+                >
 
-                    <span class="cliente-dado-label">
+                    <span
+                        class="cliente-dado-label"
+                    >
                         PPOE
                     </span>
 
-                    <strong class="cliente-dado-valor">
+                    <strong
+                        class="cliente-dado-valor"
+                    >
                         ${escaparHTML(ppoe)}
                     </strong>
 
                 </div>
 
 
-                <div class="cliente-dado">
+                <div
+                    class="cliente-dado"
+                >
 
-                    <span class="cliente-dado-label">
+                    <span
+                        class="cliente-dado-label"
+                    >
                         IP DO CLIENTE
                     </span>
 
-                    <strong class="cliente-dado-valor">
+                    <strong
+                        class="cliente-dado-valor"
+                    >
                         ${escaparHTML(ip)}
                     </strong>
 
                 </div>
 
 
-                <div class="cliente-dado">
+                <div
+                    class="cliente-dado"
+                >
 
-                    <span class="cliente-dado-label">
+                    <span
+                        class="cliente-dado-label"
+                    >
                         PAINEL
                     </span>
 
-                    <strong class="cliente-dado-valor">
+                    <strong
+                        class="cliente-dado-valor"
+                    >
                         ${escaparHTML(painel)}
                     </strong>
 
                 </div>
 
 
-                <div class="cliente-dado">
+                <div
+                    class="cliente-dado"
+                >
 
-                    <span class="cliente-dado-label">
+                    <span
+                        class="cliente-dado-label"
+                    >
                         IP DO PAINEL
                     </span>
 
-                    <strong class="cliente-dado-valor">
+                    <strong
+                        class="cliente-dado-valor"
+                    >
                         ${escaparHTML(ipPainel)}
                     </strong>
 
                 </div>
 
 
-                <div class="cliente-dado">
+                <div
+                    class="cliente-dado"
+                >
 
-                    <span class="cliente-dado-label">
+                    <span
+                        class="cliente-dado-label"
+                    >
                         SINAL
                     </span>
 
-                    <strong class="cliente-dado-valor">
+                    <strong
+                        class="cliente-dado-valor"
+                    >
                         ${escaparHTML(sinal)}
                     </strong>
 
                 </div>
 
 
-                <div class="cliente-dado">
+                <div
+                    class="cliente-dado"
+                >
 
-                    <span class="cliente-dado-label">
+                    <span
+                        class="cliente-dado-label"
+                    >
                         STATUS
                     </span>
 
-                    <strong class="cliente-dado-valor">
+                    <strong
+                        class="
+                            cliente-dado-valor
+                            cliente-status-texto
+                            ${status.classe}
+                        "
+                    >
+                        ${status.icone}
                         ${escaparHTML(status.nome)}
                     </strong>
 
@@ -1472,16 +1742,22 @@ function mostrarCliente(cliente) {
 
 
             ${
-                status.classe === "ruim"
+                status.classe ===
+                "ruim"
                     ? `
-                        <div class="alerta-critico">
-                            ⚠️ Atenção: sinal ruim neste cliente.
+                        <div
+                            class="alerta-critico"
+                        >
+                            ⚠️
+                            Atenção:
+                            sinal ruim neste cliente.
                         </div>
                     `
                     : ""
             }
 
-        </div>
+
+        </article>
 
     `;
 
@@ -1492,7 +1768,9 @@ function mostrarCliente(cliente) {
    IP DO PAINEL
 ========================================================= */
 
-function encontrarIPPainel(cliente) {
+function encontrarIPPainel(
+    cliente
+) {
 
     if (!cliente) {
 
@@ -1501,7 +1779,7 @@ function encontrarIPPainel(cliente) {
     }
 
 
-    const nomesPossiveis = [
+    const nomes = [
 
         "ipPainel",
         "IPPainel",
@@ -1515,7 +1793,6 @@ function encontrarIPPainel(cliente) {
         "IP do painel",
         "ipdopainel",
         "IPDOPAINEL",
-        "ip-painel",
         "ip-painel"
 
     ];
@@ -1524,7 +1801,7 @@ function encontrarIPPainel(cliente) {
     const direto =
         pegarCampo(
             cliente,
-            nomesPossiveis
+            nomes
         );
 
 
@@ -1551,11 +1828,14 @@ function encontrarIPPainel(cliente) {
    STATUS
 ========================================================= */
 
-function determinarStatus(cliente) {
+function determinarStatus(
+    cliente
+) {
 
     const valor =
         String(
-            cliente.status || ""
+            cliente.status ||
+            ""
         )
             .toLowerCase()
             .trim();
@@ -1564,10 +1844,17 @@ function determinarStatus(cliente) {
     const sinal =
         parseFloat(
             String(
-                cliente.sinal || ""
+                cliente.sinal ||
+                ""
             )
-                .replace(",", ".")
-                .replace("dbm", "")
+                .replace(
+                    ",",
+                    "."
+                )
+                .replace(
+                    "dbm",
+                    ""
+                )
         );
 
 
@@ -1577,9 +1864,13 @@ function determinarStatus(cliente) {
     ) {
 
         return {
+
             nome: "Bom",
+
             classe: "bom",
+
             icone: "🟢"
+
         };
 
     }
@@ -1592,9 +1883,13 @@ function determinarStatus(cliente) {
     ) {
 
         return {
+
             nome: "Médio",
+
             classe: "medio",
+
             icone: "🟡"
+
         };
 
     }
@@ -1606,60 +1901,82 @@ function determinarStatus(cliente) {
     ) {
 
         return {
+
             nome: "Ruim",
+
             classe: "ruim",
+
             icone: "🔴"
+
         };
 
     }
 
 
     /*
-       Se não houver status, tenta pelo sinal.
+       Sem status:
+       usa o sinal.
     */
 
-    if (!isNaN(sinal)) {
+    if (
+        !Number.isNaN(sinal)
+    ) {
 
-        /*
-           Sinais de fibra normalmente são negativos.
-           Quanto mais próximo de zero, melhor.
-        */
-
-        if (sinal >= -25) {
+        if (
+            sinal >= -25
+        ) {
 
             return {
+
                 nome: "Bom",
+
                 classe: "bom",
+
                 icone: "🟢"
+
             };
 
         }
 
 
-        if (sinal >= -27) {
+        if (
+            sinal >= -27
+        ) {
 
             return {
+
                 nome: "Médio",
+
                 classe: "medio",
+
                 icone: "🟡"
+
             };
 
         }
 
 
         return {
+
             nome: "Ruim",
+
             classe: "ruim",
+
             icone: "🔴"
+
         };
 
     }
 
 
     return {
+
         nome: "Não informado",
+
         classe: "medio",
+
         icone: "⚪"
+
     };
 
 }
@@ -1680,52 +1997,66 @@ function atualizarDashboard() {
 
 
     let bom = 0;
+
     let medio = 0;
+
     let ruim = 0;
 
 
-    clientes.forEach(cliente => {
+    clientes.forEach(
+        cliente => {
 
-        const painel =
-            cliente.painel;
+            const painel =
+                String(
+                    cliente.painel ||
+                    ""
+                ).trim();
 
 
-        if (painel) {
+            if (painel) {
 
-            paineis.add(
-                String(painel).trim()
-            );
+                paineis.add(
+                    painel
+                );
+
+            }
+
+
+            const status =
+                determinarStatus(
+                    cliente
+                );
+
+
+            if (
+                status.classe ===
+                "bom"
+            ) {
+
+                bom++;
+
+            }
+
+            else if (
+                status.classe ===
+                "medio"
+            ) {
+
+                medio++;
+
+            }
+
+            else if (
+                status.classe ===
+                "ruim"
+            ) {
+
+                ruim++;
+
+            }
 
         }
-
-
-        const status =
-            determinarStatus(cliente);
-
-
-        if (status.classe === "bom") {
-
-            bom++;
-
-        }
-
-        else if (
-            status.classe === "medio"
-        ) {
-
-            medio++;
-
-        }
-
-        else if (
-            status.classe === "ruim"
-        ) {
-
-            ruim++;
-
-        }
-
-    });
+    );
 
 
     definirTexto(
@@ -1781,7 +2112,10 @@ function atualizarSaude(
     const percentual =
         total > 0
             ? Math.round(
-                (bom / total) * 100
+                (
+                    bom /
+                    total
+                ) * 100
             )
             : 0;
 
@@ -1805,19 +2139,7 @@ function atualizarSaude(
     if (texto) {
 
         texto.textContent =
-            `${percentual}%`;
-
-    }
-
-
-    const percentualElemento =
-        $("percentualSaude");
-
-
-    if (percentualElemento) {
-
-        percentualElemento.textContent =
-            `${percentual}%`;
+            `${percentual}% dos clientes com sinal bom`;
 
     }
 
@@ -1834,50 +2156,69 @@ function atualizarRanking() {
         $("rankingPaineis");
 
 
-    if (!elemento) return;
+    if (!elemento) {
+
+        return;
+
+    }
 
 
     const mapa =
         {};
 
 
-    clientes.forEach(cliente => {
+    clientes.forEach(
+        cliente => {
 
-        const painel =
-            String(
-                cliente.painel || ""
-            ).trim();
+            const painel =
+                String(
+                    cliente.painel ||
+                    ""
+                ).trim();
 
 
-        if (!painel) return;
+            if (!painel) {
+
+                return;
+
+            }
 
 
-        if (!mapa[painel]) {
-
-            mapa[painel] = 0;
+            mapa[painel] =
+                (
+                    mapa[painel] ||
+                    0
+                ) + 1;
 
         }
-
-
-        mapa[painel]++;
-
-    });
+    );
 
 
     const ranking =
-        Object.entries(mapa)
+        Object.entries(
+            mapa
+        )
             .sort(
                 (a, b) =>
                     b[1] - a[1]
             )
-            .slice(0, 10);
+            .slice(
+                0,
+                10
+            );
 
 
     if (!ranking.length) {
 
         elemento.innerHTML = `
-            <div class="nao-encontrado">
-                <div class="icone">📡</div>
+
+            <div
+                class="nao-encontrado"
+            >
+
+                <div class="icone">
+                    📡
+                </div>
 
                 <h2>
                     Nenhum painel disponível
@@ -1886,7 +2227,9 @@ function atualizarRanking() {
                 <p>
                     Os dados dos painéis aparecerão aqui.
                 </p>
+
             </div>
+
         `;
 
         return;
@@ -1899,54 +2242,76 @@ function atualizarRanking() {
 
 
     elemento.innerHTML =
-        ranking.map(
-            ([painel, quantidade], indice) => {
+        ranking
+            .map(
+                (
+                    [painel, quantidade],
+                    indice
+                ) => {
 
-                const largura =
-                    maior > 0
-                        ? Math.round(
-                            (quantidade / maior) * 100
-                        )
-                        : 0;
+                    const largura =
+                        maior > 0
+                            ? Math.round(
+                                (
+                                    quantidade /
+                                    maior
+                                ) * 100
+                            )
+                            : 0;
 
 
-                return `
+                    return `
 
-                    <div class="itemPainel">
-
-                        <span>
+                        <div
+                            class="itemPainel"
+                        >
 
                             <span>
-                                ${String(
-                                    indice + 1
-                                ).padStart(2, "0")}
-                                — 
-                                ${escaparHTML(painel)}
+
+                                <span>
+                                    #
+                                    ${
+                                        String(
+                                            indice + 1
+                                        ).padStart(
+                                            2,
+                                            "0"
+                                        )
+                                    }
+
+                                    ${escaparHTML(
+                                        painel
+                                    )}
+                                </span>
+
+                                <strong>
+                                    ${quantidade}
+                                </strong>
+
                             </span>
 
-                            <strong>
-                                ${quantidade}
-                            </strong>
-
-                        </span>
-
-
-                        <div class="barraPainel">
 
                             <div
-                                class="preenchimento"
-                                style="width:${largura}%"
-                            ></div>
+                                class="barraPainel"
+                            >
+
+                                <div
+                                    class="preenchimento"
+                                    style="
+                                        width:
+                                        ${largura}%
+                                    "
+                                ></div>
+
+                            </div>
 
                         </div>
 
-                    </div>
+                    `;
 
-                `;
-
-            }
-        )
-        .join("");
+                }
+            )
+            .join("");
 
 }
 
@@ -1977,7 +2342,8 @@ async function importarExcel() {
 
 
     if (
-        typeof XLSX === "undefined"
+        typeof XLSX ===
+        "undefined"
     ) {
 
         alert(
@@ -2003,26 +2369,31 @@ async function importarExcel() {
             XLSX.read(
                 dados,
                 {
-                    type: "array"
+                    type:
+                        "array"
                 }
             );
 
 
-        const importados = [];
+        const importados =
+            [];
 
 
         workbook.SheetNames.forEach(
             nomeAba => {
 
                 const planilha =
-                    workbook.Sheets[nomeAba];
+                    workbook.Sheets[
+                        nomeAba
+                    ];
 
 
                 const linhas =
                     XLSX.utils.sheet_to_json(
                         planilha,
                         {
-                            defval: ""
+                            defval:
+                                ""
                         }
                     );
 
@@ -2044,11 +2415,6 @@ async function importarExcel() {
                             if (
                                 !cliente.painel
                             ) {
-
-                                /*
-                                   Se a aba representa o painel,
-                                   usa o nome da aba.
-                                */
 
                                 cliente.painel =
                                     nomeAba;
@@ -2084,8 +2450,8 @@ async function importarExcel() {
         );
 
 
-        input.value = "";
-
+        input.value =
+            "";
 
     }
 
@@ -2112,17 +2478,30 @@ async function importarExcel() {
 
 function baixarClientesJson() {
 
+    if (!clientes.length) {
+
+        alert(
+            "Não há clientes carregados."
+        );
+
+        return;
+
+    }
+
+
     const conteudo =
         JSON.stringify(
             clientes,
             null,
-            2
+            4
         );
 
 
     const blob =
         new Blob(
-            [conteudo],
+            [
+                conteudo
+            ],
             {
                 type:
                     "application/json;charset=utf-8"
@@ -2131,27 +2510,39 @@ function baixarClientesJson() {
 
 
     const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
 
     const link =
-        document.createElement("a");
+        document.createElement(
+            "a"
+        );
 
 
-    link.href = url;
+    link.href =
+        url;
+
 
     link.download =
         "clientes.json";
 
 
-    document.body.appendChild(link);
+    document.body.appendChild(
+        link
+    );
+
 
     link.click();
+
 
     link.remove();
 
 
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(
+        url
+    );
 
 }
 
@@ -2171,7 +2562,8 @@ async function copiarEstatisticasTexto() {
             cliente =>
                 determinarStatus(
                     cliente
-                ).classe === "bom"
+                ).classe ===
+                "bom"
         ).length;
 
 
@@ -2180,7 +2572,8 @@ async function copiarEstatisticasTexto() {
             cliente =>
                 determinarStatus(
                     cliente
-                ).classe === "medio"
+                ).classe ===
+                "medio"
         ).length;
 
 
@@ -2189,7 +2582,8 @@ async function copiarEstatisticasTexto() {
             cliente =>
                 determinarStatus(
                     cliente
-                ).classe === "ruim"
+                ).classe ===
+                "ruim"
         ).length;
 
 
@@ -2199,17 +2593,23 @@ async function copiarEstatisticasTexto() {
                 .map(
                     cliente =>
                         String(
-                            cliente.painel || ""
+                            cliente.painel ||
+                            ""
                         ).trim()
                 )
-                .filter(Boolean)
+                .filter(
+                    Boolean
+                )
         ).size;
 
 
     const saude =
-        total
+        total > 0
             ? Math.round(
-                (bom / total) * 100
+                (
+                    bom /
+                    total
+                ) * 100
             )
             : 0;
 
@@ -2228,14 +2628,16 @@ Painéis: ${paineis}
 
 ❤️ Saúde da rede: ${saude}%
 
-`;
+`.trim();
 
 
     try {
 
-        await navigator.clipboard.writeText(
-            texto.trim()
-        );
+        await navigator
+            .clipboard
+            .writeText(
+                texto
+            );
 
 
         alert(
@@ -2244,10 +2646,10 @@ Painéis: ${paineis}
 
     }
 
-    catch (erro) {
+    catch {
 
         alert(
-            "Não foi possível copiar as estatísticas."
+            texto
         );
 
     }
@@ -2262,7 +2664,10 @@ Painéis: ${paineis}
 function registrarServiceWorker() {
 
     if (
-        !("serviceWorker" in navigator)
+        !(
+            "serviceWorker" in
+            navigator
+        )
     ) {
 
         return;
@@ -2277,49 +2682,20 @@ function registrarServiceWorker() {
             try {
 
                 const registro =
-                    await navigator.serviceWorker.register(
-                        "./service-worker.js"
-                    );
-
-
-                registro.addEventListener(
-                    "updatefound",
-                    () => {
-
-                        const novo =
-                            registro.installing;
-
-
-                        if (!novo) return;
-
-
-                        novo.addEventListener(
-                            "statechange",
-                            () => {
-
-                                if (
-                                    novo.state ===
-                                    "installed" &&
-                                    navigator.serviceWorker.controller
-                                ) {
-
-                                    mostrarBannerAtualizacao(
-                                        novo
-                                    );
-
-                                }
-
-                            }
+                    await navigator
+                        .serviceWorker
+                        .register(
+                            "./service-worker.js?v=30"
                         );
 
-                    }
-                );
+
+                registro.update();
 
             }
 
             catch (erro) {
 
-                console.error(
+                console.warn(
                     "Service Worker:",
                     erro
                 );
@@ -2333,7 +2709,7 @@ function registrarServiceWorker() {
 
 
 /* =========================================================
-   ATUALIZAÇÃO DO APLICATIVO
+   ATUALIZAÇÃO
 ========================================================= */
 
 function mostrarBannerAtualizacao(
@@ -2344,7 +2720,11 @@ function mostrarBannerAtualizacao(
         $("updateBanner");
 
 
-    if (!banner) return;
+    if (!banner) {
+
+        return;
+
+    }
 
 
     banner.style.display =
@@ -2355,19 +2735,24 @@ function mostrarBannerAtualizacao(
         $("btnAtualizarApp");
 
 
-    if (!botao) return;
+    if (!botao) {
+
+        return;
+
+    }
 
 
-    botao.onclick = () => {
+    botao.onclick =
+        () => {
 
-        worker.postMessage(
-            "SKIP_WAITING"
-        );
+            worker.postMessage(
+                "SKIP_WAITING"
+            );
 
 
-        window.location.reload();
+            window.location.reload();
 
-    };
+        };
 
 }
 
@@ -2396,7 +2781,7 @@ async function atualizarAplicativo() {
 
     }
 
-    catch (erro) {
+    catch {
 
         window.location.reload();
 
@@ -2406,34 +2791,37 @@ async function atualizarAplicativo() {
 
 
 /* =========================================================
-   SERVICE WORKER — ATUALIZAÇÃO FORÇADA
+   CONTROLLER CHANGE
 ========================================================= */
 
 if (
-    "serviceWorker" in navigator
+    "serviceWorker" in
+    navigator
 ) {
 
-    navigator.serviceWorker.addEventListener(
-        "controllerchange",
-        () => {
+    navigator
+        .serviceWorker
+        .addEventListener(
+            "controllerchange",
+            () => {
 
-            if (
-                window.__recarregandoSW
-            ) {
+                if (
+                    window.__recarregandoSW
+                ) {
 
-                return;
+                    return;
+
+                }
+
+
+                window.__recarregandoSW =
+                    true;
+
+
+                window.location.reload();
 
             }
-
-
-            window.__recarregandoSW =
-                true;
-
-
-            window.location.reload();
-
-        }
-    );
+        );
 
 }
 
@@ -2461,19 +2849,29 @@ function definirTexto(
 }
 
 
-function capitalizar(texto) {
+function capitalizar(
+    texto
+) {
 
-    if (!texto) return "";
+    if (!texto) {
+
+        return "";
+
+    }
+
 
     return (
-        texto.charAt(0).toUpperCase() +
+        texto.charAt(0)
+            .toUpperCase() +
         texto.slice(1)
     );
 
 }
 
 
-function escaparHTML(valor) {
+function escaparHTML(
+    valor
+) {
 
     return String(
         valor ?? ""
