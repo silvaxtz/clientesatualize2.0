@@ -1644,3 +1644,28 @@ body.dark-mode .alerta-critico {
     }
 
 }
+
+/* =====================================================
+   LOGO — DESTAQUE NO MODO ESCURO
+===================================================== */
+
+.logo {
+    background: #ffffff;
+    padding: 14px 24px;
+    border-radius: 18px;
+    object-fit: contain;
+}
+
+/* No modo claro, mantém o visual limpo */
+body:not(.dark-mode) .logo {
+    background: transparent;
+    padding: 0;
+}
+
+/* No modo escuro, cria uma área clara atrás da logo */
+body.dark-mode .logo {
+    background: #ffffff;
+    padding: 14px 24px;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
