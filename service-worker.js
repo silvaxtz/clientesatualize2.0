@@ -1,4 +1,4 @@
-const CACHE = "atualize-v30";
+const CACHE = "atualize-v31";
 
 
 const ARQUIVOS = [
