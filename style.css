@@ -1,31 +1,35 @@
 /* =========================================================
    ATUALIZE TELECOM
-   STYLE.CSS — REMASTER 3.0
+   STYLE.CSS — REMASTER 4.0
 ========================================================= */
 
 :root {
     --verde: #00b050;
-    --verde2: #00d66a;
+    --verde-claro: #18d86a;
     --verde-escuro: #008f40;
 
     --fundo: #f3f6fa;
     --card: #ffffff;
-    --card2: #f8fafc;
+    --card-2: #f8fafc;
+    --card-3: #eef3f7;
 
-    --texto: #111827;
-    --texto2: #667085;
-    --texto3: #98a2b3;
+    --texto: #101828;
+    --texto-2: #667085;
+    --texto-3: #98a2b3;
 
-    --borda: #d9e2ec;
+    --borda: #d8e1ea;
 
     --bom: #16a34a;
-    --medio: #d99b00;
+    --medio: #d49a00;
     --ruim: #dc2626;
 
     --sombra:
-        0 18px 50px rgba(15,23,42,.08);
+        0 18px 50px rgba(15, 23, 42, .08);
 
-    --raio: 20px;
+    --sombra-forte:
+        0 25px 65px rgba(15, 23, 42, .13);
+
+    --radius: 20px;
 }
 
 
@@ -46,7 +50,7 @@ html {
 body {
     min-height: 100vh;
 
-    padding: 24px;
+    padding: 22px;
 
     display: flex;
     align-items: center;
@@ -56,15 +60,21 @@ body {
         Inter,
         "Segoe UI",
         Arial,
+        Helvetica,
         sans-serif;
 
     color: var(--texto);
 
     background:
         radial-gradient(
-            circle at top left,
-            rgba(0,176,80,.08),
-            transparent 35%
+            circle at 10% 0%,
+            rgba(0, 176, 80, .08),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 90% 100%,
+            rgba(0, 176, 80, .045),
+            transparent 30%
         ),
         var(--fundo);
 
@@ -73,15 +83,23 @@ body {
         color .3s ease;
 }
 
-
 button,
 input {
     font: inherit;
 }
 
+button {
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
 
 /* =========================================================
-   CONTAINER
+   CONTAINER PRINCIPAL
 ========================================================= */
 
 .container {
@@ -89,15 +107,19 @@ input {
 
     background: var(--card);
 
-    border:
-        1px solid var(--borda);
+    border: 1px solid var(--borda);
 
-    border-radius: var(--raio);
+    border-radius: var(--radius);
 
     box-shadow: var(--sombra);
 
     animation:
         entrada .3s ease;
+
+    transition:
+        background .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
 }
 
 @keyframes entrada {
@@ -114,6 +136,54 @@ input {
 
 
 /* =========================================================
+   BOTÃO DE TEMA
+========================================================= */
+
+.btn-tema {
+    width: 43px !important;
+    height: 43px !important;
+
+    min-width: 43px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 12px !important;
+
+    border: 1px solid var(--borda) !important;
+
+    background: var(--card-2) !important;
+
+    color: var(--texto) !important;
+
+    font-size: 17px !important;
+
+    line-height: 1 !important;
+
+    box-shadow: none !important;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.btn-tema:hover {
+    transform: translateY(-1px);
+
+    border-color: var(--verde) !important;
+
+    background:
+        rgba(0, 176, 80, .08) !important;
+}
+
+
+/* =========================================================
    LOGIN
 ========================================================= */
 
@@ -122,11 +192,11 @@ input {
 
     max-width: 450px;
 
-    padding: 38px;
+    padding: 36px;
 }
 
 
-/* Tema login */
+/* Tema do login */
 
 .login-container > .btn-tema {
     position: absolute;
@@ -137,20 +207,19 @@ input {
 
 
 /* =========================================================
-   LOGO LOGIN
+   LOGO DO LOGIN
 ========================================================= */
 
 .login-logo {
     width: 100%;
-
-    height: 145px;
+    height: 135px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 
     overflow: hidden;
 }
@@ -159,30 +228,30 @@ input {
     width: 215px !important;
     max-width: 215px !important;
 
-    height: 125px !important;
-    max-height: 125px !important;
-
-    object-fit: contain;
-
-    display: block;
+    height: 115px !important;
+    max-height: 115px !important;
 
     margin: auto;
 
+    object-fit: contain;
+
+    object-position: center;
+
     filter:
         drop-shadow(
-            0 7px 18px rgba(0,0,0,.08)
+            0 8px 18px rgba(0, 0, 0, .08)
         );
 }
 
 
 /* =========================================================
-   LOGIN HEADER
+   CABEÇALHO LOGIN
 ========================================================= */
 
 .login-header {
-    text-align: center;
-
     margin-bottom: 27px;
+
+    text-align: center;
 }
 
 .login-badge,
@@ -190,6 +259,7 @@ input {
     display: inline-flex;
 
     align-items: center;
+    justify-content: center;
 
     padding:
         5px
@@ -198,7 +268,7 @@ input {
     border-radius: 30px;
 
     background:
-        rgba(0,176,80,.10);
+        rgba(0, 176, 80, .10);
 
     color: var(--verde-escuro);
 
@@ -212,28 +282,30 @@ input {
 .login-header h1 {
     margin-top: 12px;
 
-    font-size: 29px;
-
-    line-height: 1.15;
-
     color: var(--texto);
 
+    font-size: 29px;
+
+    line-height: 1.1;
+
     font-weight: 850;
+
+    letter-spacing: -.4px;
 }
 
 .login-header p {
     margin-top: 7px;
 
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 13px;
 
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 
 /* =========================================================
-   INPUTS
+   CAMPOS DO LOGIN
 ========================================================= */
 
 .campo-input {
@@ -264,7 +336,13 @@ input {
 
     transform: translateY(-50%);
 
-    opacity: .7;
+    z-index: 2;
+
+    font-size: 15px;
+
+    opacity: .72;
+
+    pointer-events: none;
 }
 
 #usuario,
@@ -283,24 +361,35 @@ input {
 
     border-radius: 13px;
 
-    background: var(--card2);
+    background: var(--card-2);
 
     color: var(--texto);
 
     outline: none;
 
+    font-size: 14px;
+
     transition:
-        .2s ease;
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+#usuario::placeholder,
+#senha::placeholder,
+#pesquisa::placeholder {
+    color: #98a2b3;
 }
 
 #usuario:focus,
-#senha:focus {
+#senha:focus,
+#pesquisa:focus {
     border-color: var(--verde);
 
     background: var(--card);
 
     box-shadow:
-        0 0 0 4px rgba(0,176,80,.09);
+        0 0 0 4px rgba(0, 176, 80, .09);
 }
 
 
@@ -310,10 +399,9 @@ input {
 
 .btn-login {
     width: 100%;
+    min-height: 53px;
 
-    height: 53px;
-
-    margin-top: 4px;
+    margin-top: 5px;
 
     padding:
         0
@@ -332,33 +420,39 @@ input {
         linear-gradient(
             135deg,
             var(--verde),
-            var(--verde2)
+            var(--verde-claro)
         );
 
     color: #fff;
 
+    font-size: 14px;
+
     font-weight: 800;
 
     box-shadow:
-        0 9px 22px rgba(0,176,80,.20);
-
-    cursor: pointer;
+        0 9px 22px rgba(0, 176, 80, .20);
 
     transition:
-        transform .2s ease;
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 .btn-login:hover {
     transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 30px rgba(0, 176, 80, .26);
 }
 
 .btn-login strong {
-    font-size: 20px;
+    font-size: 21px;
+
+    font-weight: 400;
 }
 
 
 /* =========================================================
-   ERRO / FOOTER
+   LOGIN ERRO / FOOTER
 ========================================================= */
 
 #erroLogin {
@@ -376,57 +470,13 @@ input {
 }
 
 .login-footer {
-    margin-top: 24px;
+    margin-top: 23px;
 
     text-align: center;
 
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 10px;
-}
-
-
-/* =========================================================
-   BOTÃO TEMA
-========================================================= */
-
-.btn-tema {
-    width: 43px !important;
-    height: 43px;
-
-    min-width: 43px;
-
-    padding: 0 !important;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border:
-        1px solid var(--borda);
-
-    border-radius: 12px;
-
-    background: var(--card2);
-
-    color: var(--texto);
-
-    cursor: pointer;
-
-    font-size: 17px;
-
-    transition:
-        .2s ease;
-}
-
-.btn-tema:hover {
-    border-color: var(--verde);
-
-    transform: translateY(-1px);
-
-    background:
-        rgba(0,176,80,.08);
 }
 
 
@@ -437,7 +487,7 @@ input {
 .sistema-container {
     max-width: 860px;
 
-    padding: 28px;
+    padding: 27px;
 }
 
 
@@ -446,6 +496,8 @@ input {
 ========================================================= */
 
 .topo {
+    width: 100%;
+
     display: flex;
 
     align-items: center;
@@ -463,7 +515,9 @@ input {
 
     align-items: center;
 
-    gap: 9px;
+    gap: 10px;
+
+    min-width: 0;
 }
 
 .usuario-area::before {
@@ -471,6 +525,8 @@ input {
 
     width: 40px;
     height: 40px;
+
+    flex-shrink: 0;
 
     display: flex;
 
@@ -480,10 +536,12 @@ input {
     border-radius: 12px;
 
     background:
-        rgba(0,176,80,.10);
+        rgba(0, 176, 80, .10);
 
     border:
-        1px solid rgba(0,176,80,.20);
+        1px solid rgba(0, 176, 80, .20);
+
+    font-size: 16px;
 }
 
 .usuario-area::after {
@@ -491,10 +549,10 @@ input {
 
     position: absolute;
 
-    top: -4px;
+    top: -3px;
     left: 49px;
 
-    color: var(--texto3);
+    color: var(--texto-3);
 
     font-size: 7px;
 
@@ -515,13 +573,15 @@ input {
 
 
 /* =========================================================
-   TOPO AÇÕES
+   AÇÕES DO TOPO
 ========================================================= */
 
 .acoes-topo {
     display: flex;
 
     align-items: center;
+
+    justify-content: center;
 
     gap: 7px;
 }
@@ -535,26 +595,52 @@ input {
         0
         13px;
 
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
     border-radius: 11px;
 
     font-size: 11px;
 
     font-weight: 800;
 
-    cursor: pointer;
+    line-height: 1;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease;
 }
 
 #btnAdmin {
-    background: var(--verde);
+    background:
+        linear-gradient(
+            135deg,
+            #00b050,
+            #00c85a
+        );
 
     border:
         1px solid var(--verde);
 
     color: #fff;
+
+    box-shadow:
+        0 6px 16px rgba(0, 176, 80, .16);
 }
 
 #btnAdmin:hover {
-    background: var(--verde-escuro);
+    transform: translateY(-1px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #00a348,
+            #00bb53
+        );
 }
 
 #btnSair {
@@ -567,13 +653,33 @@ input {
 }
 
 #btnSair:hover {
+    transform: translateY(-1px);
+
     background:
-        rgba(220,38,38,.07);
+        rgba(220, 38, 38, .07);
+
+    border-color:
+        rgba(220, 38, 38, .28);
+}
+
+#fecharAdmin {
+    background: var(--card-2);
+
+    border:
+        1px solid var(--borda);
+
+    color: var(--texto);
+}
+
+#fecharAdmin:hover {
+    border-color: var(--verde);
+
+    color: var(--verde);
 }
 
 
 /* =========================================================
-   CABEÇALHO PESQUISA
+   CABEÇALHO DA PESQUISA
 ========================================================= */
 
 .sistema-header {
@@ -584,32 +690,31 @@ input {
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
 
-    margin-bottom: 25px;
+    margin:
+        4px
+        auto
+        23px;
 }
 
 
 /* =========================================================
-   ÁREA DA LOGO
-   FIXA — NÃO DEIXA A IMAGEM CRESCER
+   ÁREA DA LOGO DA PESQUISA
 ========================================================= */
 
 .logo-pesquisa-area {
     width: 100%;
-
-    height: 86px;
+    height: 108px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
-    margin-bottom: 9px;
+    margin-bottom: 5px;
 
     overflow: hidden;
 }
@@ -617,22 +722,23 @@ input {
 
 /* =========================================================
    LOGO DA PESQUISA
-   PEQUENA, CENTRALIZADA E CONTROLADA
 ========================================================= */
 
 .sistema-header .logo-sistema {
     display: block !important;
 
-    width: 105px !important;
-    max-width: 105px !important;
+    width: 135px !important;
+    max-width: 135px !important;
 
-    height: 70px !important;
-    max-height: 70px !important;
+    height: 88px !important;
+    max-height: 88px !important;
 
-    min-width: 105px !important;
-    min-height: 70px !important;
+    min-width: 135px !important;
+    min-height: 88px !important;
 
-    margin: 0 auto !important;
+    margin:
+        0
+        auto !important;
 
     object-fit: contain !important;
 
@@ -643,15 +749,20 @@ input {
     filter: none !important;
 }
 
+.sistema-header .logo-sistema:hover {
+    transform: none !important;
+}
+
 
 /* =========================================================
-   TÍTULO PESQUISA
+   TÍTULO
 ========================================================= */
 
 .sistema-header h1 {
-    margin-top: 9px;
-
-    margin-bottom: 6px;
+    margin:
+        6px
+        0
+        6px;
 
     color: var(--texto);
 
@@ -665,9 +776,11 @@ input {
 }
 
 .sistema-header p {
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 11px;
+
+    line-height: 1.5;
 }
 
 
@@ -677,7 +790,6 @@ input {
 
 .pesquisa-area {
     width: 100%;
-
     max-width: 690px;
 
     margin:
@@ -700,25 +812,30 @@ input {
     transform: translateY(-50%);
 
     z-index: 2;
+
+    font-size: 16px;
+
+    opacity: .74;
+
+    pointer-events: none;
 }
 
 #pesquisa {
     width: 100%;
-
     height: 56px;
 
     padding:
         0
-        42px
+        43px
         0
-        44px;
+        43px;
 
     border:
         1.5px solid var(--borda);
 
     border-radius: 15px;
 
-    background: var(--card2);
+    background: var(--card-2);
 
     color: var(--texto);
 
@@ -726,17 +843,13 @@ input {
 
     font-size: 13px;
 
-    transition:
-        .2s ease;
-}
-
-#pesquisa:focus {
-    border-color: var(--verde);
-
-    background: var(--card);
-
     box-shadow:
-        0 0 0 4px rgba(0,176,80,.08);
+        0 7px 22px rgba(15, 23, 42, .04);
+
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
 }
 
 .limpar-pesquisa {
@@ -744,100 +857,333 @@ input {
 
     position: absolute;
 
-    right: 15px;
+    right: 14px;
     top: 50%;
 
     transform: translateY(-50%);
 
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
 
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
-    background: var(--borda);
+    background:
+        var(--borda);
 
-    color: var(--texto2);
-
-    cursor: pointer;
+    color:
+        var(--texto-2);
 
     font-size: 17px;
+
+    line-height: 1;
+
+    cursor: pointer;
 }
 
 .pesquisa-ajuda {
+    width: 100%;
+
     margin-top: 8px;
 
-    color: var(--texto2);
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: var(--texto-2);
 
     font-size: 10px;
-
-    text-align: left;
 }
 
 
 /* =========================================================
-   RESULTADO
+   RESULTADO — CONTAINER
 ========================================================= */
 
 #resultado {
     width: 100%;
-
     max-width: 690px;
 
     margin:
-        21px
+        20px
         auto
         0;
 
-    padding: 18px;
+    padding: 0 !important;
 
-    display: grid;
+    display: block !important;
 
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    background: transparent !important;
 
-    gap: 17px 24px;
+    border: 0 !important;
 
-    border:
-        1px solid var(--borda);
+    box-shadow: none !important;
 
-    border-radius: 18px;
-
-    background: var(--card);
-
-    box-shadow:
-        0 10px 28px rgba(15,23,42,.05);
+    animation: none;
 }
 
 
 /* =========================================================
-   CAMPOS
+   CARD DO CLIENTE
 ========================================================= */
 
-.campo {
+#resultado .cliente-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    background:
+        var(--card);
+
+    border:
+        1px solid var(--borda);
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        0 14px 35px rgba(15, 23, 42, .07);
+
+    animation:
+        clienteEntrada .25s ease;
+}
+
+@keyframes clienteEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   CABEÇALHO DO CLIENTE
+========================================================= */
+
+#resultado .cliente-card-header {
+    min-height: 85px;
+
+    padding:
+        16px
+        19px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom:
+        1px solid var(--borda);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 176, 80, .07),
+            rgba(0, 176, 80, .015)
+        );
+}
+
+
+/* =========================================================
+   IDENTIFICAÇÃO
+========================================================= */
+
+#resultado .cliente-identificacao {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+#resultado .cliente-avatar {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        rgba(0, 176, 80, .11);
+
+    border:
+        1px solid rgba(0, 176, 80, .15);
+
+    font-size: 20px;
+}
+
+#resultado .cliente-identificacao-info {
     min-width: 0;
 }
 
-.campo .titulo {
-    margin-bottom: 5px;
+#resultado .cliente-dado-label {
+    display: block;
 
-    color: var(--texto3);
+    color: var(--texto-3);
 
     font-size: 8px;
 
+    line-height: 1;
+
     font-weight: 850;
 
-    letter-spacing: .12em;
+    letter-spacing: .13em;
 
     text-transform: uppercase;
 }
 
-.campo .valor {
+#resultado .cliente-identificacao-info h2 {
+    margin-top: 5px;
+
     color: var(--texto);
 
-    font-size: 12px;
+    font-size: 19px;
+
+    line-height: 1.15;
+
+    font-weight: 900;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   STATUS DO CABEÇALHO
+========================================================= */
+
+#resultado .cliente-status {
+    flex-shrink: 0;
+
+    min-height: 30px;
+
+    padding:
+        0
+        11px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border-radius: 30px;
+
+    font-size: 10px;
+
+    font-weight: 850;
+
+    line-height: 1;
+}
+
+#resultado .cliente-status.bom {
+    color: var(--bom);
+
+    background:
+        rgba(22, 163, 74, .11);
+}
+
+#resultado .cliente-status.medio {
+    color: var(--medio);
+
+    background:
+        rgba(212, 154, 0, .13);
+}
+
+#resultado .cliente-status.ruim {
+    color: var(--ruim);
+
+    background:
+        rgba(220, 38, 38, .10);
+}
+
+
+/* =========================================================
+   GRADE DE DADOS
+========================================================= */
+
+#resultado .cliente-dados {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    background:
+        var(--card);
+}
+
+
+/* =========================================================
+   CADA DADO
+========================================================= */
+
+#resultado .cliente-dado {
+    min-height: 79px;
+
+    padding:
+        15px
+        19px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    background:
+        var(--card);
+
+    border-bottom:
+        1px solid var(--borda);
+}
+
+#resultado .cliente-dado:nth-child(even) {
+    border-left:
+        1px solid var(--borda);
+}
+
+#resultado .cliente-dado:nth-last-child(-n + 2) {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   VALOR DO DADO
+========================================================= */
+
+#resultado .cliente-dado-valor {
+    margin-top: 6px;
+
+    color: var(--texto);
+
+    font-size: 13px;
+
+    line-height: 1.25;
 
     font-weight: 750;
 
@@ -846,98 +1192,32 @@ input {
 
 
 /* =========================================================
-   STATUS
+   STATUS DENTRO DA GRADE
 ========================================================= */
 
-.status-bom,
-.status-medio,
-.status-ruim {
-    display: inline-flex;
+#resultado .cliente-status-texto {
+    width: fit-content;
 
-    align-items: center;
+    min-height: 27px;
 
-    min-height: 25px;
+    margin-top: 3px;
 
     padding:
         0
         9px;
 
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
     border-radius: 30px;
 
-    font-size: 9px;
-
-    font-weight: 850;
-}
-
-.status-bom {
-    color: var(--bom);
-
-    background:
-        rgba(22,163,74,.10);
-}
-
-.status-medio {
-    color: var(--medio);
-
-    background:
-        rgba(217,155,0,.11);
-}
-
-.status-ruim {
-    color: var(--ruim);
-
-    background:
-        rgba(220,38,38,.10);
-}
-
-
-/* =========================================================
-   ESTADO VAZIO
-========================================================= */
-
-.nao-encontrado {
-    grid-column: 1 / -1;
-
-    padding: 30px 20px;
-
-    text-align: center;
-
-    border-radius: 15px;
-
-    background: var(--card2);
-
-    border:
-        1px solid var(--borda);
-}
-
-.nao-encontrado .icone {
-    margin-bottom: 11px;
-
-    font-size: 30px;
-}
-
-.nao-encontrado h2 {
-    margin-bottom: 7px;
-
-    color: var(--texto);
-
-    font-size: 15px;
-}
-
-.nao-encontrado p {
-    color: var(--texto2);
-
-    font-size: 11px;
-
-    line-height: 1.6;
-}
-
-.nao-encontrado .dica {
-    margin-top: 12px;
-
-    color: var(--texto2);
-
     font-size: 10px;
+
+    line-height: 1;
 }
 
 
@@ -945,24 +1225,89 @@ input {
    ALERTA
 ========================================================= */
 
-.alerta-critico {
-    grid-column: 1 / -1;
+#resultado .alerta-critico {
+    margin: 0;
 
-    padding: 10px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(220,38,38,.07);
+    padding:
+        12px
+        17px;
 
     border:
-        1px solid rgba(220,38,38,.15);
+        0;
+
+    border-top:
+        1px solid rgba(220, 38, 38, .14);
+
+    border-radius: 0;
+
+    background:
+        rgba(220, 38, 38, .07);
 
     color: var(--ruim);
 
+    text-align: center;
+
     font-size: 10px;
 
-    font-weight: 700;
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   ESTADO VAZIO
+========================================================= */
+
+#resultado .nao-encontrado {
+    width: 100%;
+
+    padding:
+        31px
+        20px;
+
+    text-align: center;
+
+    border:
+        1px solid var(--borda);
+
+    border-radius: 18px;
+
+    background:
+        var(--card-2);
+
+    box-shadow:
+        0 8px 22px rgba(15, 23, 42, .04);
+}
+
+#resultado .nao-encontrado .icone {
+    margin-bottom: 11px;
+
+    font-size: 29px;
+}
+
+#resultado .nao-encontrado h2 {
+    margin-bottom: 7px;
+
+    color: var(--texto);
+
+    font-size: 16px;
+
+    font-weight: 850;
+}
+
+#resultado .nao-encontrado p {
+    color: var(--texto-2);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+#resultado .nao-encontrado .dica {
+    margin-top: 13px;
+
+    color: var(--texto-2);
+
+    font-size: 10px;
 }
 
 
@@ -974,11 +1319,21 @@ input {
     max-width: 1060px;
 
     max-height:
-        calc(100vh - 48px);
+        calc(100vh - 44px);
 
     overflow-y: auto;
 
-    padding: 28px;
+    padding: 27px;
+}
+
+.admin-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-container::-webkit-scrollbar-thumb {
+    background: var(--borda);
+
+    border-radius: 20px;
 }
 
 .admin-container h2 {
@@ -988,7 +1343,7 @@ input {
 .admin-subtitulo {
     margin-top: 4px;
 
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 11px;
 }
@@ -1002,7 +1357,10 @@ input {
     display: grid;
 
     grid-template-columns:
-        repeat(5, minmax(0,1fr));
+        repeat(
+            5,
+            minmax(0, 1fr)
+        );
 
     gap: 12px;
 
@@ -1013,7 +1371,7 @@ input {
 }
 
 .card-admin {
-    min-height: 108px;
+    min-height: 110px;
 
     padding: 16px;
 
@@ -1023,7 +1381,8 @@ input {
 
     justify-content: space-between;
 
-    background: var(--card2);
+    background:
+        var(--card-2);
 
     border:
         1px solid var(--borda);
@@ -1032,7 +1391,7 @@ input {
 }
 
 .card-admin span {
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 10px;
 
@@ -1040,7 +1399,9 @@ input {
 }
 
 .card-admin h2 {
-    font-size: 27px;
+    color: var(--texto);
+
+    font-size: 28px;
 
     font-weight: 900;
 }
@@ -1069,11 +1430,13 @@ input {
     padding:
         7px
         0
-        19px;
+        18px;
 }
 
 .dashboard-section h2 {
     margin-bottom: 12px;
+
+    color: var(--texto);
 
     font-size: 16px;
 
@@ -1083,27 +1446,28 @@ input {
 .admin-ajuda {
     margin-bottom: 12px;
 
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 11px;
 }
 
 .admin-container hr {
-    border: 0;
-
     height: 1px;
-
-    background: var(--borda);
 
     margin:
         2px
         0
         18px;
+
+    border: 0;
+
+    background:
+        var(--borda);
 }
 
 
 /* =========================================================
-   SAÚDE
+   SAÚDE DA REDE
 ========================================================= */
 
 .barra-saude {
@@ -1115,7 +1479,8 @@ input {
 
     border-radius: 30px;
 
-    background: var(--borda);
+    background:
+        var(--borda);
 }
 
 #barraSaude {
@@ -1123,7 +1488,7 @@ input {
 
     height: 100%;
 
-    border-radius: 30px;
+    border-radius: inherit;
 
     background:
         linear-gradient(
@@ -1139,7 +1504,7 @@ input {
 #textoSaude {
     margin-top: 8px;
 
-    color: var(--texto2);
+    color: var(--texto-2);
 
     font-size: 11px;
 
@@ -1157,6 +1522,17 @@ input {
     overflow-y: auto;
 }
 
+#rankingPaineis::-webkit-scrollbar {
+    width: 6px;
+}
+
+#rankingPaineis::-webkit-scrollbar-thumb {
+    background:
+        var(--borda);
+
+    border-radius: 20px;
+}
+
 .itemPainel {
     margin-bottom: 14px;
 }
@@ -1165,6 +1541,8 @@ input {
     display: flex;
 
     justify-content: space-between;
+
+    gap: 12px;
 
     margin-bottom: 6px;
 
@@ -1176,7 +1554,7 @@ input {
 }
 
 .itemPainel strong {
-    color: var(--texto2);
+    color: var(--texto-2);
 }
 
 .barraPainel {
@@ -1186,9 +1564,10 @@ input {
 
     overflow: hidden;
 
-    border-radius: 30px;
+    border-radius: 20px;
 
-    background: var(--borda);
+    background:
+        var(--borda);
 }
 
 .preenchimento {
@@ -1200,7 +1579,7 @@ input {
         linear-gradient(
             90deg,
             var(--verde),
-            var(--verde2)
+            var(--verde-claro)
         );
 }
 
@@ -1225,9 +1604,11 @@ input {
 
     border-radius: 11px;
 
-    background: var(--card2);
+    background:
+        var(--card-2);
 
-    color: var(--texto);
+    color:
+        var(--texto);
 
     font-size: 11px;
 }
@@ -1241,7 +1622,8 @@ input {
 
     border-radius: 12px;
 
-    background: var(--verde);
+    background:
+        var(--verde);
 
     color: #fff;
 
@@ -1251,12 +1633,13 @@ input {
 }
 
 #btnImportarExcel:hover {
-    background: var(--verde-escuro);
+    background:
+        var(--verde-escuro);
 }
 
 
 /* =========================================================
-   DOWNLOAD
+   BOTÕES ADMIN
 ========================================================= */
 
 #baixarJson,
@@ -1285,31 +1668,13 @@ input {
 }
 
 #baixarJson {
-    background: #2563eb;
+    background:
+        #2563eb;
 }
 
 #copiarEstatisticas {
-    background: #7c3aed;
-}
-
-
-/* =========================================================
-   FECHAR ADMIN
-========================================================= */
-
-#fecharAdmin {
-    background: var(--card2);
-
-    border:
-        1px solid var(--borda);
-
-    color: var(--texto);
-}
-
-#fecharAdmin:hover {
-    border-color: var(--verde);
-
-    color: var(--verde);
+    background:
+        #7c3aed;
 }
 
 
@@ -1323,11 +1688,7 @@ input {
     left: 50%;
     bottom: 18px;
 
-    transform: translateX(-50%);
-
     z-index: 99999;
-
-    display: none;
 
     width:
         min(
@@ -1335,25 +1696,33 @@ input {
             450px
         );
 
+    transform:
+        translateX(-50%);
+
+    display: none;
+
     align-items: center;
 
     justify-content: space-between;
 
     gap: 12px;
 
-    padding: 13px 15px;
-
-    border-radius: 14px;
-
-    background: #111820;
-
-    color: #fff;
+    padding:
+        13px
+        15px;
 
     border:
         1px solid #293746;
 
+    border-radius: 14px;
+
+    background:
+        #111820;
+
+    color: #fff;
+
     box-shadow:
-        0 15px 40px rgba(0,0,0,.3);
+        0 15px 40px rgba(0, 0, 0, .30);
 }
 
 .update-banner button {
@@ -1367,7 +1736,8 @@ input {
 
     border-radius: 8px;
 
-    background: var(--verde);
+    background:
+        var(--verde);
 
     color: #fff;
 
@@ -1387,6 +1757,8 @@ input {
     left: 8px;
     bottom: 6px;
 
+    z-index: 9999;
+
     color: #94a3b8;
 
     font-size: 8px;
@@ -1404,33 +1776,52 @@ body.dark-theme {
 
     --card: #10171f;
 
-    --card2: #141d26;
+    --card-2: #141d26;
+
+    --card-3: #19232d;
 
     --texto: #f1f5f9;
 
-    --texto2: #94a3b8;
+    --texto-2: #94a3b8;
 
-    --texto3: #718096;
+    --texto-3: #718096;
 
     --borda: #293746;
+
+    --sombra:
+        0 22px 60px rgba(0, 0, 0, .42);
+
+    --sombra-forte:
+        0 28px 80px rgba(0, 0, 0, .55);
 
     background:
         radial-gradient(
             circle at 10% 0%,
-            rgba(0,176,80,.08),
-            transparent 35%
+            rgba(0, 176, 80, .08),
+            transparent 34%
         ),
         var(--fundo);
 
     color: var(--texto);
 }
 
+
+/* containers */
+
 body.dark-mode .container,
 body.dark-theme .container {
-    background: var(--card);
+    background:
+        var(--card);
 
-    border-color: var(--borda);
+    border-color:
+        var(--borda);
+
+    box-shadow:
+        var(--sombra);
 }
+
+
+/* inputs */
 
 body.dark-mode #usuario,
 body.dark-mode #senha,
@@ -1438,62 +1829,124 @@ body.dark-mode #pesquisa,
 body.dark-theme #usuario,
 body.dark-theme #senha,
 body.dark-theme #pesquisa {
-    background: #0b1219;
+    background:
+        #0c131a;
 
-    color: #fff;
+    color:
+        #fff;
 
-    border-color: #304050;
+    border-color:
+        #304050;
 }
 
-body.dark-mode #resultado,
-body.dark-theme #resultado {
-    background: #10171f;
 
-    border-color: var(--borda);
-}
-
-body.dark-mode .card-admin,
-body.dark-theme .card-admin {
-    background: var(--card2);
-
-    border-color: var(--borda);
-}
-
-body.dark-mode .nao-encontrado,
-body.dark-theme .nao-encontrado {
-    background: var(--card2);
-
-    border-color: var(--borda);
-}
+/* botão tema */
 
 body.dark-mode .btn-tema,
 body.dark-theme .btn-tema {
-    background: #17222d;
+    background:
+        #17222d !important;
 
-    border-color: #334454;
+    border-color:
+        #334454 !important;
 
-    color: #fff;
+    color:
+        #fff !important;
+}
+
+
+/* resultado */
+
+body.dark-mode #resultado .cliente-card,
+body.dark-theme #resultado .cliente-card {
+    background:
+        #10171f;
+
+    border-color:
+        #293746;
+
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, .27);
+}
+
+body.dark-mode #resultado .cliente-card-header,
+body.dark-theme #resultado .cliente-card-header {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 176, 80, .10),
+            rgba(0, 176, 80, .02)
+        );
+
+    border-color:
+        #293746;
+}
+
+body.dark-mode #resultado .cliente-dados,
+body.dark-theme #resultado .cliente-dados {
+    background:
+        #10171f;
+}
+
+body.dark-mode #resultado .cliente-dado,
+body.dark-theme #resultado .cliente-dado {
+    background:
+        #10171f;
+
+    border-color:
+        #293746;
+}
+
+
+/* estado vazio */
+
+body.dark-mode #resultado .nao-encontrado,
+body.dark-theme #resultado .nao-encontrado {
+    background:
+        var(--card-2);
+
+    border-color:
+        #293746;
+}
+
+
+/* admin */
+
+body.dark-mode .card-admin,
+body.dark-theme .card-admin {
+    background:
+        var(--card-2);
+
+    border-color:
+        #293746;
 }
 
 body.dark-mode #fecharAdmin,
 body.dark-theme #fecharAdmin {
-    background: var(--card2);
+    background:
+        var(--card-2);
 
-    border-color: #334454;
+    border-color:
+        #334454;
 
-    color: #fff;
+    color:
+        #fff;
 }
+
+
+/* barras */
 
 body.dark-mode .barraPainel,
 body.dark-mode .barra-saude,
 body.dark-theme .barraPainel,
 body.dark-theme .barra-saude {
-    background: #293746;
+    background:
+        #293746;
 }
 
 
 /* =========================================================
-   RESPONSIVO
+   TABLET
 ========================================================= */
 
 @media (max-width: 900px) {
@@ -1501,7 +1954,8 @@ body.dark-theme .barra-saude {
     body {
         padding: 15px;
 
-        align-items: flex-start;
+        align-items:
+            flex-start;
     }
 
     .container {
@@ -1512,516 +1966,20 @@ body.dark-theme .barra-saude {
 
     .cards-admin {
         grid-template-columns:
-            repeat(2,1fr);
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
     }
 
     .card-admin:last-child {
-        grid-column: span 2;
-    }
-}
-
-
-@media (max-width: 600px) {
-
-    body {
-        padding: 10px;
+        grid-column:
+            span 2;
     }
 
-    .container {
-        padding: 18px;
+    .admin-container {
+        max-height: none;
     }
-
-    .login-container {
-        padding: 30px 20px;
-    }
-
-    .login-logo {
-        height: 125px;
-    }
-
-    .login-logo .logo {
-        width: 195px !important;
-        max-width: 195px !important;
-
-        height: 105px !important;
-        max-height: 105px !important;
-    }
-
-    .topo {
-        align-items: flex-start;
-    }
-
-    .acoes-topo {
-        gap: 5px;
-    }
-
-    #btnAdmin,
-    #btnSair {
-        min-height: 38px;
-
-        padding:
-            0
-            10px;
-
-        font-size: 10px;
-    }
-
-    .btn-tema {
-        width: 38px !important;
-        height: 38px;
-
-        min-width: 38px;
-    }
-
-    .logo-pesquisa-area {
-        height: 70px;
-    }
-
-    .sistema-header .logo-sistema {
-        width: 100px !important;
-        max-width: 100px !important;
-
-        height: 62px !important;
-        max-height: 62px !important;
-
-        min-width: 100px !important;
-        min-height: 62px !important;
-    }
-
-    .sistema-header h1 {
-        font-size: 24px;
-    }
-
-    #resultado {
-        grid-template-columns: 1fr;
-
-        padding: 15px;
-    }
-
-    .cards-admin {
-        grid-template-columns: 1fr;
-    }
-
-    .card-admin:last-child {
-        grid-column: auto;
-    }
-
-    #baixarJson,
-    #copiarEstatisticas {
-        width: 100%;
-
-        margin-right: 0;
-    }
-}
-
-
-@media (max-width: 400px) {
-
-    .login-logo {
-        height: 110px;
-    }
-
-    .login-logo .logo {
-        width: 180px !important;
-        max-width: 180px !important;
-
-        height: 95px !important;
-        max-height: 95px !important;
-    }
-
-    .logo-pesquisa-area {
-        height: 65px;
-    }
-
-    .sistema-header .logo-sistema {
-        width: 95px !important;
-        max-width: 95px !important;
-
-        height: 58px !important;
-        max-height: 58px !important;
-
-        min-width: 95px !important;
-        min-height: 58px !important;
-    }
-
-    .topo {
-        flex-direction: column;
-    }
-
-    .acoes-topo {
-        width: 100%;
-
-        justify-content: flex-end;
-    }
-
-    .sistema-header h1 {
-        font-size: 22px;
-    }
-}
-
-/* =========================================================
-   AJUSTES FINAIS — TELA DE PESQUISA
-========================================================= */
-
-
-/* =========================================================
-   1. LOGO UM POUCO MAIOR E CENTRALIZADA
-========================================================= */
-
-.logo-pesquisa-area {
-    width: 100% !important;
-    height: 100px !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    margin: 0 auto 8px !important;
-
-    overflow: hidden !important;
-}
-
-.sistema-header .logo-sistema {
-    display: block !important;
-
-    width: 135px !important;
-    max-width: 135px !important;
-
-    height: 82px !important;
-    max-height: 82px !important;
-
-    min-width: 135px !important;
-    min-height: 82px !important;
-
-    margin: 0 auto !important;
-
-    object-fit: contain !important;
-    object-position: center center !important;
-
-    transform: none !important;
-
-    filter: none !important;
-}
-
-
-/* =========================================================
-   2. ADMIN PERFEITAMENTE CENTRALIZADO
-========================================================= */
-
-#btnAdmin {
-    min-height: 41px !important;
-
-    padding: 0 14px !important;
-
-    display: inline-flex !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    text-align: center !important;
-
-    vertical-align: middle !important;
-
-    line-height: 1 !important;
-
-    gap: 5px !important;
-
-    white-space: nowrap !important;
-}
-
-
-/* =========================================================
-   3. DICA DOS 3 CARACTERES CENTRALIZADA
-========================================================= */
-
-.pesquisa-ajuda {
-    width: 100% !important;
-
-    margin-top: 8px !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    text-align: center !important;
-
-    color: var(--texto2);
-
-    font-size: 10px;
-}
-
-/* =========================================================
-   LOGO DA TELA DE PESQUISA — AUMENTO FINAL
-========================================================= */
-
-.logo-pesquisa-area {
-    width: 100% !important;
-    height: 125px !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    margin: 0 auto 8px !important;
-    overflow: hidden !important;
-}
-
-.sistema-header .logo-sistema {
-    display: block !important;
-
-    width: 160px !important;
-    max-width: 160px !important;
-
-    height: 105px !important;
-    max-height: 105px !important;
-
-    min-width: 160px !important;
-    min-height: 105px !important;
-
-    margin: 0 auto !important;
-
-    object-fit: contain !important;
-    object-position: center center !important;
-
-    transform: none !important;
-    filter: none !important;
-}
-
-.sistema-header .logo-sistema:hover {
-    transform: none !important;
-}
-
-
-/* CELULAR */
-
-@media (max-width: 600px) {
-
-    .logo-pesquisa-area {
-        height: 100px !important;
-    }
-
-    .sistema-header .logo-sistema {
-        width: 140px !important;
-        max-width: 140px !important;
-
-        height: 90px !important;
-        max-height: 90px !important;
-
-        min-width: 140px !important;
-        min-height: 90px !important;
-    }
-}
-
-/* =========================================================
-   CARD DO CLIENTE — VERSÃO PROFISSIONAL
-========================================================= */
-
-#resultado {
-    width: 100% !important;
-    max-width: 690px !important;
-
-    margin: 22px auto 0 !important;
-    padding: 0 !important;
-
-    display: block !important;
-
-    border: 1px solid var(--borda) !important;
-    border-radius: 20px !important;
-
-    background: var(--card) !important;
-
-    overflow: hidden !important;
-
-    box-shadow:
-        0 14px 35px rgba(15, 23, 42, .07) !important;
-}
-
-
-/* =========================================================
-   CADA CAMPO
-========================================================= */
-
-#resultado .campo {
-    width: 100%;
-
-    min-height: 67px;
-
-    padding: 14px 20px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    border-bottom:
-        1px solid var(--borda);
-
-    background: var(--card);
-
-    transition: background .2s ease;
-}
-
-#resultado .campo:hover {
-    background:
-        rgba(0, 176, 80, .025);
-}
-
-#resultado .campo:last-child {
-    border-bottom: none;
-}
-
-
-/* =========================================================
-   TÍTULO DO CAMPO
-========================================================= */
-
-#resultado .campo .titulo {
-    margin-bottom: 5px !important;
-
-    color: var(--texto3) !important;
-
-    font-size: 8px !important;
-
-    font-weight: 850 !important;
-
-    letter-spacing: .14em;
-
-    line-height: 1;
-
-    text-transform: uppercase;
-}
-
-
-/* =========================================================
-   VALOR
-========================================================= */
-
-#resultado .campo .valor {
-    color: var(--texto) !important;
-
-    font-size: 13px !important;
-
-    font-weight: 750 !important;
-
-    line-height: 1.3;
-
-    overflow-wrap: anywhere;
-}
-
-
-/* =========================================================
-   PPOE — DESTAQUE
-========================================================= */
-
-#resultado .campo:first-child {
-    min-height: 92px;
-
-    padding: 20px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,176,80,.10),
-            rgba(0,176,80,.02)
-        );
-
-    border-bottom:
-        1px solid rgba(0,176,80,.15);
-}
-
-#resultado .campo:first-child .titulo {
-    color: var(--verde) !important;
-}
-
-#resultado .campo:first-child .valor {
-    font-size: 21px !important;
-
-    font-weight: 900 !important;
-
-    letter-spacing: -.3px;
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-#resultado .status-bom,
-#resultado .status-medio,
-#resultado .status-ruim {
-    width: fit-content;
-
-    min-height: 28px;
-
-    padding:
-        0
-        11px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 30px;
-
-    font-size: 10px !important;
-
-    font-weight: 850 !important;
-
-    line-height: 1;
-}
-
-
-/* =========================================================
-   SEPARAÇÃO VISUAL DE ALGUNS DADOS
-========================================================= */
-
-#resultado .campo:nth-child(2),
-#resultado .campo:nth-child(4) {
-    background: var(--card2);
-}
-
-
-/* =========================================================
-   DARK MODE
-========================================================= */
-
-body.dark-mode #resultado,
-body.dark-theme #resultado {
-    background: #10171f !important;
-
-    border-color: #293746 !important;
-
-    box-shadow:
-        0 18px 40px rgba(0,0,0,.28) !important;
-}
-
-body.dark-mode #resultado .campo,
-body.dark-theme #resultado .campo {
-    background: #10171f;
-
-    border-color: #293746;
-}
-
-body.dark-mode #resultado .campo:nth-child(2),
-body.dark-mode #resultado .campo:nth-child(4),
-body.dark-theme #resultado .campo:nth-child(2),
-body.dark-theme #resultado .campo:nth-child(4) {
-    background: #141d26;
-}
-
-body.dark-mode #resultado .campo:first-child,
-body.dark-theme #resultado .campo:first-child {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,176,80,.10),
-            rgba(0,176,80,.02)
-        );
-
-    border-bottom-color:
-        rgba(0,176,80,.18);
 }
 
 
@@ -2031,29 +1989,310 @@ body.dark-theme #resultado .campo:first-child {
 
 @media (max-width: 600px) {
 
-    #resultado {
-        border-radius: 17px !important;
+    body {
+        padding: 10px;
     }
 
-    #resultado .campo {
-        min-height: 63px;
+    .container {
+        padding: 18px;
+
+        border-radius:
+            17px;
+    }
+
+
+    /* LOGIN */
+
+    .login-container {
+        padding:
+            30px
+            20px;
+    }
+
+    .login-logo {
+        height:
+            115px;
+    }
+
+    .login-logo .logo {
+        width:
+            195px !important;
+
+        max-width:
+            195px !important;
+
+        height:
+            105px !important;
+
+        max-height:
+            105px !important;
+    }
+
+
+    /* TOPO */
+
+    .topo {
+        align-items:
+            flex-start;
+
+        gap: 14px;
+    }
+
+    .usuario-area::after {
+        display:
+            none;
+    }
+
+    #usuarioLogado {
+        padding-top:
+            0;
+    }
+
+    .acoes-topo {
+        gap:
+            5px;
+    }
+
+    #btnAdmin,
+    #btnSair {
+        min-height:
+            38px;
+
+        padding:
+            0
+            10px;
+
+        font-size:
+            10px;
+    }
+
+    .btn-tema {
+        width:
+            38px !important;
+
+        height:
+            38px !important;
+
+        min-width:
+            38px !important;
+    }
+
+
+    /* LOGO PESQUISA */
+
+    .logo-pesquisa-area {
+        height:
+            92px;
+    }
+
+    .sistema-header .logo-sistema {
+        width:
+            120px !important;
+
+        max-width:
+            120px !important;
+
+        height:
+            78px !important;
+
+        max-height:
+            78px !important;
+
+        min-width:
+            120px !important;
+
+        min-height:
+            78px !important;
+    }
+
+
+    .sistema-header h1 {
+        font-size:
+            24px;
+    }
+
+
+    /* pesquisa */
+
+    #pesquisa {
+        height:
+            55px;
+
+        font-size:
+            13px;
+    }
+
+
+    /* CARD */
+
+    #resultado .cliente-card-header {
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        padding:
+            15px
+            16px;
+    }
+
+    #resultado .cliente-status {
+        align-self:
+            flex-start;
+    }
+
+    #resultado .cliente-dados {
+        grid-template-columns:
+            1fr;
+    }
+
+    #resultado .cliente-dado {
+        min-height:
+            65px;
 
         padding:
             13px
             16px;
+
+        border-left:
+            0 !important;
+
+        border-bottom:
+            1px solid var(--borda);
     }
 
-    #resultado .campo:first-child {
-        min-height: 82px;
+    #resultado .cliente-dado:last-child {
+        border-bottom:
+            0;
+    }
 
+
+    /* ADMIN */
+
+    .cards-admin {
+        grid-template-columns:
+            1fr;
+    }
+
+    .card-admin:last-child {
+        grid-column:
+            auto;
+    }
+
+    #baixarJson,
+    #copiarEstatisticas {
+        width:
+            100%;
+
+        margin-right:
+            0;
+    }
+}
+
+
+/* =========================================================
+   CELULAR PEQUENO
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .container {
         padding:
-            17px
             16px;
     }
 
-    #resultado .campo:first-child .valor {
-        font-size: 18px !important;
+    .login-container {
+        padding:
+            27px
+            18px;
     }
 
+    .login-logo {
+        height:
+            105px;
+    }
+
+    .login-logo .logo {
+        width:
+            180px !important;
+
+        max-width:
+            180px !important;
+
+        height:
+            95px !important;
+
+        max-height:
+            95px !important;
+    }
+
+    .logo-pesquisa-area {
+        height:
+            82px;
+    }
+
+    .sistema-header .logo-sistema {
+        width:
+            110px !important;
+
+        max-width:
+            110px !important;
+
+        height:
+            70px !important;
+
+        max-height:
+            70px !important;
+
+        min-width:
+            110px !important;
+
+        min-height:
+            70px !important;
+    }
+
+    .topo {
+        flex-direction:
+            column;
+    }
+
+    .usuario-area {
+        width:
+            100%;
+    }
+
+    .acoes-topo {
+        width:
+            100%;
+
+        justify-content:
+            flex-end;
+    }
+
+    #btnAdmin,
+    #btnSair {
+        flex:
+            1;
+    }
+
+    .sistema-header h1 {
+        font-size:
+            22px;
+    }
 }
 
+
+/* =========================================================
+   FOCO
+========================================================= */
+
+button:focus-visible,
+input:focus-visible {
+    outline:
+        3px solid
+        rgba(0, 176, 80, .22);
+
+    outline-offset:
+        2px;
+}
