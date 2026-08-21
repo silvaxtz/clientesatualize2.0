@@ -1658,3 +1658,96 @@ body.dark-theme .barra-saude {
         font-size: 22px;
     }
 }
+
+/* =========================================================
+   AJUSTES FINAIS — TELA DE PESQUISA
+========================================================= */
+
+
+/* =========================================================
+   1. LOGO UM POUCO MAIOR E CENTRALIZADA
+========================================================= */
+
+.logo-pesquisa-area {
+    width: 100% !important;
+    height: 100px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 auto 8px !important;
+
+    overflow: hidden !important;
+}
+
+.sistema-header .logo-sistema {
+    display: block !important;
+
+    width: 135px !important;
+    max-width: 135px !important;
+
+    height: 82px !important;
+    max-height: 82px !important;
+
+    min-width: 135px !important;
+    min-height: 82px !important;
+
+    margin: 0 auto !important;
+
+    object-fit: contain !important;
+    object-position: center center !important;
+
+    transform: none !important;
+
+    filter: none !important;
+}
+
+
+/* =========================================================
+   2. ADMIN PERFEITAMENTE CENTRALIZADO
+========================================================= */
+
+#btnAdmin {
+    min-height: 41px !important;
+
+    padding: 0 14px !important;
+
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+
+    vertical-align: middle !important;
+
+    line-height: 1 !important;
+
+    gap: 5px !important;
+
+    white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   3. DICA DOS 3 CARACTERES CENTRALIZADA
+========================================================= */
+
+.pesquisa-ajuda {
+    width: 100% !important;
+
+    margin-top: 8px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+
+    color: var(--texto2);
+
+    font-size: 10px;
+}
