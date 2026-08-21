@@ -694,10 +694,8 @@ function pesquisarCliente() {
         return;
     }
 
-    resultado.innerHTML =
-        encontrados
-            .map(renderizarCliente)
-            .join("");
+    // Mostra somente o primeiro resultado encontrado
+resultado.innerHTML = renderizarCliente(encontrados[0]);
 }
 
 /* =========================================================
