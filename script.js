@@ -1,386 +1,489 @@
 /* =========================================================
-   ATUALIZE TELECOM
-   SCRIPT PRINCIPAL
+   ATUALIZE TELECOM — APP CORE v2
    ========================================================= */
 
+"use strict";
 
-/* =========================================================
+/* =========================
+   CONFIGURAÇÃO
+========================= */
+
+const CONFIG = {
+    arquivos: {
+        clientes: "clientes.json",
+        versao: "version.json"
+    },
+
+    armazenamento: {
+        usuario: "usuarioAtual",
+        historico: "historico_pesquisas",
+        tema: "temaAtual"
+    },
+
+    historicoLimite: 8,
+    intervaloAtualizacao: 10000
+};
+
+/* =========================
    USUÁRIOS
-   ========================================================= */
+========================= */
 
 const usuarios = [
-    { usuario: "adriano", senha: "180405a", tipo: "admin" },
-    { usuario: "julio", senha: "suporteatlz", tipo: "tecnico" },
-    { usuario: "kristian", senha: "suporteatlz", tipo: "tecnico" },
-    { usuario: "jeciana", senha: "suporteatlz", tipo: "tecnico" },
-    { usuario: "nubia", senha: "suporteatlz", tipo: "tecnico" },
-    { usuario: "jerbson", senha: "suporteatlz", tipo: "tecnico" }
+    {
+        usuario: "adriano",
+        senha: "180405a",
+        tipo: "admin"
+    },
+    {
+        usuario: "julio",
+        senha: "suporteatlz",
+        tipo: "tecnico"
+    },
+    {
+        usuario: "kristian",
+        senha: "suporteatlz",
+        tipo: "tecnico"
+    },
+    {
+        usuario: "jeciana",
+        senha: "suporteatlz",
+        tipo: "tecnico"
+    },
+    {
+        usuario: "nubia",
+        senha: "suporteatlz",
+        tipo: "tecnico"
+    },
+    {
+        usuario: "jerbson",
+        senha: "suporteatlz",
+        tipo: "tecnico"
+    }
 ];
 
 
 /* =========================================================
-   ELEMENTOS
-   ========================================================= */
-
-const loginTela = document.getElementById("loginTela");
-const sistema = document.getElementById("sistema");
-const painelAdmin = document.getElementById("painelAdmin");
-
-const usuarioInput = document.getElementById("usuario");
-const senhaInput = document.getElementById("senha");
-const erroLogin = document.getElementById("erroLogin");
-
-const btnLogin = document.getElementById("btnLogin");
-const btnSair = document.getElementById("btnSair");
-const btnAdmin = document.getElementById("btnAdmin");
-const fecharAdmin = document.getElementById("fecharAdmin");
-const usuarioLogado = document.getElementById("usuarioLogado");
-
-const pesquisa = document.getElementById("pesquisa");
-const resultado = document.getElementById("resultado");
-const divHistorico = document.getElementById("historicoPesquisas");
-
-const inputExcel = document.getElementById("inputExcel");
-const btnImportarExcel = document.getElementById("btnImportarExcel");
-
-const banner = document.getElementById("updateBanner");
-const btnAtualizar = document.getElementById("btnAtualizarApp");
-const versaoTexto = document.getElementById("versaoApp");
-
-
-/* =========================================================
-   DADOS
-   ========================================================= */
+   ESTADO
+========================================================= */
 
 let clientes = [];
-let versaoAtual = null;
+let usuarioAtual = null;
+let clientesCarregados = false;
+let versaoAtual = "1.0.0";
 
 
 /* =========================================================
-   LOGIN
-   ========================================================= */
+   ELEMENTOS
+========================================================= */
 
-function entrar() {
+const $ = (id) => document.getElementById(id);
 
-    const usuario = usuarioInput.value.trim().toLowerCase();
-    const senha = senhaInput.value;
+const loginTela = $("loginTela");
+const sistema = $("sistema");
+const painelAdmin = $("painelAdmin");
 
-    const encontrado = usuarios.find(
-        u =>
-            u.usuario === usuario &&
-            u.senha === senha
-    );
+const usuarioInput = $("usuario");
+const senhaInput = $("senha");
 
-    if (!encontrado) {
+const btnLogin = $("btnLogin");
+const btnSair = $("btnSair");
+const btnAdmin = $("btnAdmin");
+const fecharAdmin = $("fecharAdmin");
 
-        erroLogin.textContent =
-            "Usuário ou senha inválidos.";
+const erroLogin = $("erroLogin");
 
-        return;
-    }
+const usuarioLogado = $("usuarioLogado");
 
-    erroLogin.textContent = "";
+const pesquisa = $("pesquisa");
+const resultado = $("resultado");
 
-    localStorage.setItem(
-        "usuarioAtual",
-        JSON.stringify(encontrado)
-    );
+const historicoPesquisas = $("historicoPesquisas");
 
-    carregarSistema();
-}
+const inputExcel = $("inputExcel");
+const btnImportarExcel = $("btnImportarExcel");
+
+const baixarJson = $("baixarJson");
+const copiarEstatisticas = $("copiarEstatisticas");
+
+const rankingPaineis = $("rankingPaineis");
+
+const totalClientes = $("totalClientes");
+const totalPaineis = $("totalPaineis");
+const totalBom = $("totalBom");
+const totalMedio = $("totalMedio");
+const totalRuim = $("totalRuim");
+
+const barraSaude = $("barraSaude");
+const textoSaude = $("textoSaude");
+
+const updateBanner = $("updateBanner");
+const btnAtualizarApp = $("btnAtualizarApp");
 
 
-btnLogin.addEventListener("click", entrar);
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
 
+document.addEventListener("DOMContentLoaded", () => {
 
-senhaInput.addEventListener("keypress", event => {
+    inicializarTema();
 
-    if (event.key === "Enter") {
-        entrar();
-    }
+    inicializarLogin();
+
+    inicializarSistema();
+
+    inicializarAdmin();
+
+    inicializarHistorico();
+
+    inicializarAtualizacao();
+
+    carregarClientes();
+
+    restaurarSessao();
 
 });
 
 
-function carregarSistema() {
+/* =========================================================
+   LOGIN
+========================================================= */
 
-    let salvo = null;
+function inicializarLogin() {
 
-    try {
+    if (!btnLogin) {
+        console.error("❌ btnLogin não encontrado.");
+        return;
+    }
 
-        salvo = JSON.parse(
-            localStorage.getItem("usuarioAtual")
-        );
+    btnLogin.addEventListener("click", fazerLogin);
 
-    } catch {
+    if (senhaInput) {
 
-        salvo = null;
+        senhaInput.addEventListener("keydown", (event) => {
+
+            if (event.key === "Enter") {
+                fazerLogin();
+            }
+
+        });
 
     }
 
+    if (usuarioInput) {
 
-    if (!salvo) {
+        usuarioInput.addEventListener("keydown", (event) => {
 
-        loginTela.style.display = "block";
-        sistema.style.display = "none";
-        painelAdmin.style.display = "none";
+            if (event.key === "Enter") {
+                fazerLogin();
+            }
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   FAZER LOGIN
+========================================================= */
+
+function fazerLogin() {
+
+    const usuario = usuarioInput
+        ? usuarioInput.value.trim().toLowerCase()
+        : "";
+
+    const senha = senhaInput
+        ? senhaInput.value
+        : "";
+
+    limparErroLogin();
+
+
+    if (!usuario || !senha) {
+
+        mostrarErroLogin(
+            "Digite o usuário e a senha."
+        );
 
         return;
     }
 
 
-    loginTela.style.display = "none";
-    sistema.style.display = "block";
-    painelAdmin.style.display = "none";
+    const encontrado = usuarios.find((item) => {
+
+        return (
+            item.usuario.toLowerCase() === usuario &&
+            item.senha === senha
+        );
+
+    });
 
 
-    usuarioLogado.textContent =
-        `👤 ${salvo.usuario} (${salvo.tipo})`;
+    if (!encontrado) {
+
+        mostrarErroLogin(
+            "Usuário ou senha incorretos."
+        );
+
+        if (senhaInput) {
+            senhaInput.value = "";
+            senhaInput.focus();
+        }
+
+        return;
+    }
 
 
-    btnAdmin.style.display =
-        salvo.tipo === "admin"
-            ? "inline-block"
-            : "none";
+    usuarioAtual = encontrado;
 
+    localStorage.setItem(
+        CONFIG.armazenamento.usuario,
+        JSON.stringify(encontrado)
+    );
+
+
+    entrarNoSistema();
+
+}
+
+
+/* =========================================================
+   ENTRAR NO SISTEMA
+========================================================= */
+
+function entrarNoSistema() {
+
+    if (loginTela) {
+        loginTela.style.display = "none";
+    }
+
+    if (painelAdmin) {
+        painelAdmin.style.display = "none";
+    }
+
+    if (sistema) {
+        sistema.style.display = "block";
+    }
+
+
+    if (usuarioLogado && usuarioAtual) {
+
+        usuarioLogado.textContent =
+            `👤 ${usuarioAtual.usuario}`;
+
+    }
+
+
+    if (btnAdmin) {
+
+        btnAdmin.style.display =
+            usuarioAtual &&
+            usuarioAtual.tipo === "admin"
+                ? "inline-block"
+                : "none";
+
+    }
+
+
+    if (pesquisa) {
+
+        setTimeout(() => {
+            pesquisa.focus();
+        }, 150);
+
+    }
+
+
+    carregarClientes();
 
     renderizarHistorico();
 
 }
 
 
-btnSair.addEventListener("click", () => {
-
-    localStorage.removeItem("usuarioAtual");
-
-    location.reload();
-
-});
-
-
 /* =========================================================
-   TEMA CLARO / ESCURO
-   ========================================================= */
+   RESTAURAR SESSÃO
+========================================================= */
 
-function aplicarTema(tema) {
+function restaurarSessao() {
 
-    if (tema === "dark") {
+    try {
 
-        document.body.classList.add(
-            "dark-theme"
+        const salvo = localStorage.getItem(
+            CONFIG.armazenamento.usuario
         );
 
-    } else {
+        if (!salvo) {
+            return;
+        }
 
-        document.body.classList.remove(
-            "dark-theme"
+
+        const usuario = JSON.parse(salvo);
+
+        const valido = usuarios.find(
+            (item) =>
+                item.usuario === usuario.usuario &&
+                item.senha === usuario.senha
+        );
+
+
+        if (!valido) {
+
+            localStorage.removeItem(
+                CONFIG.armazenamento.usuario
+            );
+
+            return;
+        }
+
+
+        usuarioAtual = valido;
+
+        entrarNoSistema();
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao restaurar sessão:",
+            erro
+        );
+
+        localStorage.removeItem(
+            CONFIG.armazenamento.usuario
         );
 
     }
 
-    localStorage.setItem(
-        "temaAtual",
-        tema
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function sair() {
+
+    usuarioAtual = null;
+
+    localStorage.removeItem(
+        CONFIG.armazenamento.usuario
     );
 
-    atualizarBotaoTema();
+
+    if (sistema) {
+        sistema.style.display = "none";
+    }
+
+    if (painelAdmin) {
+        painelAdmin.style.display = "none";
+    }
+
+    if (loginTela) {
+        loginTela.style.display = "block";
+    }
+
+
+    if (usuarioInput) {
+        usuarioInput.value = "";
+    }
+
+    if (senhaInput) {
+        senhaInput.value = "";
+    }
+
+
+    limparErroLogin();
+
+
+    if (usuarioInput) {
+        usuarioInput.focus();
+    }
 
 }
 
 
-function atualizarBotaoTema() {
+/* =========================================================
+   ERRO LOGIN
+========================================================= */
 
-    const botao =
-        document.getElementById("btnTema");
+function mostrarErroLogin(mensagem) {
 
-    if (!botao) return;
-
-
-    const escuro =
-        document.body.classList.contains(
-            "dark-theme"
-        );
-
-
-    botao.innerHTML =
-        escuro
-            ? "☀️ Dia"
-            : "🌙 Noite";
-
-    botao.title =
-        escuro
-            ? "Mudar para modo claro"
-            : "Mudar para modo escuro";
-
-}
-
-
-function criarBotaoTema() {
-
-    if (document.getElementById("btnTema")) {
+    if (!erroLogin) {
         return;
     }
 
-
-    const botao =
-        document.createElement("button");
-
-    botao.id = "btnTema";
-    botao.type = "button";
-
-
-    botao.style.width = "auto";
-    botao.style.marginTop = "0";
-    botao.style.padding = "10px 16px";
-    botao.style.fontSize = "14px";
-
-
-    botao.addEventListener("click", () => {
-
-        const escuro =
-            document.body.classList.contains(
-                "dark-theme"
-            );
-
-        aplicarTema(
-            escuro ? "light" : "dark"
-        );
-
-    });
-
-
-    const topo =
-        document.querySelector(
-            "#sistema .topo"
-        );
-
-
-    if (topo) {
-
-        const areaBotoes =
-            topo.querySelector("div");
-
-
-        if (areaBotoes) {
-
-            areaBotoes.insertBefore(
-                botao,
-                areaBotoes.firstChild
-            );
-
-        } else {
-
-            topo.appendChild(botao);
-
-        }
-
-    }
-
-
-    atualizarBotaoTema();
+    erroLogin.textContent = mensagem;
 
 }
 
 
-function carregarTema() {
+function limparErroLogin() {
 
-    const tema =
-        localStorage.getItem("temaAtual")
-        || "light";
-
-    aplicarTema(tema);
+    if (erroLogin) {
+        erroLogin.textContent = "";
+    }
 
 }
 
 
 /* =========================================================
-   FORMATAÇÃO DE IP
-   ========================================================= */
+   SISTEMA
+========================================================= */
 
-function formatarIP(ip) {
+function inicializarSistema() {
 
-    if (
-        ip === null ||
-        ip === undefined ||
-        ip === ""
-    ) {
-        return "";
-    }
+    if (btnSair) {
 
-
-    let valor =
-        String(ip).trim();
-
-
-    if (valor.includes(".")) {
-        return valor;
-    }
-
-
-    valor =
-        valor.replace(/\D/g, "");
-
-
-    if (valor.length === 12) {
-
-        return valor.replace(
-            /(\d{3})(\d{3})(\d{3})(\d{3})/,
-            "$1.$2.$3.$4"
+        btnSair.addEventListener(
+            "click",
+            sair
         );
 
     }
 
 
-    return String(ip);
+    if (pesquisa) {
+
+        pesquisa.addEventListener(
+            "input",
+            pesquisarCliente
+        );
+
+    }
 
 }
 
 
 /* =========================================================
    CARREGAR CLIENTES
-   ========================================================= */
+========================================================= */
 
 async function carregarClientes() {
 
     try {
 
-        const resposta =
-            await fetch(
-                "clientes.json?v=" +
-                Date.now(),
-                {
-                    cache: "no-store"
-                }
-            );
+        const resposta = await fetch(
+            `${CONFIG.arquivos.clientes}?v=${Date.now()}`,
+            {
+                cache: "no-store"
+            }
+        );
 
 
         if (!resposta.ok) {
 
             throw new Error(
-                "Não foi possível carregar clientes.json"
+                `HTTP ${resposta.status}`
             );
 
         }
 
 
-        const dados =
-            await resposta.json();
+        const dados = await resposta.json();
 
-
-        /*
-         Aceita tanto:
-
-         [
-             {...},
-             {...}
-         ]
-
-         quanto:
-
-         {
-             clientes: [...]
-         }
-        */
 
         if (Array.isArray(dados)) {
 
@@ -396,10 +499,13 @@ async function carregarClientes() {
         } else {
 
             throw new Error(
-                "Formato do clientes.json inválido."
+                "Formato inválido do clientes.json."
             );
 
         }
+
+
+        clientesCarregados = true;
 
 
         console.log(
@@ -412,26 +518,12 @@ async function carregarClientes() {
 
     } catch (erro) {
 
+        clientesCarregados = false;
+
         console.error(
-            "Erro carregando clientes:",
+            "❌ Erro ao carregar clientes.json:",
             erro
         );
-
-
-        clientes = [];
-
-
-        resultado.innerHTML = `
-            <div class="nao-encontrado">
-                <div class="icone">⚠️</div>
-                <h2>Não foi possível carregar os clientes</h2>
-                <p>
-                    Verifique se o arquivo
-                    <strong>clientes.json</strong>
-                    está disponível.
-                </p>
-            </div>
-        `;
 
     }
 
@@ -440,69 +532,102 @@ async function carregarClientes() {
 
 /* =========================================================
    PESQUISA
-   ========================================================= */
-
-pesquisa.addEventListener(
-    "input",
-    pesquisarCliente
-);
-
+========================================================= */
 
 function pesquisarCliente() {
 
-    const texto =
+    if (!pesquisa || !resultado) {
+        return;
+    }
+
+
+    const termo = normalizar(
         pesquisa.value
-            .toLowerCase()
-            .trim();
+    );
 
 
-    if (!texto) {
+    if (!termo) {
 
-        resultado.innerHTML = "";
+        resultado.innerHTML = `
+            <div class="nao-encontrado">
+                <div class="icone">🔎</div>
+
+                <h2>Pesquisar cliente</h2>
+
+                <p>
+                    Digite um PPOE ou IP para começar.
+                </p>
+            </div>
+        `;
 
         return;
     }
 
 
-    const cliente =
-        clientes.find(c => {
+    if (!clientesCarregados) {
 
-            const ppoe =
-                String(
-                    c.ppoe ?? ""
-                ).toLowerCase();
+        resultado.innerHTML = `
+            <div class="nao-encontrado">
+                <div class="icone">⏳</div>
+
+                <h2>Carregando clientes...</h2>
+
+                <p>
+                    Aguarde um instante e tente novamente.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
 
 
-            const ip =
-                String(
-                    c.ip ?? ""
-                ).toLowerCase();
+    const encontrados = clientes.filter(
+        (cliente) => {
 
-
-            return (
-                ppoe.includes(texto) ||
-                ip.includes(texto)
+            const ppoe = normalizar(
+                cliente.ppoe
             );
 
-        });
+            const ip = normalizar(
+                cliente.ip
+            );
+
+            return (
+                ppoe.includes(termo) ||
+                ip.includes(termo)
+            );
+
+        }
+    );
 
 
-    if (!cliente) {
+    if (encontrados.length === 0) {
+
+        adicionarHistorico(
+            pesquisa.value.trim()
+        );
+
 
         resultado.innerHTML = `
             <div class="nao-encontrado">
 
-                <div class="icone">🔍</div>
+                <div class="icone">
+                    🔍
+                </div>
 
-                <h2>Cliente não encontrado</h2>
+                <h2>
+                    Cliente não encontrado
+                </h2>
 
                 <p>
-                    Verifique o PPOE ou IP informado.
+                    Nenhum cliente corresponde a
+                    <strong>${escaparHTML(pesquisa.value)}</strong>.
                 </p>
 
                 <div class="dica">
-                    💡 Você pode pesquisar
-                    pelo PPOE ou pelo endereço IP.
+                    Verifique se o PPOE ou IP foi
+                    digitado corretamente.
                 </div>
 
             </div>
@@ -512,219 +637,119 @@ function pesquisarCliente() {
     }
 
 
-    mostrarCliente(cliente);
+    adicionarHistorico(
+        pesquisa.value.trim()
+    );
+
+
+    resultado.innerHTML =
+        encontrados
+            .map(renderizarCliente)
+            .join("");
 
 }
 
 
 /* =========================================================
-   EXIBIR CLIENTE
-   ========================================================= */
+   RENDERIZAR CLIENTE
+========================================================= */
 
-function mostrarCliente(cliente) {
+function renderizarCliente(cliente) {
 
-    let statusTexto = "🔴 Ruim";
-    let classeStatus = "status-ruim";
-
-
-    if (Number(cliente.status) === 3) {
-
-        statusTexto = "🟢 Bom";
-        classeStatus = "status-bom";
-
-    } else if (Number(cliente.status) === 2) {
-
-        statusTexto = "🟡 Médio";
-        classeStatus = "status-medio";
-
-    }
+    const status = obterStatus(
+        cliente
+    );
 
 
-    const sinalValor =
-        parseFloat(
-            String(cliente.sinal)
-                .replace(",", ".")
-        );
+    const classeStatus =
+        status.classe;
 
 
-    let alertaHtml = "";
-
-
-    if (!isNaN(sinalValor)) {
-
-        if (sinalValor <= -81) {
-
-            alertaHtml = `
-                <div class="alerta-critico">
-                    ⚠️ Sinal crítico
-                    (${cliente.sinal} dBm)
-                    <br>
-                    Verificar o sinal.
-                </div>
-            `;
-
-        } else if (sinalValor <= -70) {
-
-            alertaHtml = `
-                <div
-                    class="alerta-critico"
-                    style="
-                        background:#fff3cd;
-                        color:#856404;
-                        border-color:#ffeeba;
-                    "
-                >
-                    ⚠️ Atenção
-                    (${cliente.sinal} dBm)
-                    <br>
-                    Sinal fora do ideal.
-                </div>
-            `;
-
-        }
-
-    }
-
-
-    const ip =
-        formatarIP(cliente.ip);
-
-
-    const ipPainel =
-        formatarIP(cliente.ip_painel);
-
-
-    resultado.innerHTML = `
-
+    return `
         <div class="campo">
-            <div class="titulo">PPOE</div>
+            <div class="titulo">
+                PPOE
+            </div>
+
             <div class="valor">
-                ${escaparHTML(cliente.ppoe)}
+                ${escaparHTML(cliente.ppoe || "-")}
             </div>
         </div>
 
 
         <div class="campo">
-            <div class="titulo">Painel</div>
+            <div class="titulo">
+                IP
+            </div>
+
             <div class="valor">
-                ${escaparHTML(cliente.painel)}
+                ${escaparHTML(cliente.ip || "-")}
             </div>
         </div>
 
 
         <div class="campo">
-            <div class="titulo">IP</div>
+            <div class="titulo">
+                Sinal
+            </div>
+
             <div class="valor">
-                ${escaparHTML(ip)}
+                ${escaparHTML(cliente.sinal || "-")}
             </div>
         </div>
 
 
         <div class="campo">
-            <div class="titulo">IP do Painel</div>
+            <div class="titulo">
+                Status
+            </div>
+
             <div class="valor">
-                ${escaparHTML(
-                    ipPainel || "Não informado"
-                )}
+
+                <span class="${classeStatus}">
+                    ${status.texto}
+                </span>
+
             </div>
         </div>
 
 
         <div class="campo">
-            <div class="titulo">SSID</div>
+            <div class="titulo">
+                Painel
+            </div>
+
             <div class="valor">
-                ${escaparHTML(
-                    cliente.ssid ||
-                    "Não informado"
-                )}
+                ${escaparHTML(cliente.painel || "-")}
             </div>
-        </div>
-
-
-        <div class="campo">
-            <div class="titulo">Última Medição</div>
-            <div class="valor">
-                ${escaparHTML(
-                    cliente.sinal ??
-                    "Não informado"
-                )}
-            </div>
-        </div>
-
-
-        ${alertaHtml}
-
-
-        <div class="campo">
-
-            <div class="titulo">Status</div>
-
-            <div class="${classeStatus}">
-                ${statusTexto}
-            </div>
-
-        </div>
-
-
-        <div class="botoes-copiar">
-
-            <button
-                onclick="copiarEsalvar(
-                    '${escaparAtributo(ip)}',
-                    '${escaparAtributo(cliente.ppoe)}'
-                )"
-            >
-                📋 Copiar IP
-            </button>
-
-
-            <button
-                onclick="copiarEsalvar(
-                    '${escaparAtributo(ipPainel)}',
-                    '${escaparAtributo(cliente.ppoe)}'
-                )"
-            >
-                📋 Copiar IP Painel
-            </button>
-
-
-            <button
-                onclick="copiarEsalvar(
-                    '${escaparAtributo(cliente.ppoe)}',
-                    '${escaparAtributo(cliente.ppoe)}'
-                )"
-            >
-                📋 Copiar PPOE
-            </button>
-
-
-            <button
-                onclick="copiarEsalvar(
-                    '${escaparAtributo(cliente.ssid || "")}',
-                    '${escaparAtributo(cliente.ppoe)}'
-                )"
-            >
-                📋 Copiar SSID
-            </button>
-
         </div>
     `;
 
-
-    salvarHistorico(cliente.ppoe);
-
 }
 
 
 /* =========================================================
-   SEGURANÇA HTML
-   ========================================================= */
+   NORMALIZAÇÃO
+========================================================= */
 
-function escaparHTML(valor) {
+function normalizar(valor) {
 
     return String(
         valor ?? ""
     )
+        .trim()
+        .toLowerCase();
+
+}
+
+
+/* =========================================================
+   ESCAPAR HTML
+========================================================= */
+
+function escaparHTML(valor) {
+
+    return String(valor ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -734,102 +759,149 @@ function escaparHTML(valor) {
 }
 
 
-function escaparAtributo(valor) {
+/* =========================================================
+   STATUS
+========================================================= */
 
-    return String(
-        valor ?? ""
-    )
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, "&quot;");
+function obterStatus(cliente) {
+
+    const status =
+        String(
+            cliente.status ?? ""
+        ).trim();
+
+
+    if (
+        status === "3" ||
+        normalizar(status) === "bom"
+    ) {
+
+        return {
+            texto: "🟢 Bom",
+            classe: "status-bom"
+        };
+
+    }
+
+
+    if (
+        status === "2" ||
+        normalizar(status) === "medio" ||
+        normalizar(status) === "médio"
+    ) {
+
+        return {
+            texto: "🟡 Médio",
+            classe: "status-medio"
+        };
+
+    }
+
+
+    if (
+        status === "1" ||
+        normalizar(status) === "ruim"
+    ) {
+
+        return {
+            texto: "🔴 Ruim",
+            classe: "status-ruim"
+        };
+
+    }
+
+
+    return {
+        texto: "⚪ Desconhecido",
+        classe: "status-medio"
+    };
 
 }
 
 
 /* =========================================================
-   COPIAR
-   ========================================================= */
-
-window.copiarEsalvar =
-async function(
-    textoParaCopiar,
-    ppoeParaHistorico
-) {
-
-    try {
-
-        await navigator.clipboard.writeText(
-            textoParaCopiar
-        );
-
-        mostrarAviso(
-            "📋 Copiado com sucesso!"
-        );
-
-
-        salvarHistorico(
-            ppoeParaHistorico
-        );
-
-
-    } catch (erro) {
-
-        console.error(erro);
-
-        alert(
-            "Não foi possível copiar."
-        );
-
-    }
-
-};
-
-
-/* =========================================================
    HISTÓRICO
-   ========================================================= */
+========================================================= */
 
-function salvarHistorico(ppoe) {
+function inicializarHistorico() {
 
-    if (!ppoe) return;
+    renderizarHistorico();
+
+}
 
 
-    let historico = [];
-
+function obterHistorico() {
 
     try {
 
-        historico =
-            JSON.parse(
-                localStorage.getItem(
-                    "historico_pesquisas"
-                ) || "[]"
-            );
+        const dados = localStorage.getItem(
+            CONFIG.armazenamento.historico
+        );
+
+        if (!dados) {
+            return [];
+        }
+
+        const historico = JSON.parse(dados);
+
+        return Array.isArray(historico)
+            ? historico
+            : [];
 
     } catch {
 
-        historico = [];
+        return [];
 
     }
+
+}
+
+
+function salvarHistorico(historico) {
+
+    localStorage.setItem(
+        CONFIG.armazenamento.historico,
+        JSON.stringify(historico)
+    );
+
+}
+
+
+function adicionarHistorico(valor) {
+
+    const termo = String(
+        valor ?? ""
+    ).trim();
+
+
+    if (!termo) {
+        return;
+    }
+
+
+    let historico =
+        obterHistorico();
+
+
+    historico = historico.filter(
+        item =>
+            normalizar(item) !==
+            normalizar(termo)
+    );
+
+
+    historico.unshift(termo);
 
 
     historico =
-        historico.filter(
-            item => item !== ppoe
+        historico.slice(
+            0,
+            CONFIG.historicoLimite
         );
 
 
-    historico.unshift(ppoe);
-
-
-    if (historico.length > 5) {
-        historico = historico.slice(0, 5);
-    }
-
-
-    localStorage.setItem(
-        "historico_pesquisas",
-        JSON.stringify(historico)
+    salvarHistorico(
+        historico
     );
 
 
@@ -840,98 +912,297 @@ function salvarHistorico(ppoe) {
 
 function renderizarHistorico() {
 
-    if (!divHistorico) return;
-
-
-    let historico = [];
-
-
-    try {
-
-        historico =
-            JSON.parse(
-                localStorage.getItem(
-                    "historico_pesquisas"
-                ) || "[]"
-            );
-
-    } catch {
-
-        historico = [];
-
+    if (!historicoPesquisas) {
+        return;
     }
+
+
+    const historico =
+        obterHistorico();
 
 
     if (!historico.length) {
 
-        divHistorico.innerHTML = "";
+        historicoPesquisas.innerHTML = "";
 
         return;
     }
 
 
-    divHistorico.innerHTML =
+    historicoPesquisas.innerHTML =
         historico.map(
-            h => `
+            (item) => `
                 <button
+                    type="button"
                     class="btn-historico"
-                    onclick="usarHistorico(
-                        '${escaparAtributo(h)}'
-                    )"
+                    data-termo="${escaparHTML(item)}"
                 >
-                    🕒 ${escaparHTML(h)}
+                    ${escaparHTML(item)}
                 </button>
             `
         ).join("");
 
+
+    historicoPesquisas
+        .querySelectorAll(
+            ".btn-historico"
+        )
+        .forEach(
+            (botao) => {
+
+                botao.addEventListener(
+                    "click",
+                    () => {
+
+                        if (pesquisa) {
+
+                            pesquisa.value =
+                                botao.dataset.termo;
+
+                            pesquisarCliente();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
 }
 
 
-window.usarHistorico =
-function(termo) {
+function limparHistorico() {
 
-    pesquisa.value = termo;
+    localStorage.removeItem(
+        CONFIG.armazenamento.historico
+    );
 
-    pesquisarCliente();
+    renderizarHistorico();
 
-};
+}
+
+
+/* =========================================================
+   TEMA
+========================================================= */
+
+function inicializarTema() {
+
+    aplicarTema(
+        localStorage.getItem(
+            CONFIG.armazenamento.tema
+        ) || "claro"
+    );
+
+
+    document
+        .querySelectorAll(".btn-tema")
+        .forEach(
+            (botao) => {
+
+                botao.addEventListener(
+                    "click",
+                    alternarTema
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   APLICAR TEMA
+========================================================= */
+
+function aplicarTema(tema) {
+
+    const escuro =
+        tema === "escuro";
+
+
+    document.body.classList.toggle(
+        "dark-mode",
+        escuro
+    );
+
+
+    localStorage.setItem(
+        CONFIG.armazenamento.tema,
+        escuro
+            ? "escuro"
+            : "claro"
+    );
+
+
+    document
+        .querySelectorAll(".btn-tema")
+        .forEach(
+            (botao) => {
+
+                botao.textContent =
+                    escuro
+                        ? "☀️"
+                        : "🌙";
+
+                botao.title =
+                    escuro
+                        ? "Ativar modo claro"
+                        : "Ativar modo noite";
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   ALTERNAR TEMA
+========================================================= */
+
+function alternarTema() {
+
+    const escuro =
+        document.body.classList.contains(
+            "dark-mode"
+        );
+
+
+    aplicarTema(
+        escuro
+            ? "claro"
+            : "escuro"
+    );
+
+}
+
+
+/* =========================================================
+   FIM DA PARTE 1
+========================================================= */
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function inicializarAdmin() {
+
+    if (btnAdmin) {
+
+        btnAdmin.addEventListener(
+            "click",
+            abrirAdmin
+        );
+
+    }
+
+
+    if (fecharAdmin) {
+
+        fecharAdmin.addEventListener(
+            "click",
+            fecharPainelAdmin
+        );
+
+    }
+
+
+    if (baixarJson) {
+
+        baixarJson.addEventListener(
+            "click",
+            baixarClientesJson
+        );
+
+    }
+
+
+    if (copiarEstatisticas) {
+
+        copiarEstatisticas.addEventListener(
+            "click",
+            copiarDadosDashboard
+        );
+
+    }
+
+
+    if (btnImportarExcel) {
+
+        btnImportarExcel.addEventListener(
+            "click",
+            importarExcel
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ABRIR ADMIN
+========================================================= */
+
+function abrirAdmin() {
+
+    if (
+        !usuarioAtual ||
+        usuarioAtual.tipo !== "admin"
+    ) {
+
+        return;
+
+    }
+
+
+    if (sistema) {
+        sistema.style.display = "none";
+    }
+
+
+    if (painelAdmin) {
+        painelAdmin.style.display = "block";
+    }
+
+
+    atualizarDashboard();
+
+}
+
+
+/* =========================================================
+   FECHAR ADMIN
+========================================================= */
+
+function fecharPainelAdmin() {
+
+    if (painelAdmin) {
+        painelAdmin.style.display = "none";
+    }
+
+
+    if (sistema) {
+        sistema.style.display = "block";
+    }
+
+
+    if (pesquisa) {
+        pesquisa.focus();
+    }
+
+}
 
 
 /* =========================================================
    DASHBOARD
-   ========================================================= */
-
-btnAdmin.addEventListener(
-    "click",
-    () => {
-
-        sistema.style.display = "none";
-
-        painelAdmin.style.display = "block";
-
-        atualizarDashboard();
-
-    }
-);
-
-
-fecharAdmin.addEventListener(
-    "click",
-    () => {
-
-        painelAdmin.style.display = "none";
-
-        sistema.style.display = "block";
-
-    }
-);
-
+========================================================= */
 
 function atualizarDashboard() {
 
     if (!clientes.length) {
 
-        atualizarNumeros(
+        atualizarNumerosDashboard(
             0,
             0,
             0,
@@ -939,530 +1210,466 @@ function atualizarDashboard() {
             0
         );
 
-        atualizarSaude(0);
+        atualizarSaudeRede();
 
-        const ranking =
-            document.getElementById(
-                "rankingPaineis"
-            );
-
-        if (ranking) {
-            ranking.innerHTML =
-                "<p>Nenhum cliente carregado.</p>";
+        if (rankingPaineis) {
+            rankingPaineis.innerHTML = `
+                <div class="nao-encontrado">
+                    <div class="icone">📡</div>
+                    <p>
+                        Nenhum cliente carregado.
+                    </p>
+                </div>
+            `;
         }
 
         return;
     }
 
 
-    const total =
-        clientes.length;
+    let bom = 0;
+    let medio = 0;
+    let ruim = 0;
 
 
-    const paineis =
-        [
-            ...new Set(
-                clientes
-                    .map(c => c.painel)
-                    .filter(Boolean)
-            )
-        ];
+    const paineis = {};
 
 
-    const bom =
-        clientes.filter(
-            c => Number(c.status) === 3
-        ).length;
+    clientes.forEach(
+        (cliente) => {
+
+            const status =
+                String(
+                    cliente.status ?? ""
+                ).trim();
 
 
-    const medio =
-        clientes.filter(
-            c => Number(c.status) === 2
-        ).length;
+            if (
+                status === "3" ||
+                normalizar(status) === "bom"
+            ) {
+
+                bom++;
+
+            } else if (
+                status === "2" ||
+                normalizar(status) === "medio" ||
+                normalizar(status) === "médio"
+            ) {
+
+                medio++;
+
+            } else if (
+                status === "1" ||
+                normalizar(status) === "ruim"
+            ) {
+
+                ruim++;
+
+            }
 
 
-    const ruim =
-        total - bom - medio;
+            const painel =
+                String(
+                    cliente.painel ?? ""
+                ).trim();
 
 
-    atualizarNumeros(
-        total,
-        paineis.length,
+            if (painel) {
+
+                paineis[painel] =
+                    (paineis[painel] || 0) + 1;
+
+            }
+
+        }
+    );
+
+
+    atualizarNumerosDashboard(
+        clientes.length,
+        Object.keys(paineis).length,
         bom,
         medio,
         ruim
     );
 
 
-    /*
-       SAÚDE DA REDE
-
-       Consideramos saúde:
-       clientes com status Bom
-       dividido pelo total.
-    */
-
-    const percentualSaude =
-        total > 0
-            ? (bom / total) * 100
-            : 0;
-
-
-    atualizarSaude(
-        percentualSaude
+    atualizarSaudeRede(
+        bom,
+        clientes.length
     );
 
 
-    atualizarRanking();
+    atualizarRanking(
+        paineis
+    );
 
 }
 
 
 /* =========================================================
-   NÚMEROS DO DASHBOARD
-   ========================================================= */
+   NÚMEROS DASHBOARD
+========================================================= */
 
-function atualizarNumeros(
-    total,
-    paineis,
+function atualizarNumerosDashboard(
+    clientesTotal,
+    paineisTotal,
     bom,
     medio,
     ruim
 ) {
 
-    const elementos = {
+    if (totalClientes) {
+        totalClientes.textContent =
+            clientesTotal;
+    }
 
-        totalClientes: total,
+    if (totalPaineis) {
+        totalPaineis.textContent =
+            paineisTotal;
+    }
 
-        totalPaineis: paineis,
+    if (totalBom) {
+        totalBom.textContent =
+            bom;
+    }
 
-        totalBom: bom,
+    if (totalMedio) {
+        totalMedio.textContent =
+            medio;
+    }
 
-        totalMedio: medio,
-
-        totalRuim: ruim
-
-    };
-
-
-    Object.entries(elementos)
-        .forEach(
-            ([id, valor]) => {
-
-                const elemento =
-                    document.getElementById(id);
-
-                if (elemento) {
-
-                    elemento.textContent =
-                        valor;
-
-                }
-
-            }
-        );
+    if (totalRuim) {
+        totalRuim.textContent =
+            ruim;
+    }
 
 }
 
 
 /* =========================================================
-   BARRA DE SAÚDE
-   ========================================================= */
+   SAÚDE DA REDE
+========================================================= */
 
-function criarBarraSaude() {
+function atualizarSaudeRede(
+    bom = 0,
+    total = clientes.length
+) {
 
-    let barra =
-        document.getElementById(
-            "barraSaude"
-        );
-
-
-    let texto =
-        document.getElementById(
-            "textoSaude"
-        );
-
-
-    /*
-       Se não existir no HTML,
-       cria automaticamente.
-    */
-
-    if (!barra) {
-
-        const titulo =
-            document.createElement("h2");
-
-        titulo.textContent =
-            "❤️ Saúde da Rede";
-
-
-        const container =
-            document.createElement("div");
-
-        container.className =
-            "barra-saude";
-
-
-        barra =
-            document.createElement("div");
-
-        barra.id =
-            "barraSaude";
-
-
-        container.appendChild(barra);
-
-
-        texto =
-            document.createElement("div");
-
-        texto.id =
-            "textoSaude";
-
-
-        const ranking =
-            document.getElementById(
-                "rankingPaineis"
-            );
-
-
-        if (ranking) {
-
-            ranking.parentNode.insertBefore(
-                titulo,
-                ranking
-            );
-
-            ranking.parentNode.insertBefore(
-                container,
-                ranking
-            );
-
-            ranking.parentNode.insertBefore(
-                texto,
-                ranking
-            );
-
-        }
-
+    if (!barraSaude || !textoSaude) {
+        return;
     }
 
 
-    return {
-        barra,
-        texto
-    };
+    if (!total) {
 
-}
+        barraSaude.style.width = "0%";
 
+        textoSaude.textContent =
+            "0% dos clientes com sinal bom";
 
-function atualizarSaude(percentual) {
-
-    const elementos =
-        criarBarraSaude();
+        return;
+    }
 
 
-    if (!elementos) return;
-
-
-    const valor =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                percentual
-            )
+    const percentual =
+        Math.round(
+            (bom / total) * 100
         );
 
 
-    elementos.barra.style.width =
-        valor.toFixed(1) + "%";
+    barraSaude.style.width =
+        `${percentual}%`;
 
 
-    elementos.texto.textContent =
-        `Saúde da rede: ${valor.toFixed(1)}%`;
+    textoSaude.textContent =
+        `${percentual}% dos clientes com sinal bom`;
 
 }
 
 
 /* =========================================================
    RANKING DOS PAINÉIS
-   ========================================================= */
+========================================================= */
 
-function atualizarRanking() {
+function atualizarRanking(paineis) {
 
-    const divRanking =
-        document.getElementById(
-            "rankingPaineis"
-        );
-
-
-    if (!divRanking) return;
-
-
-    const ranking = {};
-
-
-    clientes.forEach(cliente => {
-
-        const painel =
-            cliente.painel ||
-            "Painel não informado";
-
-
-        ranking[painel] =
-            (ranking[painel] || 0) + 1;
-
-    });
-
-
-    const top10 =
-        Object.entries(ranking)
-            .sort(
-                (a, b) => b[1] - a[1]
-            )
-            .slice(0, 10);
-
-
-    if (!top10.length) {
-
-        divRanking.innerHTML =
-            "<p>Nenhum painel encontrado.</p>";
-
+    if (!rankingPaineis) {
         return;
-
     }
 
 
-    const maiorQuantidade =
-        top10[0][1];
+    const lista =
+        Object.entries(paineis)
+            .sort(
+                (a, b) =>
+                    b[1] - a[1]
+            );
 
 
-    divRanking.innerHTML =
-        top10.map(
-            (item, index) => {
+    if (!lista.length) {
 
-                const painel =
-                    item[0];
+        rankingPaineis.innerHTML = `
+            <div class="nao-encontrado">
+                <p>
+                    Nenhum painel encontrado.
+                </p>
+            </div>
+        `;
 
-                const quantidade =
-                    item[1];
-
-
-                const percentual =
-                    maiorQuantidade > 0
-                        ? (
-                            quantidade /
-                            maiorQuantidade
-                        ) * 100
-                        : 0;
+        return;
+    }
 
 
-                return `
+    const maior =
+        lista[0][1];
 
-                    <div class="itemPainel">
 
-                        <span>
+    rankingPaineis.innerHTML =
+        lista
+            .slice(0, 20)
+            .map(
+                ([painel, quantidade], index) => {
+
+                    const percentual =
+                        maior > 0
+                            ? (
+                                quantidade /
+                                maior
+                            ) * 100
+                            : 0;
+
+
+                    return `
+                        <div class="itemPainel">
+
                             <span>
-                                ${index + 1}º
-                                ${escaparHTML(painel)}
+
+                                <span>
+                                    #${index + 1}
+                                    ${escaparHTML(painel)}
+                                </span>
+
+                                <strong>
+                                    ${quantidade}
+                                </strong>
+
                             </span>
 
-                            <span>
-                                ${quantidade} clientes
-                            </span>
-                        </span>
 
-                        <div class="barraPainel">
+                            <div class="barraPainel">
 
-                            <div
-                                class="preenchimento"
-                                style="
-                                    width:${percentual}%;
-                                "
-                            ></div>
+                                <div
+                                    class="preenchimento"
+                                    style="width:${percentual}%"
+                                ></div>
+
+                            </div>
 
                         </div>
+                    `;
 
-                    </div>
+                }
+            )
+            .join("");
 
-                `;
+}
 
+
+/* =========================================================
+   BAIXAR JSON
+========================================================= */
+
+function baixarClientesJson() {
+
+    if (!clientes.length) {
+
+        alert(
+            "Não há clientes carregados."
+        );
+
+        return;
+    }
+
+
+    const conteudo =
+        JSON.stringify(
+            clientes,
+            null,
+            4
+        );
+
+
+    const blob =
+        new Blob(
+            [conteudo],
+            {
+                type:
+                    "application/json;charset=utf-8"
             }
-        ).join("");
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+
+    link.href = url;
+
+    link.download =
+        "clientes.json";
+
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+
+    URL.revokeObjectURL(url);
 
 }
 
 
 /* =========================================================
    COPIAR ESTATÍSTICAS
-   ========================================================= */
+========================================================= */
 
-document
-    .getElementById("copiarEstatisticas")
-    ?.addEventListener(
-        "click",
-        async () => {
+async function copiarDadosDashboard() {
 
-            const total =
-                clientes.length;
+    const total =
+        clientes.length;
 
 
-            const bom =
-                clientes.filter(
-                    c =>
-                        Number(c.status) === 3
-                ).length;
+    let bom = 0;
+    let medio = 0;
+    let ruim = 0;
 
 
-            const medio =
-                clientes.filter(
-                    c =>
-                        Number(c.status) === 2
-                ).length;
+    const paineis = new Set();
 
 
-            const ruim =
-                total - bom - medio;
+    clientes.forEach(
+        (cliente) => {
+
+            const status =
+                String(
+                    cliente.status ?? ""
+                ).trim();
 
 
-            const saude =
-                total > 0
-                    ? (
-                        bom /
-                        total
-                    ) * 100
-                    : 0;
+            if (
+                status === "3" ||
+                normalizar(status) === "bom"
+            ) {
+
+                bom++;
+
+            } else if (
+                status === "2" ||
+                normalizar(status) === "medio" ||
+                normalizar(status) === "médio"
+            ) {
+
+                medio++;
+
+            } else if (
+                status === "1" ||
+                normalizar(status) === "ruim"
+            ) {
+
+                ruim++;
+
+            }
 
 
-            const texto =
+            if (cliente.painel) {
+                paineis.add(
+                    String(cliente.painel).trim()
+                );
+            }
 
-`📊 ATUALIZE TELECOM
+        }
+    );
+
+
+    const percentual =
+        total > 0
+            ? Math.round(
+                (bom / total) * 100
+            )
+            : 0;
+
+
+    const texto = `
+📊 ATUALIZE TELECOM
 
 👥 Clientes: ${total}
-📡 Painéis: ${
-                new Set(
-                    clientes
-                        .map(c => c.painel)
-                        .filter(Boolean)
-                ).size
-            }
+📡 Painéis: ${paineis.size}
 
 🟢 Bom: ${bom}
 🟡 Médio: ${medio}
 🔴 Ruim: ${ruim}
 
-❤️ Saúde da rede: ${saude.toFixed(1)}%`;
+❤️ Saúde da rede: ${percentual}%
+`.trim();
 
 
-            try {
+    try {
 
-                await navigator.clipboard.writeText(
-                    texto
-                );
-
-                mostrarAviso(
-                    "📋 Estatísticas copiadas!"
-                );
-
-            } catch {
-
-                alert(
-                    "Não foi possível copiar."
-                );
-
-            }
-
-        }
-    );
+        await navigator.clipboard.writeText(
+            texto
+        );
 
 
-/* =========================================================
-   BAIXAR JSON
-   ========================================================= */
-
-document
-    .getElementById("baixarJson")
-    ?.addEventListener(
-        "click",
-        () => {
-
-            const blob =
-                new Blob(
-                    [
-                        JSON.stringify(
-                            clientes,
-                            null,
-                            2
-                        )
-                    ],
-                    {
-                        type:
-                            "application/json"
-                    }
-                );
+        alert(
+            "Estatísticas copiadas!"
+        );
 
 
-            const url =
-                URL.createObjectURL(
-                    blob
-                );
+    } catch (erro) {
+
+        console.error(
+            "Erro ao copiar:",
+            erro
+        );
 
 
-            const link =
-                document.createElement("a");
+        alert(
+            "Não foi possível copiar as estatísticas."
+        );
 
+    }
 
-            link.href = url;
-
-            link.download =
-                "clientes.json";
-
-
-            document.body.appendChild(
-                link
-            );
-
-
-            link.click();
-
-
-            link.remove();
-
-
-            setTimeout(
-                () =>
-                    URL.revokeObjectURL(
-                        url
-                    ),
-                1000
-            );
-
-        }
-    );
+}
 
 
 /* =========================================================
-   IMPORTAÇÃO DE EXCEL
-   ========================================================= */
+   IMPORTAÇÃO EXCEL
+========================================================= */
 
-btnImportarExcel?.addEventListener(
-    "click",
-    importarExcel
-);
+async function importarExcel() {
 
+    if (!inputExcel) {
+        return;
+    }
 
-function importarExcel() {
 
     const arquivo =
-        inputExcel?.files?.[0];
+        inputExcel.files &&
+        inputExcel.files[0];
 
 
     if (!arquivo) {
 
         alert(
-            "Selecione uma planilha Excel primeiro."
+            "Selecione uma planilha primeiro."
         );
 
         return;
@@ -1475,348 +1682,306 @@ function importarExcel() {
     ) {
 
         alert(
-            "A biblioteca Excel não foi carregada."
+            "A biblioteca do Excel não foi carregada."
         );
 
         return;
     }
 
 
-    const reader =
-        new FileReader();
+    try {
+
+        const buffer =
+            await arquivo.arrayBuffer();
 
 
-    reader.onload =
-        event => {
-
-            try {
-
-                const data =
-                    new Uint8Array(
-                        event.target.result
-                    );
+        const workbook =
+            XLSX.read(
+                buffer,
+                {
+                    type: "array"
+                }
+            );
 
 
-                const workbook =
-                    XLSX.read(
-                        data,
+        const novosClientes = [];
+
+
+        workbook.SheetNames.forEach(
+            (nomeAba) => {
+
+                const planilha =
+                    workbook.Sheets[nomeAba];
+
+
+                const linhas =
+                    XLSX.utils.sheet_to_json(
+                        planilha,
                         {
-                            type: "array"
+                            defval: ""
                         }
                     );
 
 
-                const novosClientes = [];
+                linhas.forEach(
+                    (linha) => {
+
+                        const ppoe =
+                            obterCampoExcel(
+                                linha,
+                                [
+                                    "ppoe",
+                                    "PPPOE",
+                                    "PPOE",
+                                    "usuário",
+                                    "usuario"
+                                ]
+                            );
 
 
-                workbook.SheetNames
-                    .forEach(
-                        nomeAba => {
-
-                            const worksheet =
-                                workbook
-                                    .Sheets[nomeAba];
-
-
-                            const valorA4 =
-                                String(
-                                    worksheet["A4"]?.v ||
-                                    ""
-                                ).trim();
+                        const ip =
+                            obterCampoExcel(
+                                linha,
+                                [
+                                    "ip",
+                                    "IP"
+                                ]
+                            );
 
 
-                            if (!valorA4) {
-                                return;
-                            }
+                        const sinal =
+                            obterCampoExcel(
+                                linha,
+                                [
+                                    "sinal",
+                                    "Sinal",
+                                    "SIGNAL"
+                                ]
+                            );
 
 
-                            const nomePainel =
-                                valorA4
-                                    .startsWith("P ")
-                                    ? valorA4
-                                    : "P " +
-                                      valorA4;
+                        const painel =
+                            obterCampoExcel(
+                                linha,
+                                [
+                                    "painel",
+                                    "Painel",
+                                    "PANEL"
+                                ]
+                            );
 
 
-                            const ipPainel =
-                                formatarIP(
-                                    worksheet["D4"]?.v ||
-                                    ""
-                                );
+                        if (
+                            !ppoe &&
+                            !ip
+                        ) {
 
-
-                            const ssid =
-                                String(
-                                    worksheet["J4"]?.v ||
-                                    ""
-                                ).trim();
-
-
-                            const rows =
-                                XLSX.utils
-                                    .sheet_to_json(
-                                        worksheet,
-                                        {
-                                            header: 1,
-                                            defval: ""
-                                        }
-                                    );
-
-
-                            /*
-                               Começa na linha 8
-                               da planilha,
-                               igual ao sistema
-                               original.
-                            */
-
-                            for (
-                                let i = 7;
-                                i < rows.length;
-                                i++
-                            ) {
-
-                                const row =
-                                    rows[i];
-
-
-                                if (
-                                    !row ||
-                                    !row.length
-                                ) {
-                                    continue;
-                                }
-
-
-                                const ppoe =
-                                    String(
-                                        row[0] ??
-                                        ""
-                                    ).trim();
-
-
-                                const ip =
-                                    String(
-                                        row[3] ??
-                                        ""
-                                    ).trim();
-
-
-                                const sinal =
-                                    String(
-                                        row[6] ??
-                                        ""
-                                    ).trim();
-
-
-                                if (
-                                    !ppoe &&
-                                    !ip &&
-                                    !sinal
-                                ) {
-                                    continue;
-                                }
-
-
-                                const sinalNum =
-                                    parseFloat(
-                                        sinal.replace(
-                                            ",",
-                                            "."
-                                        )
-                                    );
-
-
-                                let status = 1;
-
-
-                                if (
-                                    !isNaN(
-                                        sinalNum
-                                    )
-                                {
-
-                                    if (
-                                        sinalNum >=
-                                        -65
-                                    ) {
-
-                                        status = 3;
-
-                                    } else if (
-                                        sinalNum >=
-                                        -75
-                                    ) {
-
-                                        status = 2;
-
-                                    } else {
-
-                                        status = 1;
-
-                                    }
-
-                                }
-
-
-                                novosClientes.push({
-
-                                    ppoe,
-
-                                    painel:
-                                        nomePainel,
-
-                                    ip,
-
-                                    ip_painel:
-                                        ipPainel,
-
-                                    ssid,
-
-                                    sinal,
-
-                                    status
-
-                                });
-
-                            }
+                            return;
 
                         }
-                    );
 
 
-                clientes =
-                    novosClientes;
+                        const status =
+                            calcularStatusPorSinal(
+                                sinal
+                            );
 
 
-                atualizarDashboard();
+                        novosClientes.push({
 
+                            ppoe:
+                                String(ppoe).trim(),
 
-                inputExcel.value = "";
+                            ip:
+                                String(ip).trim(),
 
+                            sinal:
+                                String(sinal).trim(),
 
-                alert(
-                    `✅ Importação concluída!\n\n` +
-                    `${clientes.length} clientes carregados.\n\n` +
-                    `Agora baixe o clientes.json ` +
-                    `e substitua o arquivo no GitHub.`
-                );
+                            status,
 
+                            painel:
+                                String(painel).trim()
 
-            } catch (erro) {
+                        });
 
-                console.error(
-                    erro
-                );
-
-
-                alert(
-                    "❌ Erro ao importar Excel:\n" +
-                    erro.message
+                    }
                 );
 
             }
-
-        };
-
-
-    reader.onerror =
-        () => {
-
-            alert(
-                "❌ Não foi possível ler a planilha."
-            );
-
-        };
-
-
-    reader.readAsArrayBuffer(
-        arquivo
-    );
-
-}
-
-
-/* =========================================================
-   AVISOS
-   ========================================================= */
-
-function mostrarAviso(mensagem) {
-
-    const aviso =
-        document.createElement(
-            "div"
         );
 
 
-    aviso.textContent =
-        mensagem;
+        if (!novosClientes.length) {
+
+            alert(
+                "Nenhum cliente válido foi encontrado na planilha."
+            );
+
+            return;
+        }
 
 
-    aviso.style.position =
-        "fixed";
+        clientes =
+            novosClientes;
 
 
-    aviso.style.left =
-        "50%";
+        clientesCarregados = true;
 
 
-    aviso.style.bottom =
-        "25px";
+        atualizarDashboard();
 
 
-    aviso.style.transform =
-        "translateX(-50%)";
+        alert(
+            `${clientes.length} clientes importados com sucesso!`
+        );
 
 
-    aviso.style.background =
-        "#00b050";
+    } catch (erro) {
+
+        console.error(
+            "Erro ao importar Excel:",
+            erro
+        );
 
 
-    aviso.style.color =
-        "#fff";
+        alert(
+            "Não foi possível importar a planilha."
+        );
 
-
-    aviso.style.padding =
-        "12px 20px";
-
-
-    aviso.style.borderRadius =
-        "12px";
-
-
-    aviso.style.fontWeight =
-        "bold";
-
-
-    aviso.style.zIndex =
-        "999999";
-
-
-    aviso.style.boxShadow =
-        "0 8px 25px rgba(0,0,0,.25)";
-
-
-    document.body.appendChild(
-        aviso
-    );
-
-
-    setTimeout(
-        () => {
-
-            aviso.remove();
-
-        },
-        1800
-    );
+    }
 
 }
 
 
 /* =========================================================
+   CAMPO DA PLANILHA
+========================================================= */
+
+function obterCampoExcel(
+    linha,
+    nomes
+) {
+
+    const chaves =
+        Object.keys(linha);
+
+
+    for (
+        const nome of nomes
+    ) {
+
+        const encontrado =
+            chaves.find(
+                chave =>
+                    normalizar(chave) ===
+                    normalizar(nome)
+            );
+
+
+        if (
+            encontrado !== undefined
+        ) {
+
+            return linha[
+                encontrado
+            ];
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   STATUS PELO SINAL
+========================================================= */
+
+function calcularStatusPorSinal(
+    sinal
+) {
+
+    const texto =
+        String(
+            sinal ?? ""
+        )
+        .trim()
+        .replace(",", ".");
+
+
+    const numero =
+        parseFloat(texto);
+
+
+    if (
+        Number.isNaN(numero)
+    ) {
+
+        return "";
+
+    }
+
+
+    /*
+       Regra padrão para sinal óptico:
+
+       >= -25  -> Bom
+       >= -28  -> Médio
+       <  -28  -> Ruim
+
+       Se sua planilha já possui status,
+       o valor original pode ser preservado
+       em uma atualização posterior.
+    */
+
+
+    if (numero >= -25) {
+        return "3";
+    }
+
+
+    if (numero >= -28) {
+        return "2";
+    }
+
+
+    return "1";
+
+}
+
+
+/* =========================================================
+   FIM DA PARTE 2
+========================================================= */
+
+/* =========================================================
    ATUALIZAÇÃO DO APLICATIVO
-   ========================================================= */
+========================================================= */
+
+function inicializarAtualizacao() {
+
+    if (btnAtualizarApp) {
+
+        btnAtualizarApp.addEventListener(
+            "click",
+            atualizarAplicativo
+        );
+
+    }
+
+
+    verificarNovaVersao();
+
+}
+
+
+/* =========================================================
+   VERIFICAR NOVA VERSÃO
+========================================================= */
 
 async function verificarNovaVersao() {
 
@@ -1824,8 +1989,7 @@ async function verificarNovaVersao() {
 
         const resposta =
             await fetch(
-                "version.json?v=" +
-                Date.now(),
+                `${CONFIG.arquivos.versao}?v=${Date.now()}`,
                 {
                     cache: "no-store"
                 }
@@ -1846,43 +2010,50 @@ async function verificarNovaVersao() {
         }
 
 
-        if (versaoAtual === null) {
-
-            versaoAtual =
-                dados.version;
+        versaoAtual =
+            String(dados.version);
 
 
-            if (versaoTexto) {
-
-                versaoTexto.textContent =
-                    "Versão " +
-                    dados.version;
-
-            }
+        const versaoNaTela =
+            document.getElementById(
+                "versaoApp"
+            );
 
 
-            return;
+        if (versaoNaTela) {
+
+            versaoNaTela.textContent =
+                `Versão ${versaoAtual}`;
+
         }
+
+
+        const versaoSalva =
+            localStorage.getItem(
+                "versaoAplicativo"
+            );
 
 
         if (
-            dados.version !==
-            versaoAtual
+            versaoSalva &&
+            versaoSalva !== versaoAtual
         ) {
 
-            if (banner) {
-
-                banner.style.display =
-                    "flex";
-
-            }
+            mostrarBannerAtualizacao();
 
         }
 
+
+        localStorage.setItem(
+            "versaoAplicativo",
+            versaoAtual
+        );
+
+
     } catch (erro) {
 
-        console.log(
-            "Erro verificando versão:",
+        console.warn(
+            "Não foi possível verificar a versão.",
             erro
         );
 
@@ -1891,53 +2062,239 @@ async function verificarNovaVersao() {
 }
 
 
-btnAtualizar?.addEventListener(
-    "click",
-    async () => {
+/* =========================================================
+   MOSTRAR BANNER
+========================================================= */
 
-        try {
+function mostrarBannerAtualizacao() {
 
-            const registro =
+    if (!updateBanner) {
+        return;
+    }
+
+
+    updateBanner.style.display =
+        "flex";
+
+}
+
+
+/* =========================================================
+   ATUALIZAR APLICATIVO
+========================================================= */
+
+async function atualizarAplicativo() {
+
+    try {
+
+        if (
+            "serviceWorker" in
+            navigator
+        ) {
+
+            const registrations =
                 await navigator
                     .serviceWorker
-                    .getRegistration();
+                    .getRegistrations();
 
 
-            if (!registro) {
-
-                location.reload();
-
-                return;
-            }
-
-
-            await registro.update();
-
-
-            if (
-                registro.waiting
+            for (
+                const registration
+                of registrations
             ) {
 
-                registro.waiting.postMessage(
-                    {
-                        type:
-                            "SKIP_WAITING"
+                try {
+
+                    await registration.update();
+
+                } catch (erro) {
+
+                    console.warn(
+                        "Erro atualizando Service Worker:",
+                        erro
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        if (window.caches) {
+
+            const cachesAtuais =
+                await caches.keys();
+
+
+            await Promise.all(
+                cachesAtuais.map(
+                    nome =>
+                        caches.delete(nome)
+                )
+            );
+
+        }
+
+
+    } catch (erro) {
+
+        console.warn(
+            "Erro limpando cache:",
+            erro
+        );
+
+    }
+
+
+    window.location.reload(
+        true
+    );
+
+}
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+function registrarServiceWorker() {
+
+    if (
+        !("serviceWorker" in navigator)
+    ) {
+
+        return;
+
+    }
+
+
+    window.addEventListener(
+        "load",
+        async () => {
+
+            try {
+
+                const registro =
+                    await navigator
+                        .serviceWorker
+                        .register(
+                            "./service-worker.js"
+                        );
+
+
+                console.log(
+                    "✅ Service Worker registrado.",
+                    registro
+                );
+
+
+                registro.addEventListener(
+                    "updatefound",
+                    () => {
+
+                        const novo =
+                            registro.installing;
+
+
+                        if (!novo) {
+                            return;
+                        }
+
+
+                        novo.addEventListener(
+                            "statechange",
+                            () => {
+
+                                if (
+                                    novo.state ===
+                                    "installed"
+                                ) {
+
+                                    if (
+                                        navigator
+                                            .serviceWorker
+                                            .controller
+                                    ) {
+
+                                        mostrarBannerAtualizacao();
+
+                                    }
+
+                                }
+
+                            }
+                        );
+
                     }
                 );
 
-            } else {
 
-                location.reload();
+            } catch (erro) {
+
+                console.error(
+                    "❌ Erro no Service Worker:",
+                    erro
+                );
 
             }
 
-        } catch (erro) {
+        }
+    );
 
-            console.error(
-                erro
-            );
+}
 
-            location.reload();
+
+/* =========================================================
+   TRATAMENTO GLOBAL DE ERROS
+========================================================= */
+
+window.addEventListener(
+    "error",
+    (evento) => {
+
+        console.error(
+            "Erro no aplicativo:",
+            evento.error ||
+            evento.message
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "unhandledrejection",
+    (evento) => {
+
+        console.error(
+            "Promise rejeitada:",
+            evento.reason
+        );
+
+    }
+);
+
+
+/* =========================================================
+   EVENTOS EXTRAS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    (evento) => {
+
+        /*
+           ESC fecha o painel administrativo.
+        */
+
+        if (
+            evento.key === "Escape" &&
+            painelAdmin &&
+            painelAdmin.style.display !== "none"
+        ) {
+
+            fecharPainelAdmin();
 
         }
 
@@ -1946,89 +2303,58 @@ btnAtualizar?.addEventListener(
 
 
 /* =========================================================
-   SERVICE WORKER
-   ========================================================= */
+   GARANTIR ESTADO INICIAL
+========================================================= */
 
-if (
-    "serviceWorker" in navigator
-) {
+function garantirEstadoInicial() {
 
-    window.addEventListener(
-        "load",
-        () => {
+    if (
+        !usuarioAtual &&
+        loginTela &&
+        sistema
+    ) {
 
-            navigator.serviceWorker
-                .register(
-                    "./service-worker.js"
-                )
-                .then(
-                    registro => {
+        loginTela.style.display =
+            "block";
 
-                        console.log(
-                            "✅ Service Worker ativo."
-                        );
+        sistema.style.display =
+            "none";
 
-                        registro.update();
-
-                    }
-                )
-                .catch(
-                    erro => {
-
-                        console.error(
-                            "Erro no Service Worker:",
-                            erro
-                        );
-
-                    }
-                );
-
-        }
-    );
+    }
 
 
-    navigator.serviceWorker
-        .addEventListener(
-            "controllerchange",
-            () => {
+    if (
+        !usuarioAtual &&
+        painelAdmin
+    ) {
 
-                window.location.reload();
+        painelAdmin.style.display =
+            "none";
 
-            }
-        );
+    }
 
 }
 
 
 /* =========================================================
-   INICIALIZAÇÃO
-   ========================================================= */
+   INICIAR SERVICE WORKER
+========================================================= */
 
-function iniciarAplicativo() {
-
-    carregarTema();
-
-    carregarSistema();
-
-    carregarClientes();
-
-    renderizarHistorico();
-
-    criarBotaoTema();
-
-    verificarNovaVersao();
-
-}
+registrarServiceWorker();
 
 
-iniciarAplicativo();
+/* =========================================================
+   ESTADO FINAL
+========================================================= */
+
+garantirEstadoInicial();
 
 
-/*
-   Verifica atualização a cada 1 minuto.
-*/
-
-setInterval(
-    verificarNovaVersao,
-    60000
+console.log(
+    "🚀 Atualize Telecom carregado com sucesso."
 );
+
+
+/* =========================================================
+   FIM DO SCRIPT
+========================================================= */
