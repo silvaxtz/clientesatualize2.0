@@ -1889,3 +1889,130 @@ input,
 #resultado {
     -webkit-tap-highlight-color: transparent;
 }
+
+/* =========================================================
+   CORREÇÃO FINAL DA LOGO DO SISTEMA
+========================================================= */
+
+.sistema-header {
+    position: relative !important;
+
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+
+    margin-top: 10px !important;
+    margin-bottom: 28px !important;
+}
+
+
+/* Caixa da logo */
+
+.sistema-header .logo-sistema {
+    display: block !important;
+
+    width: 150px !important;
+    max-width: 150px !important;
+
+    height: 90px !important;
+    max-height: 90px !important;
+
+    margin: 0 auto 15px auto !important;
+
+    object-fit: contain !important;
+
+    object-position: center !important;
+
+    filter: none !important;
+}
+
+
+/* Impede a logo de ocupar a tela inteira */
+
+.sistema-header .logo {
+    flex-shrink: 0 !important;
+}
+
+
+/* Título */
+
+.sistema-header h1 {
+    margin: 0 0 8px 0 !important;
+
+    font-size: 29px !important;
+
+    line-height: 1.15 !important;
+}
+
+
+/* Subtítulo */
+
+.sistema-header p {
+    margin: 0 !important;
+
+    font-size: 12px !important;
+}
+
+
+/* =========================================================
+   TOPo NÃO PODE INTERFERIR NA LOGO
+========================================================= */
+
+.sistema-container > .topo {
+    position: relative !important;
+    z-index: 10 !important;
+
+    width: 100% !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+
+/* =========================================================
+   BOTÕES DO TOPO
+========================================================= */
+
+.sistema-container .acoes-topo {
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 8px !important;
+}
+
+
+/* =========================================================
+   LOGO NO DARK MODE
+========================================================= */
+
+body.dark-mode .sistema-header .logo-sistema {
+    filter: none !important;
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .sistema-header .logo-sistema {
+        width: 125px !important;
+        max-width: 125px !important;
+
+        height: 75px !important;
+        max-height: 75px !important;
+
+        margin-bottom: 12px !important;
+    }
+
+}
