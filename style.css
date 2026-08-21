@@ -97,7 +97,7 @@ img {
 
 
 /* =========================================================
-   CONTAINERS
+   CONTAINER
 ========================================================= */
 
 .container {
@@ -127,7 +127,6 @@ img {
 }
 
 @keyframes aparecer {
-
     from {
         opacity: 0;
         transform: translateY(10px);
@@ -190,10 +189,7 @@ img {
 
     text-align: center;
 
-    margin:
-        0
-        auto
-        25px;
+    margin: 0 auto 25px;
 
     padding: 0;
 }
@@ -207,9 +203,7 @@ img {
     height: 120px !important;
     max-height: 120px !important;
 
-    margin:
-        0
-        auto;
+    margin: 0 auto;
 
     object-fit: contain;
     object-position: center center;
@@ -221,7 +215,9 @@ img {
 }
 
 
-/* Cabeçalho */
+/* =========================================================
+   CABEÇALHO LOGIN
+========================================================= */
 
 .login-header {
     text-align: center;
@@ -252,7 +248,7 @@ img {
 
 
 /* =========================================================
-   TEMA
+   BOTÃO TEMA
 ========================================================= */
 
 .btn-tema {
@@ -297,7 +293,7 @@ img {
 
 
 /* =========================================================
-   CAMPOS DE LOGIN
+   CAMPOS LOGIN
 ========================================================= */
 
 .campo-input {
@@ -501,7 +497,9 @@ img {
 }
 
 
-/* Usuário */
+/* =========================================================
+   USUÁRIO
+========================================================= */
 
 .usuario-area {
     position: relative;
@@ -566,7 +564,7 @@ img {
 
 
 /* =========================================================
-   AÇÕES DO TOPO
+   AÇÕES TOPO
 ========================================================= */
 
 .acoes-topo {
@@ -592,7 +590,9 @@ img {
 }
 
 
-/* ADMIN */
+/* =========================================================
+   ADMIN
+========================================================= */
 
 #btnAdmin {
     min-height: 42px;
@@ -626,7 +626,9 @@ img {
 }
 
 
-/* SAIR */
+/* =========================================================
+   SAIR
+========================================================= */
 
 #btnSair {
     min-height: 42px;
@@ -677,37 +679,41 @@ img {
 
 
 /* =========================================================
-   LOGO PRINCIPAL DO SISTEMA
+   LOGO DA TELA DE PESQUISA
+   115px — DISCRETA E CENTRALIZADA
 ========================================================= */
 
 .sistema-header .logo-sistema {
     display: block !important;
 
-    width: 185px !important;
-    max-width: 185px !important;
+    width: 115px !important;
+    max-width: 115px !important;
 
-    height: 105px !important;
-    max-height: 105px !important;
+    height: 70px !important;
+    max-height: 70px !important;
 
     margin:
         0
         auto
-        17px !important;
+        12px !important;
 
     object-fit: contain !important;
+
     object-position: center center !important;
 
     transform: none !important;
 
-    filter:
-        drop-shadow(
-            0 9px 20px rgba(0, 0, 0, .18)
-        );
+    filter: none !important;
 }
 
 .sistema-header .logo-sistema:hover {
     transform: none !important;
 }
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
 
 .sistema-header h1 {
     margin-bottom: 7px;
@@ -857,7 +863,7 @@ img {
 
 
 /* =========================================================
-   CAMPOS DO RESULTADO
+   CAMPOS RESULTADO
 ========================================================= */
 
 .campo {
@@ -1470,7 +1476,7 @@ img {
 
 
 /* =========================================================
-   BANNER DE ATUALIZAÇÃO
+   BANNER
 ========================================================= */
 
 .update-banner {
@@ -1550,7 +1556,6 @@ img {
 
 /* =========================================================
    DARK MODE
-   O SCRIPT USA .dark-mode
 ========================================================= */
 
 body.dark-mode,
@@ -1795,16 +1800,16 @@ body.dark-theme .logo-sistema {
     }
 
 
-    /* LOGO SISTEMA */
+    /* LOGO PESQUISA */
 
     .sistema-header .logo-sistema {
-        width: 155px !important;
-        max-width: 155px !important;
+        width: 110px !important;
+        max-width: 110px !important;
 
-        height: 90px !important;
-        max-height: 90px !important;
+        height: 65px !important;
+        max-height: 65px !important;
 
-        margin-bottom: 14px !important;
+        margin-bottom: 10px !important;
     }
 
 
@@ -1885,11 +1890,11 @@ body.dark-theme .logo-sistema {
     }
 
     .sistema-header .logo-sistema {
-        width: 140px !important;
-        max-width: 140px !important;
+        width: 105px !important;
+        max-width: 105px !important;
 
-        height: 82px !important;
-        max-height: 82px !important;
+        height: 62px !important;
+        max-height: 62px !important;
     }
 
     .topo {
