@@ -4,8 +4,8 @@ const CACHE = "atualize-v31";
 const ARQUIVOS = [
     "./",
     "./index.html",
-    "./style.css?v=30",
-    "./script.js?v=30",
+    "./style.css?v=31",
+    "./script.js?v=31",
     "./clientes.json",
     "./logo.png",
     "./logo-512.png",
