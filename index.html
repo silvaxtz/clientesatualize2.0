@@ -1,146 +1,957 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualize Telecom - Pesquisa de Clientes</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#00b050">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <!-- Biblioteca para ler Excel -->
-    <script src="xlsx.full.min.js"></script>
+    <meta
+        name="theme-color"
+        content="#00b050"
+    >
 
-  
+    <meta
+        name="description"
+        content="Sistema de gerenciamento e pesquisa de clientes Atualize Telecom"
+    >
+
+    <title>
+        Atualize Telecom
+    </title>
+
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- Excel -->
+    <script
+        src="xlsx.full.min.js"
+    ></script>
+
 </head>
+
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginTela" class="container">
-    <img src="logo.png" class="logo" alt="Atualize">
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
-    <input type="text" id="usuario" placeholder="Usuário" autocomplete="username">
-    <input type="password" id="senha" placeholder="Senha" autocomplete="current-password">
+<main
+    id="loginTela"
+    class="login-page"
+>
 
-    <button id="btnLogin">Entrar</button>
+    <section class="login-card">
 
-    <div id="erroLogin"></div>
-</div>
+        <div class="login-logo">
 
-<!-- SISTEMA -->
-<div id="sistema" class="container" style="display:none;">
+            <img
+                src="logo.png"
+                class="logo"
+                alt="Atualize Telecom"
+            >
 
-    <div class="topo">
-        <span id="usuarioLogado"></span>
-
-        <div style="display:flex;gap:10px;align-items:center;">
-            <button id="btnAdmin" style="display:none;">Admin</button>
-            <button id="btnSair">Sair</button>
         </div>
 
-    </div>
 
-    <img src="logo.png" class="logo" alt="Atualize">
+        <div class="login-header">
 
-    <h1>Pesquisa de Clientes</h1>
+            <span class="eyebrow">
+                ATUALIZE TELECOM
+            </span>
 
-    <input
-        type="text"
-        id="pesquisa"
-        placeholder="Digite o PPOE ou IP..."
-        autocomplete="off"
-    >
+            <h1>
+                Bem-vindo
+            </h1>
 
-    <div id="historicoPesquisas" class="historico-container"></div>
+            <p>
+                Entre para acessar o sistema
+                de gerenciamento.
+            </p>
 
-    <div id="resultado"></div>
-
-</div>
-
-<!-- PAINEL ADMIN -->
-<div id="painelAdmin" class="container" style="display:none;">
-
-    <div class="topo">
-        <h2>Painel Administrativo</h2>
-        <button id="fecharAdmin">Fechar</button>
-    </div>
-
-    <div class="cards-admin">
-
-        <div class="card-admin">
-            <span>👥 Clientes</span>
-            <h2 id="totalClientes">0</h2>
         </div>
 
-        <div class="card-admin">
-            <span>📡 Painéis</span>
-            <h2 id="totalPaineis">0</h2>
+
+        <div class="form-group">
+
+            <label for="usuario">
+                Usuário
+            </label>
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">
+                    👤
+                </span>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    placeholder="Digite seu usuário"
+                    autocomplete="username"
+                >
+
+            </div>
+
         </div>
 
-        <div class="card-admin">
-            <span>🟢 Bom</span>
-            <h2 id="totalBom">0</h2>
+
+        <div class="form-group">
+
+            <label for="senha">
+                Senha
+            </label>
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">
+                    🔒
+                </span>
+
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                >
+
+            </div>
+
         </div>
 
-        <div class="card-admin">
-            <span>🟡 Médio</span>
-            <h2 id="totalMedio">0</h2>
-        </div>
 
-        <div class="card-admin">
-            <span>🔴 Ruim</span>
-            <h2 id="totalRuim">0</h2>
-        </div>
-
-    </div>
-
-    <hr style="margin:30px 0;">
-
-    <h2>📈 Top Painéis</h2>
-
-    <div id="rankingPaineis"></div>
-
-    <hr style="margin:30px 0;">
-
-    <h2>🔄 Importar Planilha</h2>
-
-    <div style="margin-bottom:20px;">
-
-        <input
-            type="file"
-            id="inputExcel"
-            accept=".xlsx,.xls"
-            style="margin-bottom:10px;"
+        <button
+            id="btnLogin"
+            class="btn-primary btn-login"
+            type="button"
         >
 
-        <br>
+            <span>
+                Entrar no sistema
+            </span>
 
-        <button id="btnImportarExcel">
-            Carregar e Atualizar Dashboard
+            <span>
+                →
+            </span>
+
         </button>
+
+
+        <div
+            id="erroLogin"
+            class="login-error"
+        ></div>
+
+
+        <div class="login-footer">
+
+            <span>
+                Sistema interno
+            </span>
+
+            <span>
+                •
+            </span>
+
+            <span>
+                Atualize Telecom
+            </span>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     SISTEMA PRINCIPAL
+===================================================== -->
+
+<main
+    id="sistema"
+    class="app-page"
+    style="display:none;"
+>
+
+
+    <!-- HEADER -->
+
+    <header class="app-header">
+
+        <div class="brand-area">
+
+            <img
+                src="logo.png"
+                class="header-logo"
+                alt="Atualize Telecom"
+            >
+
+            <div class="brand-text">
+
+                <strong>
+                    Atualize
+                </strong>
+
+                <span>
+                    Telecom
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <div
+                id="usuarioLogado"
+                class="user-badge"
+            ></div>
+
+
+            <button
+                id="btnTema"
+                class="icon-button"
+                type="button"
+                data-theme-toggle="icon"
+                aria-label="Alternar tema"
+                title="Ativar modo noite"
+            >
+                🌙
+            </button>
+
+
+            <button
+                id="btnAdmin"
+                class="btn-header admin-button"
+                type="button"
+                style="display:none;"
+            >
+                ⚙️ Admin
+            </button>
+
+
+            <button
+                id="btnSair"
+                class="btn-header btn-danger"
+                type="button"
+            >
+                Sair
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTEÚDO -->
+
+    <section class="app-content">
+
+
+        <!-- HERO -->
+
+        <div class="hero-section">
+
+            <div>
+
+                <span class="eyebrow">
+                    CENTRAL DE ATENDIMENTO
+                </span>
+
+                <h1>
+                    Pesquisa de clientes
+                </h1>
+
+                <p>
+                    Encontre rapidamente informações
+                    de conexão, sinal e painel.
+                </p>
+
+            </div>
+
+
+            <button
+                id="btnModoNoite"
+                class="theme-button"
+                type="button"
+                data-theme-toggle
+            >
+                🌙
+                <span>
+                    Modo noite
+                </span>
+            </button>
+
+        </div>
+
+
+
+        <!-- PESQUISA -->
+
+        <section class="search-panel">
+
+            <div class="search-header">
+
+                <div>
+
+                    <span class="search-label">
+                        🔎 PESQUISAR
+                    </span>
+
+                    <h2>
+                        Localizar cliente
+                    </h2>
+
+                </div>
+
+
+                <div class="keyboard-hint">
+
+                    <kbd>/</kbd>
+
+                    <span>
+                        para pesquisar
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="pesquisa"
+                    placeholder="PPOE, IP, SSID ou painel..."
+                    autocomplete="off"
+                    aria-label="Pesquisar cliente"
+                >
+
+                <span class="search-shortcut">
+                    ESC limpa
+                </span>
+
+            </div>
+
+
+            <div class="search-tips">
+
+                <span>
+                    PPOE
+                </span>
+
+                <span>
+                    IP
+                </span>
+
+                <span>
+                    SSID
+                </span>
+
+                <span>
+                    Painel
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- HISTÓRICO -->
+
+        <section
+            id="historicoWrapper"
+            class="historico-wrapper"
+        >
+
+            <div
+                id="historicoPesquisas"
+                class="historico-container"
+            ></div>
+
+        </section>
+
+
+
+        <!-- RESULTADO -->
+
+        <section
+            id="resultado"
+            class="resultado-container"
+        ></section>
+
+
+    </section>
+
+
+    <!-- RODAPÉ -->
+
+    <footer class="app-footer">
+
+        <span>
+            Atualize Telecom
+        </span>
+
+        <span>
+            •
+        </span>
+
+        <span id="versaoApp">
+            Versão 1.0.0
+        </span>
+
+    </footer>
+
+</main>
+
+
+
+<!-- =====================================================
+     PAINEL ADMINISTRATIVO
+===================================================== -->
+
+<main
+    id="painelAdmin"
+    class="admin-page"
+    style="display:none;"
+>
+
+
+    <!-- HEADER ADMIN -->
+
+    <header class="admin-header">
+
+        <div class="admin-brand">
+
+            <div class="admin-icon">
+                📊
+            </div>
+
+            <div>
+
+                <span class="eyebrow">
+                    ATUALIZE TELECOM
+                </span>
+
+                <h1>
+                    Painel administrativo
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-actions">
+
+            <button
+                id="btnTemaAdmin"
+                class="icon-button"
+                type="button"
+                data-theme-toggle="icon"
+                title="Alternar modo noite"
+            >
+                🌙
+            </button>
+
+
+            <button
+                id="fecharAdmin"
+                class="btn-header"
+                type="button"
+            >
+                ← Voltar
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ADMIN CONTENT -->
+
+    <section class="admin-content">
+
+
+        <!-- RESUMO -->
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    VISÃO GERAL
+                </span>
+
+                <h2>
+                    Saúde da rede
+                </h2>
+
+            </div>
+
+            <div
+                id="saudeRede"
+                class="health-value"
+            >
+                0%
+            </div>
+
+        </div>
+
+
+
+        <!-- CARDS -->
+
+        <section class="cards-admin">
+
+
+            <article class="card-admin card-total">
+
+                <div class="card-admin-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <span>
+                        Clientes
+                    </span>
+
+                    <strong id="totalClientes">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="card-admin card-panel">
+
+                <div class="card-admin-icon">
+                    📡
+                </div>
+
+                <div>
+
+                    <span>
+                        Painéis
+                    </span>
+
+                    <strong id="totalPaineis">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="card-admin card-good">
+
+                <div class="card-admin-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <span>
+                        Sinal bom
+                    </span>
+
+                    <strong id="totalBom">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="card-admin card-medium">
+
+                <div class="card-admin-icon">
+                    🟡
+                </div>
+
+                <div>
+
+                    <span>
+                        Sinal médio
+                    </span>
+
+                    <strong id="totalMedio">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="card-admin card-bad">
+
+                <div class="card-admin-icon">
+                    🔴
+                </div>
+
+                <div>
+
+                    <span>
+                        Sinal ruim
+                    </span>
+
+                    <strong id="totalRuim">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- SAÚDE -->
+
+        <section class="health-card">
+
+            <div class="health-card-header">
+
+                <div>
+
+                    <span>
+                        Saúde geral da rede
+                    </span>
+
+                    <strong id="percentualSaude">
+                        0%
+                    </strong>
+
+                </div>
+
+                <span>
+                    Clientes com sinal bom
+                </span>
+
+            </div>
+
+
+            <div class="health-progress">
+
+                <div
+                    id="barraSaude"
+                    class="health-progress-bar"
+                    style="width:0%;"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- RANKING -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        DISTRIBUIÇÃO
+                    </span>
+
+                    <h2>
+                        Top painéis
+                    </h2>
+
+                </div>
+
+                <span class="section-icon">
+                    🏆
+                </span>
+
+            </div>
+
+
+            <div
+                id="rankingPaineis"
+                class="ranking-container"
+            ></div>
+
+        </section>
+
+
+
+        <!-- IMPORTAÇÃO -->
+
+        <section class="admin-section import-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        BASE DE CLIENTES
+                    </span>
+
+                    <h2>
+                        Atualizar dados
+                    </h2>
+
+                    <p>
+                        Importe uma nova planilha
+                        para atualizar a base.
+                    </p>
+
+                </div>
+
+                <span class="section-icon">
+                    📥
+                </span>
+
+            </div>
+
+
+            <div class="upload-area">
+
+                <div class="upload-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Importar planilha Excel
+                </h3>
+
+                <p>
+                    Formatos aceitos:
+                    .xlsx e .xls
+                </p>
+
+
+                <label
+                    for="inputExcel"
+                    class="file-label"
+                >
+                    Escolher arquivo
+                </label>
+
+
+                <input
+                    type="file"
+                    id="inputExcel"
+                    accept=".xlsx,.xls"
+                    class="file-input"
+                >
+
+
+                <div
+                    id="arquivoSelecionado"
+                    class="arquivo-selecionado"
+                >
+                    Nenhum arquivo selecionado
+                </div>
+
+
+                <button
+                    id="btnImportarExcel"
+                    class="btn-primary"
+                    type="button"
+                >
+                    🔄 Carregar e atualizar
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- AÇÕES -->
+
+        <section class="admin-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        FERRAMENTAS
+                    </span>
+
+                    <h2>
+                        Exportação
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-tools">
+
+                <button
+                    id="baixarJson"
+                    class="tool-button"
+                    type="button"
+                >
+
+                    <span>
+                        📥
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Baixar clientes.json
+                        </strong>
+
+                        <small>
+                            Exportar a base atual
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+                <button
+                    id="copiarEstatisticas"
+                    class="tool-button"
+                    type="button"
+                >
+
+                    <span>
+                        📋
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Copiar estatísticas
+                        </strong>
+
+                        <small>
+                            Copiar resumo da rede
+                        </small>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+    </section>
+
+
+    <footer class="app-footer">
+
+        <span>
+            Atualize Telecom
+        </span>
+
+        <span>
+            •
+        </span>
+
+        <span>
+            Painel Administrativo
+        </span>
+
+    </footer>
+
+</main>
+
+
+
+<!-- =====================================================
+     BANNER DE ATUALIZAÇÃO
+===================================================== -->
+
+<div
+    id="updateBanner"
+    class="update-banner"
+    aria-hidden="true"
+>
+
+    <div class="update-info">
+
+        <span class="update-icon">
+            🚀
+        </span>
+
+        <div>
+
+            <strong>
+                Nova versão disponível
+            </strong>
+
+            <small>
+                Uma atualização do sistema está pronta.
+            </small>
+
+        </div>
 
     </div>
 
-    <hr style="margin:30px 0;">
 
-    <button id="baixarJson">📥 Baixar clientes.json</button>
-
-    <button id="copiarEstatisticas">
-        📋 Copiar Estatísticas
+    <button
+        id="btnAtualizarApp"
+        type="button"
+    >
+        Atualizar agora
     </button>
 
 </div>
 
-<!-- BANNER DE ATUALIZAÇÃO -->
-<div id="updateBanner" class="update-banner">
-    <span>🚀 Nova versão disponível</span>
-    <button id="btnAtualizarApp">Atualizar</button>
-</div>
 
-<!-- VERSÃO DO APLICATIVO -->
-<div id="versaoApp">Versão 1.0.0</div>
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="appToast"
+    class="app-toast"
+    role="status"
+    aria-live="polite"
+></div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script src="script.js"></script>
 
