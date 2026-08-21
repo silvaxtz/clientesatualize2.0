@@ -27,9 +27,10 @@
         href="manifest.json"
     >
 
+    <!-- CACHE BUSTER -->
     <link
         rel="stylesheet"
-        href="style.css"
+        href="style.css?v=30"
     >
 
     <script src="xlsx.full.min.js"></script>
@@ -62,15 +63,11 @@
 
     <div class="login-logo">
 
-        <div class="logo-glow">
-
-            <img
-                src="logo.png"
-                class="logo"
-                alt="Atualize Telecom"
-            >
-
-        </div>
+        <img
+            src="logo.png"
+            class="logo"
+            alt="Atualize Telecom"
+        >
 
     </div>
 
@@ -86,8 +83,7 @@
         </h1>
 
         <p>
-            Acesse o sistema para consultar
-            os clientes da rede.
+            Entre para acessar o sistema de gerenciamento.
         </p>
 
     </div>
@@ -97,7 +93,6 @@
         id="loginForm"
         autocomplete="on"
     >
-
 
         <div class="campo-input">
 
@@ -164,7 +159,6 @@
 
         </button>
 
-
     </form>
 
 
@@ -176,9 +170,7 @@
 
     <div class="login-footer">
 
-        <span class="status-online"></span>
-
-        Sistema interno • Atualize Telecom
+        ● Sistema interno • Atualize Telecom
 
     </div>
 
@@ -197,32 +189,11 @@
 >
 
 
-    <!-- TOPO -->
-
     <header class="topo">
 
-        <div class="marca-topo">
+        <div class="usuario-area">
 
-            <div class="mini-logo">
-
-                <img
-                    src="logo.png"
-                    alt="Atualize"
-                >
-
-            </div>
-
-
-            <div class="usuario-area">
-
-                <span class="usuario-label">
-                    Usuário conectado
-                </span>
-
-                <strong id="usuarioLogado">
-                </strong>
-
-            </div>
+            <span id="usuarioLogado"></span>
 
         </div>
 
@@ -233,7 +204,6 @@
                 id="btnTemaSistema"
                 class="btn-tema"
                 type="button"
-                aria-label="Alternar tema"
                 title="Ativar modo noite"
             >
                 🌙
@@ -242,18 +212,15 @@
 
             <button
                 id="btnAdmin"
-                class="btn-admin"
                 type="button"
                 style="display:none;"
             >
-                📊
-                <span>Admin</span>
+                📊 Admin
             </button>
 
 
             <button
                 id="btnSair"
-                class="btn-sair"
                 type="button"
             >
                 Sair
@@ -265,9 +232,22 @@
 
 
 
-    <!-- CABEÇALHO -->
+    <!-- =================================================
+         CABEÇALHO DA PESQUISA
+    ================================================== -->
 
     <section class="sistema-header">
+
+        <div class="logo-pesquisa-area">
+
+            <img
+                src="logo.png"
+                class="logo-sistema"
+                alt="Atualize Telecom"
+            >
+
+        </div>
+
 
         <span class="section-badge">
             CENTRAL DE CONSULTA
@@ -280,15 +260,16 @@
 
 
         <p>
-            Encontre rapidamente um cliente
-            pelo PPOE ou endereço IP.
+            Encontre rapidamente um cliente pelo PPOE ou IP.
         </p>
 
     </section>
 
 
 
-    <!-- PESQUISA -->
+    <!-- =================================================
+         PESQUISA
+    ================================================== -->
 
     <section class="pesquisa-area">
 
@@ -311,7 +292,6 @@
             <span
                 id="limparPesquisa"
                 class="limpar-pesquisa"
-                title="Limpar pesquisa"
             >
                 ×
             </span>
@@ -320,32 +300,24 @@
 
 
         <div class="pesquisa-ajuda">
-
-            <span>
-                💡
-                Digite pelo menos 3 caracteres
-            </span>
-
+            💡 Digite pelo menos 3 caracteres
         </div>
 
     </section>
 
 
 
-    <!-- RESULTADO -->
-
     <main
         id="resultado"
         class="resultado-container"
     ></main>
-
 
 </div>
 
 
 
 <!-- =====================================================
-     PAINEL ADMINISTRATIVO
+     ADMIN
 ===================================================== -->
 
 <div
@@ -354,12 +326,9 @@
     style="display:none;"
 >
 
+    <header class="topo">
 
-    <!-- TOPO ADMIN -->
-
-    <header class="topo admin-topo">
-
-        <div class="admin-titulo-area">
+        <div>
 
             <span class="section-badge">
                 ADMINISTRAÇÃO
@@ -382,8 +351,6 @@
                 id="btnTemaAdmin"
                 class="btn-tema"
                 type="button"
-                aria-label="Alternar tema"
-                title="Ativar modo noite"
             >
                 🌙
             </button>
@@ -391,7 +358,6 @@
 
             <button
                 id="fecharAdmin"
-                class="btn-sair"
                 type="button"
             >
                 ← Voltar
@@ -402,256 +368,116 @@
     </header>
 
 
+    <div class="cards-admin">
 
-    <!-- CARDS -->
+        <div class="card-admin">
 
-    <section class="cards-admin">
+            <span>👥 Clientes</span>
 
-
-        <div class="card-admin card-clientes">
-
-            <div class="card-icon">
-                👥
-            </div>
-
-            <div class="card-conteudo">
-
-                <span>
-                    Clientes
-                </span>
-
-                <h2 id="totalClientes">
-                    0
-                </h2>
-
-            </div>
+            <h2 id="totalClientes">
+                0
+            </h2>
 
         </div>
 
 
-        <div class="card-admin card-paineis">
+        <div class="card-admin">
 
-            <div class="card-icon">
-                📡
-            </div>
+            <span>📡 Painéis</span>
 
-            <div class="card-conteudo">
-
-                <span>
-                    Painéis
-                </span>
-
-                <h2 id="totalPaineis">
-                    0
-                </h2>
-
-            </div>
+            <h2 id="totalPaineis">
+                0
+            </h2>
 
         </div>
 
 
         <div class="card-admin card-bom">
 
-            <div class="card-icon">
-                🟢
-            </div>
+            <span>🟢 Bom</span>
 
-            <div class="card-conteudo">
-
-                <span>
-                    Sinal Bom
-                </span>
-
-                <h2 id="totalBom">
-                    0
-                </h2>
-
-            </div>
+            <h2 id="totalBom">
+                0
+            </h2>
 
         </div>
 
 
         <div class="card-admin card-medio">
 
-            <div class="card-icon">
-                🟡
-            </div>
+            <span>🟡 Médio</span>
 
-            <div class="card-conteudo">
-
-                <span>
-                    Sinal Médio
-                </span>
-
-                <h2 id="totalMedio">
-                    0
-                </h2>
-
-            </div>
+            <h2 id="totalMedio">
+                0
+            </h2>
 
         </div>
 
 
         <div class="card-admin card-ruim">
 
-            <div class="card-icon">
-                🔴
-            </div>
+            <span>🔴 Ruim</span>
 
-            <div class="card-conteudo">
-
-                <span>
-                    Sinal Ruim
-                </span>
-
-                <h2 id="totalRuim">
-                    0
-                </h2>
-
-            </div>
+            <h2 id="totalRuim">
+                0
+            </h2>
 
         </div>
 
-
-    </section>
-
+    </div>
 
 
-    <!-- SAÚDE DA REDE -->
-
-    <section
-        id="saudeRede"
-        class="dashboard-card dashboard-health"
-    >
-
-        <div class="dashboard-card-header">
-
-            <div>
-
-                <span class="dashboard-kicker">
-                    MONITORAMENTO
-                </span>
-
-                <h2>
-                    ❤️ Saúde da Rede
-                </h2>
-
-            </div>
+    <hr>
 
 
-            <strong
-                id="percentualSaude"
-                class="health-percent"
-            >
-                0%
-            </strong>
+    <section class="dashboard-section">
 
-        </div>
-
+        <h2>
+            ❤️ Saúde da Rede
+        </h2>
 
         <div class="barra-saude">
 
-            <div
-                id="barraSaude"
-                class="barra-saude-preenchimento"
-            ></div>
+            <div id="barraSaude"></div>
 
         </div>
 
-
-        <div class="health-footer">
-
-            <span>
-                Clientes com sinal bom
-            </span>
-
-            <strong id="textoSaude">
-                0%
-            </strong>
-
+        <div id="textoSaude">
+            0% dos clientes com sinal bom
         </div>
 
     </section>
 
 
-
-    <!-- RANKING -->
-
-    <section class="dashboard-card">
-
-        <div class="dashboard-card-header">
-
-            <div>
-
-                <span class="dashboard-kicker">
-                    DESEMPENHO
-                </span>
-
-                <h2>
-                    📈 Top Painéis
-                </h2>
-
-            </div>
-
-        </div>
+    <hr>
 
 
-        <div
-            id="rankingPaineis"
-            class="ranking-container"
-        ></div>
+    <section class="dashboard-section">
+
+        <h2>
+            📈 Top Painéis
+        </h2>
+
+        <div id="rankingPaineis"></div>
 
     </section>
 
 
+    <hr>
 
-    <!-- IMPORTAÇÃO -->
 
-    <section class="dashboard-card">
+    <section class="dashboard-section">
 
-        <div class="dashboard-card-header">
+        <h2>
+            🔄 Importar Planilha
+        </h2>
 
-            <div>
-
-                <span class="dashboard-kicker">
-                    DADOS
-                </span>
-
-                <h2>
-                    🔄 Atualizar Clientes
-                </h2>
-
-                <p class="admin-ajuda">
-                    Importe uma planilha Excel
-                    para atualizar a base de clientes.
-                </p>
-
-            </div>
-
-        </div>
+        <p class="admin-ajuda">
+            Carregue uma planilha para atualizar os dados.
+        </p>
 
 
         <div class="arquivo-area">
-
-            <label
-                for="inputExcel"
-                class="arquivo-label"
-            >
-
-                <span>
-                    📂
-                </span>
-
-                <strong>
-                    Selecionar planilha
-                </strong>
-
-                <small>
-                    .XLSX ou .XLS
-                </small>
-
-            </label>
-
 
             <input
                 type="file"
@@ -664,82 +490,42 @@
 
         <button
             id="btnImportarExcel"
-            class="btn-principal"
             type="button"
         >
-
-            📥
-            Carregar e Atualizar Dashboard
-
+            📥 Carregar e Atualizar Dashboard
         </button>
 
     </section>
 
 
-
-    <!-- AÇÕES -->
-
-    <section class="dashboard-card admin-acoes">
-
-        <div class="dashboard-card-header">
-
-            <div>
-
-                <span class="dashboard-kicker">
-                    FERRAMENTAS
-                </span>
-
-                <h2>
-                    ⚙️ Ações do Sistema
-                </h2>
-
-            </div>
-
-        </div>
+    <hr>
 
 
-        <div class="acoes-admin-grid">
+    <section class="dashboard-section">
 
-            <button
-                id="baixarJson"
-                class="btn-acao btn-json"
-                type="button"
-            >
-
-                📥
-
-                <span>
-                    Baixar clientes.json
-                </span>
-
-            </button>
+        <button
+            id="baixarJson"
+            type="button"
+        >
+            📥 Baixar clientes.json
+        </button>
 
 
-            <button
-                id="copiarEstatisticas"
-                class="btn-acao btn-copiar"
-                type="button"
-            >
-
-                📋
-
-                <span>
-                    Copiar Estatísticas
-                </span>
-
-            </button>
-
-        </div>
+        <button
+            id="copiarEstatisticas"
+            type="button"
+        >
+            📋 Copiar Estatísticas
+        </button>
 
     </section>
-
 
 </div>
 
 
 
 <!-- =====================================================
-     BANNER DE ATUALIZAÇÃO
+     ATUALIZAÇÃO
 ===================================================== -->
 
 <div
@@ -754,7 +540,7 @@
         </strong>
 
         <small>
-            Atualize para continuar usando a versão mais recente.
+            Atualize o sistema.
         </small>
 
     </div>
@@ -771,21 +557,14 @@
 
 
 
-<!-- =====================================================
-     VERSÃO
-===================================================== -->
-
 <div id="versaoApp">
     Versão 1.0.0
 </div>
 
 
 
-<!-- =====================================================
-     SCRIPT
-===================================================== -->
-
-<script src="script.js"></script>
+<!-- CACHE BUSTER -->
+<script src="script.js?v=30"></script>
 
 
 </body>
