@@ -1,13 +1,14 @@
 /* =========================================================
-   ATUALIZE TELECOM — NOVO DESIGN
+   ATUALIZE TELECOM
+   STYLE.CSS — VERSÃO NOVA
    ========================================================= */
 
 :root {
     --primary: #00b050;
     --primary-dark: #008f40;
-    --primary-light: #eaf9f1;
+    --primary-light: #e9f9f0;
 
-    --background: #f3f6f9;
+    --bg: #f3f6f9;
     --surface: #ffffff;
     --surface-2: #f8fafc;
 
@@ -19,18 +20,16 @@
     --danger: #dc2626;
     --warning: #d97706;
     --success: #16a34a;
+
     --blue: #2563eb;
     --purple: #7c3aed;
 
-    --shadow:
-        0 10px 35px rgba(15, 23, 42, 0.08);
+    --shadow: 0 12px 35px rgba(15, 23, 42, .09);
+    --shadow-hover: 0 18px 40px rgba(15, 23, 42, .14);
 
-    --shadow-hover:
-        0 16px 40px rgba(15, 23, 42, 0.13);
+    --radius: 20px;
 
-    --radius: 18px;
-
-    --transition: 0.25s ease;
+    --transition: .25s ease;
 }
 
 
@@ -46,6 +45,7 @@
 
 
 html {
+    min-height: 100%;
     scroll-behavior: smooth;
 }
 
@@ -70,8 +70,8 @@ body {
         radial-gradient(
             circle at top,
             #ffffff 0%,
-            var(--background) 48%,
-            #eaf0f5 100%
+            var(--bg) 50%,
+            #e8eef3 100%
         );
 
     transition:
@@ -81,7 +81,7 @@ body {
 
 
 /* =========================================================
-   CONTAINER
+   CONTAINERS
    ========================================================= */
 
 .container {
@@ -100,12 +100,93 @@ body {
 
     box-shadow: var(--shadow);
 
+    animation: fadeIn .35s ease;
+
     transition:
         background .3s ease,
         border-color .3s ease,
         box-shadow .3s ease;
+}
 
-    animation: fadeIn .35s ease;
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login-container {
+    position: relative;
+
+    max-width: 450px;
+
+    min-height: auto;
+
+    margin-top: 5vh;
+
+    padding: 35px 32px 28px;
+}
+
+
+.login-logo {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+.login-logo .logo {
+    max-width: 230px;
+
+    margin: 0;
+}
+
+
+.login-header {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.login-badge {
+    display: inline-block;
+
+    padding: 6px 11px;
+
+    margin-bottom: 10px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: .8px;
+}
+
+
+.login-header h1 {
+    margin-bottom: 8px;
+
+    font-size: 28px;
+
+    line-height: 1.2;
+}
+
+
+.login-header p {
+    color: var(--text-soft);
+
+    font-size: 14px;
+
+    line-height: 1.5;
 }
 
 
@@ -120,9 +201,9 @@ body {
 
     height: auto;
 
-    margin: 0 auto 25px;
-
     object-fit: contain;
+
+    margin: 0 auto;
 
     filter: none !important;
 
@@ -134,14 +215,14 @@ body {
    TÍTULOS
    ========================================================= */
 
-h1 {
-    margin-bottom: 22px;
-
+h1,
+h2 {
     color: var(--text);
+}
 
-    text-align: center;
 
-    font-size: clamp(24px, 5vw, 30px);
+h1 {
+    font-size: 28px;
 
     font-weight: 800;
 
@@ -150,26 +231,112 @@ h1 {
 
 
 h2 {
-    color: var(--text);
-
     font-weight: 800;
 }
 
 
 /* =========================================================
-   INPUTS
+   TEMA
    ========================================================= */
+
+.btn-tema {
+    position: absolute;
+
+    top: 18px;
+    right: 18px;
+
+    z-index: 10;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50% !important;
+
+    background: var(--surface-2) !important;
+
+    color: var(--text) !important;
+
+    border: 1px solid var(--border);
+
+    box-shadow: none !important;
+
+    font-size: 18px;
+
+    transform: none !important;
+}
+
+
+.btn-tema:hover {
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+    border-color: var(--primary);
+
+    transform: rotate(12deg) !important;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.campo-input {
+    margin-bottom: 17px;
+}
+
+
+.campo-input label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.input-wrapper {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.input-icon {
+    position: absolute;
+
+    left: 14px;
+
+    z-index: 2;
+
+    font-size: 16px;
+
+    pointer-events: none;
+}
+
 
 #usuario,
 #senha,
 #pesquisa,
 #filtroPainel {
-
     width: 100%;
 
-    padding: 15px 16px;
-
-    margin-bottom: 14px;
+    padding: 14px 16px 14px 43px;
 
     background: var(--surface);
 
@@ -181,28 +348,25 @@ h2 {
 
     outline: none;
 
+    font-family: inherit;
+
     font-size: 16px;
 
     transition:
         border-color var(--transition),
         box-shadow var(--transition),
-        transform var(--transition),
         background .3s ease;
 }
 
 
-#pesquisa {
+#usuario:focus,
+#senha:focus,
+#pesquisa:focus,
+#filtroPainel:focus {
+    border-color: var(--primary);
 
-    padding: 17px 18px;
-
-    margin-bottom: 18px;
-
-    font-size: 18px;
-}
-
-
-#filtroPainel {
-    margin: 10px 0;
+    box-shadow:
+        0 0 0 4px rgba(0, 176, 80, .12);
 }
 
 
@@ -214,45 +378,88 @@ h2 {
 }
 
 
-#usuario:focus,
-#senha:focus,
-#pesquisa:focus,
-#filtroPainel:focus {
+/* =========================================================
+   BOTÃO LOGIN
+   ========================================================= */
 
-    border-color: var(--primary);
+.btn-login {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 5px !important;
+
+    padding: 15px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00b050,
+            #00a347
+        ) !important;
+
+    border-radius: 13px !important;
 
     box-shadow:
-        0 0 0 4px rgba(0, 176, 80, .12);
+        0 8px 20px rgba(0, 176, 80, .20);
+}
 
-    transform: translateY(-1px);
+
+.btn-login:hover {
+    background:
+        linear-gradient(
+            135deg,
+            #009c46,
+            #008f40
+        ) !important;
+
+    box-shadow:
+        0 12px 25px rgba(0, 176, 80, .25);
+}
+
+
+.btn-login span {
+    font-size: 18px;
+
+    transition: transform .2s ease;
+}
+
+
+.btn-login:hover span {
+    transform: translateX(4px);
 }
 
 
 /* =========================================================
-   BOTÕES
+   BOTÕES GERAIS
    ========================================================= */
 
 button {
-
     width: 100%;
 
     padding: 13px 16px;
 
     margin-top: 10px;
 
-    border: 0;
+    border: none;
 
     border-radius: 12px;
 
     background: var(--primary);
 
-    color: #ffffff;
+    color: #fff;
+
+    cursor: pointer;
+
+    font-family: inherit;
 
     font-size: 15px;
 
     font-weight: 700;
-
-    cursor: pointer;
 
     transition:
         background var(--transition),
@@ -262,18 +469,16 @@ button {
 
 
 button:hover {
-
     background: var(--primary-dark);
 
     transform: translateY(-2px);
 
     box-shadow:
-        0 7px 20px rgba(0, 176, 80, .20);
+        0 7px 20px rgba(0, 176, 80, .18);
 }
 
 
 button:active {
-
     transform: translateY(0);
 
     box-shadow: none;
@@ -281,7 +486,6 @@ button:active {
 
 
 button:focus-visible {
-
     outline:
         3px solid rgba(0, 176, 80, .25);
 
@@ -290,38 +494,112 @@ button:focus-visible {
 
 
 /* =========================================================
+   ERRO LOGIN
+   ========================================================= */
+
+#erroLogin {
+    min-height: 22px;
+
+    margin-top: 12px;
+
+    color: var(--danger);
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.login-footer {
+    margin-top: 25px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-soft);
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SISTEMA
+   ========================================================= */
+
+.sistema-container {
+    max-width: 650px;
+}
+
+
+.sistema-header {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.logo-sistema {
+    width: min(190px, 65%);
+
+    margin-bottom: 17px;
+}
+
+
+.sistema-header h1 {
+    margin-bottom: 7px;
+}
+
+
+.sistema-header p {
+    color: var(--text-soft);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
    TOPO
    ========================================================= */
 
 .topo {
-
     display: flex;
-
-    justify-content: space-between;
 
     align-items: center;
 
-    gap: 10px;
+    justify-content: space-between;
+
+    gap: 12px;
 
     flex-wrap: wrap;
 
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+}
+
+
+.usuario-area {
+    display: flex;
+
+    align-items: center;
 }
 
 
 #usuarioLogado {
-
     display: inline-flex;
 
     align-items: center;
 
     padding: 8px 12px;
 
-    border-radius: 10px;
-
     background: var(--primary-light);
 
     color: var(--primary);
+
+    border-radius: 10px;
 
     font-size: 13px;
 
@@ -329,8 +607,7 @@ button:focus-visible {
 }
 
 
-.topo > div {
-
+.acoes-topo {
     display: flex;
 
     align-items: center;
@@ -341,13 +618,19 @@ button:focus-visible {
 }
 
 
+.acoes-topo .btn-tema {
+    position: static;
+
+    flex-shrink: 0;
+}
+
+
 #btnAdmin,
 #btnSair,
-#btnTema {
-
+#fecharAdmin {
     width: auto;
 
-    margin-top: 0;
+    margin: 0;
 
     padding: 9px 13px;
 
@@ -357,35 +640,101 @@ button:focus-visible {
 }
 
 
-#btnSair {
-
+#btnSair,
+#fecharAdmin {
     background: #64748b;
 }
 
 
-#btnSair:hover {
-
+#btnSair:hover,
+#fecharAdmin:hover {
     background: #475569;
 }
 
 
 /* =========================================================
-   ERRO LOGIN
+   PESQUISA
    ========================================================= */
 
-#erroLogin {
+.pesquisa-wrapper {
+    position: relative;
 
-    min-height: 22px;
+    display: flex;
 
-    margin-top: 10px;
+    align-items: center;
 
-    color: var(--danger);
+    margin-bottom: 17px;
+}
 
-    text-align: center;
 
-    font-size: 14px;
+.pesquisa-wrapper > span {
+    position: absolute;
 
-    font-weight: 700;
+    left: 16px;
+
+    z-index: 2;
+
+    font-size: 18px;
+
+    pointer-events: none;
+}
+
+
+#pesquisa {
+    padding: 16px 18px 16px 48px;
+
+    margin: 0;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   HISTÓRICO
+   ========================================================= */
+
+.historico-container {
+    display: flex;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin-bottom: 17px;
+}
+
+
+.btn-historico {
+    width: auto;
+
+    padding: 7px 11px;
+
+    margin: 0;
+
+    background: var(--surface-2);
+
+    color: var(--text-soft);
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    box-shadow: none;
+
+    font-size: 12px;
+}
+
+
+.btn-historico:hover {
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border-color: rgba(0,176,80,.25);
+
+    box-shadow: none;
 }
 
 
@@ -394,7 +743,6 @@ button:focus-visible {
    ========================================================= */
 
 #resultado {
-
     min-height: 120px;
 
     padding: 20px;
@@ -406,15 +754,10 @@ button:focus-visible {
     border: 1px solid var(--border);
 
     border-radius: 16px;
-
-    transition:
-        background .3s ease,
-        border-color .3s ease;
 }
 
 
 .campo {
-
     padding-bottom: 13px;
 
     margin-bottom: 14px;
@@ -424,7 +767,6 @@ button:focus-visible {
 
 
 .campo:last-child {
-
     padding-bottom: 0;
 
     margin-bottom: 0;
@@ -434,7 +776,6 @@ button:focus-visible {
 
 
 .titulo {
-
     margin-bottom: 4px;
 
     color: var(--primary);
@@ -450,7 +791,6 @@ button:focus-visible {
 
 
 .valor {
-
     color: var(--text);
 
     font-size: 17px;
@@ -468,23 +808,21 @@ button:focus-visible {
 .status-bom,
 .status-medio,
 .status-ruim {
-
     display: inline-flex;
 
     align-items: center;
 
-    padding: 7px 11px;
+    padding: 6px 10px;
 
     border-radius: 9px;
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 800;
 }
 
 
 .status-bom {
-
     background: #dcfce7;
 
     color: #15803d;
@@ -492,7 +830,6 @@ button:focus-visible {
 
 
 .status-medio {
-
     background: #fef3c7;
 
     color: #a16207;
@@ -500,7 +837,6 @@ button:focus-visible {
 
 
 .status-ruim {
-
     background: #fee2e2;
 
     color: #b91c1c;
@@ -508,11 +844,61 @@ button:focus-visible {
 
 
 /* =========================================================
-   ALERTA
+   NÃO ENCONTRADO
+   ========================================================= */
+
+.nao-encontrado {
+    padding: 25px 10px;
+
+    text-align: center;
+}
+
+
+.nao-encontrado .icone {
+    margin-bottom: 10px;
+
+    font-size: 48px;
+}
+
+
+.nao-encontrado h2 {
+    margin-bottom: 8px;
+
+    color: var(--danger);
+
+    font-size: 20px;
+}
+
+
+.nao-encontrado p {
+    margin-bottom: 15px;
+
+    color: var(--text-soft);
+}
+
+
+.nao-encontrado .dica {
+    padding: 14px;
+
+    background: var(--surface);
+
+    color: var(--text-soft);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ALERTA CRÍTICO
    ========================================================= */
 
 .alerta-critico {
-
     padding: 12px 14px;
 
     margin: 12px 0;
@@ -534,189 +920,51 @@ button:focus-visible {
 
 
 /* =========================================================
-   NÃO ENCONTRADO
+   ADMIN
    ========================================================= */
 
-.nao-encontrado {
-
-    padding: 25px 10px;
-
-    text-align: center;
+.admin-container {
+    max-width: 950px;
 }
 
 
-.nao-encontrado .icone {
-
-    margin-bottom: 10px;
-
-    font-size: 50px;
-}
-
-
-.nao-encontrado h2 {
-
-    margin-bottom: 8px;
-
-    font-size: 20px;
-}
-
-
-.nao-encontrado p {
-
-    margin-bottom: 15px;
+.admin-subtitulo {
+    margin-top: 3px;
 
     color: var(--text-soft);
-}
-
-
-.nao-encontrado .dica {
-
-    padding: 14px;
-
-    background: var(--surface);
-
-    color: var(--text-soft);
-
-    border: 1px solid var(--border);
-
-    border-radius: 12px;
-
-    font-size: 14px;
-
-    line-height: 1.6;
-}
-
-
-/* =========================================================
-   HISTÓRICO
-   ========================================================= */
-
-.historico-container {
-
-    display: flex;
-
-    justify-content: flex-start;
-
-    gap: 7px;
-
-    flex-wrap: wrap;
-
-    margin-bottom: 18px;
-}
-
-
-.btn-historico {
-
-    width: auto;
-
-    margin: 0;
-
-    padding: 7px 11px;
-
-    background: var(--surface-2);
-
-    color: var(--text-soft);
-
-    border: 1px solid var(--border);
-
-    border-radius: 20px;
-
-    font-size: 12px;
-
-    box-shadow: none;
-}
-
-
-.btn-historico:hover {
-
-    background: var(--primary-light);
-
-    color: var(--primary);
-
-    border-color: rgba(0, 176, 80, .25);
-
-    box-shadow: none;
-}
-
-
-/* =========================================================
-   BOTÕES DE COPIAR
-   ========================================================= */
-
-.botoes-copiar {
-
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 8px;
-
-    margin-top: 18px;
-}
-
-
-.botoes-copiar button {
-
-    margin: 0;
-
-    padding: 11px 9px;
-
-    background: #334155;
 
     font-size: 13px;
 }
 
 
-.botoes-copiar button:hover {
+.dashboard-section {
+    margin: 22px 0;
+}
 
-    background: #1e293b;
+
+.dashboard-section h2 {
+    margin-bottom: 13px;
+
+    font-size: 19px;
+}
+
+
+.admin-ajuda {
+    margin-bottom: 14px;
+
+    color: var(--text-soft);
+
+    font-size: 13px;
+
+    line-height: 1.5;
 }
 
 
 /* =========================================================
-   ADMIN
-   ========================================================= */
-
-#painelAdmin {
-
-    width: 100%;
-
-    max-width: 950px;
-}
-
-
-#painelAdmin .topo {
-
-    padding-bottom: 15px;
-
-    border-bottom: 1px solid var(--border);
-}
-
-
-#fecharAdmin {
-
-    width: auto;
-
-    margin-top: 0;
-
-    padding: 9px 16px;
-
-    background: #64748b;
-}
-
-
-#fecharAdmin:hover {
-
-    background: #475569;
-}
-
-
-/* =========================================================
-   CARDS
+   CARDS ADMIN
    ========================================================= */
 
 .cards-admin {
-
     display: grid;
 
     grid-template-columns:
@@ -732,7 +980,6 @@ button:focus-visible {
 
 
 .card-admin {
-
     position: relative;
 
     overflow: hidden;
@@ -748,24 +995,21 @@ button:focus-visible {
     text-align: center;
 
     transition:
-        transform var(--transition),
-        box-shadow var(--transition),
-        border-color var(--transition);
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
 }
 
 
 .card-admin::before {
-
     content: "";
 
     position: absolute;
 
     top: 0;
-
     left: 0;
 
     width: 100%;
-
     height: 3px;
 
     background: var(--primary);
@@ -773,17 +1017,15 @@ button:focus-visible {
 
 
 .card-admin:hover {
-
     transform: translateY(-3px);
 
     box-shadow: var(--shadow-hover);
 
-    border-color: rgba(0, 176, 80, .35);
+    border-color: rgba(0,176,80,.35);
 }
 
 
 .card-admin span {
-
     display: block;
 
     margin-bottom: 8px;
@@ -797,99 +1039,24 @@ button:focus-visible {
 
 
 .card-admin h2 {
-
     color: var(--primary);
 
     font-size: 30px;
 }
 
 
-/* =========================================================
-   RANKING
-   ========================================================= */
-
-#rankingPaineis {
-
-    max-height: 380px;
-
-    overflow-y: auto;
-
-    margin-top: 18px;
-
-    padding-right: 6px;
+.card-bom::before {
+    background: #16a34a;
 }
 
 
-.itemPainel {
-
-    padding: 13px;
-
-    margin-bottom: 12px;
-
-    background: var(--surface-2);
-
-    border: 1px solid var(--border);
-
-    border-radius: 13px;
+.card-medio::before {
+    background: #d97706;
 }
 
 
-.itemPainel > span {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 8px;
-
-    color: var(--text);
-
-    font-size: 13px;
-
-    font-weight: 700;
-}
-
-
-.itemPainel > span > span:last-child {
-
-    color: var(--text-soft);
-
-    white-space: nowrap;
-}
-
-
-.barraPainel {
-
-    width: 100%;
-
-    height: 9px;
-
-    overflow: hidden;
-
-    background: var(--border);
-
-    border-radius: 30px;
-}
-
-
-.preenchimento {
-
-    height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #00b050,
-            #22c55e
-        );
-
-    border-radius: 30px;
-
-    transition: width .7s ease;
+.card-ruim::before {
+    background: #dc2626;
 }
 
 
@@ -898,12 +1065,11 @@ button:focus-visible {
    ========================================================= */
 
 .barra-saude {
-
     width: 100%;
 
-    height: 16px;
+    height: 18px;
 
-    margin-top: 14px;
+    margin-top: 12px;
 
     overflow: hidden;
 
@@ -914,7 +1080,6 @@ button:focus-visible {
 
 
 #barraSaude {
-
     width: 0%;
 
     height: 100%;
@@ -933,7 +1098,6 @@ button:focus-visible {
 
 
 #textoSaude {
-
     margin-top: 10px;
 
     color: var(--text);
@@ -947,62 +1111,135 @@ button:focus-visible {
 
 
 /* =========================================================
+   RANKING
+   ========================================================= */
+
+#rankingPaineis {
+    max-height: 380px;
+
+    overflow-y: auto;
+
+    margin-top: 15px;
+
+    padding-right: 6px;
+}
+
+
+.itemPainel {
+    padding: 13px;
+
+    margin-bottom: 11px;
+
+    background: var(--surface-2);
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+}
+
+
+.itemPainel > span {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.barraPainel {
+    width: 100%;
+
+    height: 9px;
+
+    overflow: hidden;
+
+    background: var(--border);
+
+    border-radius: 30px;
+}
+
+
+.preenchimento {
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00b050,
+            #22c55e
+        );
+
+    border-radius: 30px;
+
+    transition: width .7s ease;
+}
+
+
+/* =========================================================
+   IMPORTAÇÃO
+   ========================================================= */
+
+.arquivo-area {
+    padding: 15px;
+
+    background: var(--surface-2);
+
+    border: 1px dashed var(--border);
+
+    border-radius: 13px;
+}
+
+
+#inputExcel {
+    width: 100%;
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
    BOTÕES ADMIN
    ========================================================= */
 
 #baixarJson {
-
     background: var(--blue);
 }
 
 
 #baixarJson:hover {
-
     background: #1d4ed8;
 }
 
 
 #copiarEstatisticas {
-
     background: var(--purple);
 }
 
 
 #copiarEstatisticas:hover {
-
     background: #6d28d9;
 }
 
 
 /* =========================================================
-   SCROLL
-   ========================================================= */
-
-#rankingPaineis::-webkit-scrollbar {
-
-    width: 7px;
-}
-
-
-#rankingPaineis::-webkit-scrollbar-thumb {
-
-    background: var(--primary);
-
-    border-radius: 20px;
-}
-
-
-#rankingPaineis::-webkit-scrollbar-track {
-
-    background: transparent;
-}
-
-
-/* =========================================================
-   HR
+   LINHA
    ========================================================= */
 
 hr {
+    margin: 25px 0;
 
     border: 0;
 
@@ -1011,15 +1248,13 @@ hr {
 
 
 /* =========================================================
-   BANNER DE ATUALIZAÇÃO
+   BANNER ATUALIZAÇÃO
    ========================================================= */
 
 .update-banner {
-
     position: fixed;
 
     left: 50%;
-
     bottom: 22px;
 
     z-index: 99999;
@@ -1038,7 +1273,7 @@ hr {
 
     background: #0f172a;
 
-    color: #ffffff;
+    color: #fff;
 
     border: 1px solid rgba(255,255,255,.1);
 
@@ -1054,20 +1289,18 @@ hr {
 
 
 .update-banner span {
-
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 700;
 }
 
 
 .update-banner button {
-
     width: auto;
 
-    margin: 0;
-
     padding: 8px 14px;
+
+    margin: 0;
 
     background: var(--primary);
 
@@ -1082,11 +1315,9 @@ hr {
    ========================================================= */
 
 #versaoApp {
-
     position: fixed;
 
     left: 10px;
-
     bottom: 8px;
 
     z-index: 9999;
@@ -1101,11 +1332,11 @@ hr {
 
 /* =========================================================
    MODO ESCURO
+   Compatível com script.js -> dark-mode
    ========================================================= */
 
-body.dark-theme {
-
-    --background: #070b0f;
+body.dark-mode {
+    --bg: #070b0f;
 
     --surface: #111820;
 
@@ -1117,7 +1348,7 @@ body.dark-theme {
 
     --border: #293644;
 
-    --primary-light: rgba(0, 176, 80, .12);
+    --primary-light: rgba(0,176,80,.12);
 
     background:
         radial-gradient(
@@ -1131,66 +1362,56 @@ body.dark-theme {
 }
 
 
-body.dark-theme .container {
-
+body.dark-mode .container {
     box-shadow:
         0 20px 55px rgba(0,0,0,.35);
 }
 
 
-/*
-   NÃO altera a logo.
-   As cores originais permanecem intactas.
-*/
+/* Logo nunca é alterada */
 
-body.dark-theme .logo {
-
+body.dark-mode .logo {
     filter: none !important;
 
     opacity: 1 !important;
 }
 
 
-/* Destaque atrás da logo somente no login */
+/* Fundo claro atrás da logo do login */
 
-body.dark-theme #loginTela .logo {
+body.dark-mode .login-logo {
+    padding: 8px;
 
-    padding: 10px 16px;
-
-    background: #ffffff;
+    background: #fff;
 
     border-radius: 15px;
 }
 
 
-/* Status escuro */
+/* Status no escuro */
 
-body.dark-theme .status-bom {
-
+body.dark-mode .status-bom {
     color: #4ade80;
 
     background: rgba(34,197,94,.12);
 }
 
 
-body.dark-theme .status-medio {
-
+body.dark-mode .status-medio {
     color: #facc15;
 
     background: rgba(250,204,21,.10);
 }
 
 
-body.dark-theme .status-ruim {
-
+body.dark-mode .status-ruim {
     color: #f87171;
 
     background: rgba(248,113,113,.10);
 }
 
 
-body.dark-theme .alerta-critico {
-
+body.dark-mode .alerta-critico {
     background: rgba(220,38,38,.13);
 
     color: #f87171;
@@ -1200,13 +1421,33 @@ body.dark-theme .alerta-critico {
 
 
 /* =========================================================
-   RESPONSIVIDADE
+   SCROLL
+   ========================================================= */
+
+#rankingPaineis::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+#rankingPaineis::-webkit-scrollbar-thumb {
+    background: var(--primary);
+
+    border-radius: 20px;
+}
+
+
+#rankingPaineis::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* =========================================================
+   RESPONSIVO
    ========================================================= */
 
 @media (max-width: 650px) {
 
     body {
-
         padding: 12px;
 
         align-items: flex-start;
@@ -1214,136 +1455,171 @@ body.dark-theme .alerta-critico {
 
 
     .container {
-
-        margin-top: 5px;
-
-        padding: 20px 16px;
+        padding: 22px 17px;
 
         border-radius: 17px;
     }
 
 
-    .logo {
+    .login-container {
+        margin-top: 2vh;
 
-        width: min(210px, 75%);
-
-        margin-bottom: 20px;
+        padding: 28px 20px 23px;
     }
 
 
-    h1 {
+    .login-logo .logo {
+        width: min(210px, 72%);
+    }
 
-        font-size: 24px;
+
+    .login-header h1 {
+        font-size: 25px;
+    }
+
+
+    .sistema-container {
+        margin-top: 5px;
     }
 
 
     .topo {
-
         align-items: stretch;
     }
 
 
-    #usuarioLogado {
+    .usuario-area {
+        width: 100%;
+    }
 
+
+    #usuarioLogado {
         width: 100%;
 
         justify-content: center;
     }
 
 
-    .topo > div {
-
+    .acoes-topo {
         width: 100%;
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(3, 1fr);
-
-        gap: 6px;
     }
 
 
-    #btnAdmin,
-    #btnSair,
-    #btnTema {
+    .acoes-topo > button:not(.btn-tema) {
+        flex: 1;
+    }
 
-        width: 100%;
 
-        padding: 9px 5px;
+    .acoes-topo .btn-tema {
+        position: static;
 
-        font-size: 12px;
+        width: 40px !important;
+
+        flex-shrink: 0;
     }
 
 
     .cards-admin {
-
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
 
         gap: 9px;
     }
 
 
     .card-admin {
-
         padding: 14px 8px;
     }
 
 
     .card-admin h2 {
-
         font-size: 25px;
     }
 
 
     .card-admin span {
-
         font-size: 12px;
     }
 
 
-    .botoes-copiar {
-
-        grid-template-columns: 1fr;
-    }
-
-
     .update-banner {
-
-        bottom: 15px;
-
         width: calc(100% - 24px);
 
         justify-content: space-between;
+
+        bottom: 15px;
     }
 
 }
 
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
 
     body {
-
         padding: 8px;
     }
 
 
     .container {
-
-        padding: 17px 13px;
+        padding: 18px 13px;
     }
 
 
     .cards-admin {
-
         grid-template-columns: 1fr;
     }
 
 
-    .topo > div {
+    .acoes-topo {
+        display: grid;
 
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .acoes-topo .btn-tema {
+        grid-column: 1 / -1;
+
+        justify-self: center;
+    }
+
+}
+
+
+/* =========================================================
+   ANIMAÇÕES
+   ========================================================= */
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+@keyframes slideUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translate(-50%, 15px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translate(-50%, 0);
     }
 
 }
@@ -1358,7 +1634,6 @@ body.dark-theme .alerta-critico {
     *,
     *::before,
     *::after {
-
         animation-duration: .01ms !important;
 
         animation-iteration-count: 1 !important;
@@ -1366,50 +1641,6 @@ body.dark-theme .alerta-critico {
         transition-duration: .01ms !important;
 
         scroll-behavior: auto !important;
-    }
-
-}
-
-
-/* =========================================================
-   ANIMAÇÕES
-   ========================================================= */
-
-@keyframes fadeIn {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateY(8px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-
-}
-
-
-@keyframes slideUp {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translate(-50%, 15px);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translate(-50%, 0);
     }
 
 }
