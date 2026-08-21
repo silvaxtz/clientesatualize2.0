@@ -1,22 +1,19 @@
 /* =========================================================
    ATUALIZE TELECOM
-   SERVICE WORKER - V2
+   SERVICE WORKER
    ========================================================= */
 
-const CACHE_NAME = "atualize-telecom-v2";
+const CACHE_VERSION = "atualize-v20";
 
-const ARQUIVOS = [
+const ARQUIVOS_ESTATICOS = [
     "./",
     "./index.html",
     "./style.css",
     "./script.js",
-    "./clientes.json",
-    "./logo.png",
-    "./logo-192.png",
-    "./logo-512.png",
     "./manifest.json",
-    "./xlsx.full.min.js",
-    "./version.json"
+    "./version.json",
+    "./logo.png",
+    "./xlsx.full.min.js"
 ];
 
 
@@ -27,26 +24,30 @@ const ARQUIVOS = [
 self.addEventListener("install", event => {
 
     console.log(
-        "[SW] Instalando nova versão..."
+        "[Atualize] Instalando:",
+        CACHE_VERSION
     );
 
     event.waitUntil(
 
-        caches.open(CACHE_NAME)
+        caches
+            .open(CACHE_VERSION)
             .then(cache => {
 
                 return cache.addAll(
-                    ARQUIVOS
+                    ARQUIVOS_ESTATICOS
                 );
-
-            })
-            .then(() => {
-
-                return self.skipWaiting();
 
             })
 
     );
+
+    /*
+       Ativa a nova versão imediatamente.
+    */
+
+    self.skipWaiting();
+
 });
 
 
@@ -58,20 +59,31 @@ self.addEventListener("activate", event => {
 
     event.waitUntil(
 
-        caches.keys()
-            .then(keys => {
+        caches
+            .keys()
+            .then(chaves => {
 
                 return Promise.all(
 
-                    keys
-                        .filter(
-                            key =>
-                                key !== CACHE_NAME
-                        )
-                        .map(
-                            key =>
-                                caches.delete(key)
-                        )
+                    chaves.map(chave => {
+
+                        if (
+                            chave !== CACHE_VERSION &&
+                            chave.startsWith("atualize-")
+                        ) {
+
+                            console.log(
+                                "[Atualize] Removendo cache antigo:",
+                                chave
+                            );
+
+                            return caches.delete(chave);
+
+                        }
+
+                        return null;
+
+                    })
 
                 );
 
@@ -88,141 +100,245 @@ self.addEventListener("activate", event => {
 
 
 /* =========================================================
-   RECEBER COMANDOS DO APP
+   MENSAGEM
    ========================================================= */
 
-self.addEventListener(
-    "message",
-    event => {
+self.addEventListener("message", event => {
 
-        if (
-            event.data &&
-            event.data.type === "SKIP_WAITING"
-        ) {
+    if (!event.data) return;
 
-            self.skipWaiting();
 
-        }
+    /*
+       O botão "Atualizar" do aplicativo
+       pode mandar essa mensagem.
+    */
+
+    if (
+        event.data === "SKIP_WAITING" ||
+        event.data.type === "SKIP_WAITING"
+    ) {
+
+        self.skipWaiting();
 
     }
-);
+
+});
 
 
 /* =========================================================
-   BUSCAR ARQUIVOS
+   FETCH
    ========================================================= */
 
-self.addEventListener(
-    "fetch",
-    event => {
+self.addEventListener("fetch", event => {
 
-        if (
-            event.request.method !== "GET"
-        ) {
-            return;
-        }
+    const request = event.request;
 
+    /*
+       Só trabalhamos com GET.
+    */
 
-        /*
-           Não intercepta requisições
-           externas.
-        */
-
-        const url =
-            new URL(
-                event.request.url
-            );
+    if (request.method !== "GET") {
+        return;
+    }
 
 
-        if (
-            url.origin !== self.location.origin
-        ) {
+    const url = new URL(request.url);
 
-            return;
-        }
 
+    /*
+       Não interferir em requisições externas.
+    */
+
+    if (
+        url.origin !== self.location.origin
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+       CLIENTES.JSON
+       
+       Sempre tenta buscar a versão atual
+       na internet primeiro.
+
+       Se estiver sem internet,
+       usa a versão armazenada no cache.
+    */
+
+    if (
+        url.pathname.endsWith("/clientes.json") ||
+        url.pathname.endsWith("clientes.json")
+    ) {
 
         event.respondWith(
 
-            fetch(event.request)
+            fetch(request, {
+                cache: "no-store"
+            })
 
-                .then(response => {
+            .then(response => {
 
-                    /*
-                       Só guarda respostas
-                       válidas.
-                    */
+                if (
+                    response &&
+                    response.ok
+                ) {
 
-                    if (
-                        response &&
-                        response.status === 200
-                    ) {
+                    const copia =
+                        response.clone();
 
-                        const copia =
-                            response.clone();
-
-
-                        caches.open(
-                            CACHE_NAME
-                        )
+                    caches
+                        .open(CACHE_VERSION)
                         .then(cache => {
 
                             cache.put(
-                                event.request,
+                                request,
                                 copia
                             );
 
                         });
 
-                    }
+                }
 
+                return response;
 
-                    return response;
+            })
 
-                })
+            .catch(() => {
 
-                .catch(() => {
-
-                    /*
-                       Sem internet:
-                       tenta entregar
-                       do cache.
-                    */
-
-                    return caches.match(
-                        event.request
-                    );
-
-                })
-
-        );
-
-    }
-);
-
-
-/* =========================================================
-   ATUALIZAÇÃO FORÇADA DO CACHE
-   ========================================================= */
-
-self.addEventListener(
-    "activate",
-    event => {
-
-        event.waitUntil(
-
-            caches.open(
-                CACHE_NAME
-            )
-            .then(cache => {
-
-                return cache.addAll(
-                    ARQUIVOS
-                );
+                return caches.match(request);
 
             })
 
         );
 
+        return;
+
     }
-);
+
+
+    /*
+       VERSION.JSON
+       
+       Sempre busca a versão atual.
+    */
+
+    if (
+        url.pathname.endsWith("/version.json") ||
+        url.pathname.endsWith("version.json")
+    ) {
+
+        event.respondWith(
+
+            fetch(request, {
+                cache: "no-store"
+            })
+
+            .then(response => {
+
+                if (
+                    response &&
+                    response.ok
+                ) {
+
+                    const copia =
+                        response.clone();
+
+                    caches
+                        .open(CACHE_VERSION)
+                        .then(cache => {
+
+                            cache.put(
+                                request,
+                                copia
+                            );
+
+                        });
+
+                }
+
+                return response;
+
+            })
+
+            .catch(() => {
+
+                return caches.match(request);
+
+            })
+
+        );
+
+        return;
+
+    }
+
+
+    /*
+       HTML / CSS / JS / imagens
+       
+       Primeiro tenta internet.
+       Se estiver offline, usa cache.
+    */
+
+    event.respondWith(
+
+        fetch(request)
+
+        .then(response => {
+
+            if (
+                response &&
+                response.ok
+            ) {
+
+                const copia =
+                    response.clone();
+
+                caches
+                    .open(CACHE_VERSION)
+                    .then(cache => {
+
+                        cache.put(
+                            request,
+                            copia
+                        );
+
+                    });
+
+            }
+
+            return response;
+
+        })
+
+        .catch(() => {
+
+            return caches.match(request)
+
+                .then(cachedResponse => {
+
+                    if (cachedResponse) {
+
+                        return cachedResponse;
+
+                    }
+
+                    /*
+                       Se não encontrou no cache,
+                       tenta retornar index.html.
+                    */
+
+                    return caches.match(
+                        "./index.html"
+                    );
+
+                });
+
+        })
+
+    );
+
+});
