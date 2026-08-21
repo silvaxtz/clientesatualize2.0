@@ -282,111 +282,59 @@ function notificar(
 
 function criarBotaoTema() {
 
-    let botao =
-        document.getElementById(
-            "btnTema"
-        );
-
+    let botao = document.getElementById("btnTema");
 
     if (botao) {
         return botao;
     }
 
+    botao = document.createElement("button");
 
-    botao =
-        document.createElement("button");
+    botao.id = "btnTema";
+    botao.type = "button";
+    botao.innerHTML = "🌙";
+    botao.title = "Ativar modo noite";
 
-    botao.id =
-        "btnTema";
+    botao.style.width = "auto";
+    botao.style.marginTop = "0";
+    botao.style.padding = "10px 14px";
+    botao.style.fontSize = "18px";
 
-    botao.type =
-        "button";
-
-    botao.innerHTML =
-        "🌙";
-
-    botao.title =
-        "Ativar modo noite";
-
-
-    /*
-       Procura um lugar apropriado
-       no topo do sistema.
-    */
-
-    const topo =
-        sistema?.querySelector(
-            ".topo"
-        );
-
+    const topo = document.querySelector(".topo");
 
     if (topo) {
-
-        topo.insertBefore(
-            botao,
-            topo.firstChild
-        );
-
-    } else {
-
-        document.body.appendChild(
-            botao
-        );
-
+        topo.insertBefore(botao, topo.firstChild);
     }
 
-
-    botao.addEventListener(
-        "click",
-        alternarTema
-    );
-
+    botao.addEventListener("click", alternarTema);
 
     return botao;
-
 }
 
 
-function aplicarTema(
-    tema
-) {
+function aplicarTema(tema) {
 
-    temaAtual =
-        tema === "dark"
-            ? "dark"
-            : "light";
+    temaAtual = tema === "dark"
+        ? "dark"
+        : "light";
 
+    if (temaAtual === "dark") {
 
-    document.documentElement
-        .setAttribute(
-            "data-theme",
-            temaAtual
-        );
+        document.body.classList.add("dark-theme");
 
+    } else {
 
-    document.body.classList.toggle(
-        "dark-mode",
-        temaAtual === "dark"
-    );
+        document.body.classList.remove("dark-theme");
 
-
-    document.body.classList.toggle(
-        "dark-theme",
-        temaAtual === "dark"
-    );
-
+    }
 
     localStorage.setItem(
         CONFIG.storage.tema,
         temaAtual
     );
 
-
     const botao =
-        document.getElementById(
-            "btnTema"
-        );
-
+        document.getElementById("btnTema");
 
     if (botao) {
 
@@ -395,34 +343,10 @@ function aplicarTema(
                 ? "☀️"
                 : "🌙";
 
-
         botao.title =
             temaAtual === "dark"
                 ? "Ativar modo claro"
                 : "Ativar modo noite";
-
-    }
-
-
-    /*
-       Atualiza theme-color do PWA.
-    */
-
-    let meta =
-        document.querySelector(
-            'meta[name="theme-color"]'
-        );
-
-
-    if (meta) {
-
-        meta.setAttribute(
-            "content",
-            temaAtual === "dark"
-                ? "#111827"
-                : "#00b050"
-        );
-
     }
 
 }
@@ -435,24 +359,15 @@ function inicializarTema() {
             CONFIG.storage.tema
         );
 
+    if (salvo === "dark") {
 
-    if (
-        salvo === "dark" ||
-        salvo === "light"
-    ) {
-
-        aplicarTema(
-            salvo
-        );
+        aplicarTema("dark");
 
     } else {
 
-        aplicarTema(
-            "light"
-        );
+        aplicarTema("light");
 
     }
-
 
     criarBotaoTema();
 
@@ -461,11 +376,19 @@ function inicializarTema() {
 
 function alternarTema() {
 
-    aplicarTema(
-        temaAtual === "dark"
-            ? "light"
-            : "dark"
-    );
+    if (
+        document.body.classList.contains(
+            "dark-theme"
+        )
+    ) {
+
+        aplicarTema("light");
+
+    } else {
+
+        aplicarTema("dark");
+
+    }
 
 }
 
