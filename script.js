@@ -760,6 +760,20 @@ function renderizarCliente(cliente) {
     `;
 
 }
+         <div class="campo">
+             <div class="titulo">
+                  IP do painel
+          </div>
+
+             <div class="valor">
+                 ${escaparHTML(
+                  cliente.ipPainel ||
+                  cliente.ip_painel ||
+                  cliente.ipPainelIP ||
+                  "-"
+                 )}
+             </div>
+         </div>
 
 
 /* =========================================================
