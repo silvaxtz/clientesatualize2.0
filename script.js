@@ -533,18 +533,14 @@ async function carregarClientes() {
 /* =========================================================
    PESQUISA
 ========================================================= */
-
 function pesquisarCliente() {
 
     if (!pesquisa || !resultado) {
         return;
     }
 
-
-    const termo = normalizar(
-        pesquisa.value
-    );
-
+    const termoOriginal = pesquisa.value.trim();
+    const termo = normalizar(termoOriginal);
 
     if (!termo) {
 
@@ -563,6 +559,32 @@ function pesquisarCliente() {
         return;
     }
 
+    /*
+       Evita mostrar resultados demais com pesquisas
+       muito curtas.
+
+       1 caractere = não pesquisa
+       2 caracteres = ainda não pesquisa
+       3 ou mais = pesquisa
+    */
+
+    if (termo.length < 3) {
+
+        resultado.innerHTML = `
+            <div class="nao-encontrado">
+                <div class="icone">⌨️</div>
+
+                <h2>Continue digitando</h2>
+
+                <p>
+                    Digite pelo menos <strong>3 caracteres</strong>
+                    do PPOE ou IP.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
 
     if (!clientesCarregados) {
 
@@ -581,33 +603,34 @@ function pesquisarCliente() {
         return;
     }
 
+    const encontrados = clientes.filter((cliente) => {
 
-    const encontrados = clientes.filter(
-        (cliente) => {
+        const ppoe = normalizar(cliente.ppoe);
+        const ip = normalizar(cliente.ip);
 
-            const ppoe = normalizar(
-                cliente.ppoe
-            );
+        /*
+           Pesquisa somente pelo início do PPOE ou IP.
+           Exemplo:
 
-            const ip = normalizar(
-                cliente.ip
-            );
+           PPOE: cliente123
 
-            return (
-                ppoe.includes(termo) ||
-                ip.includes(termo)
-            );
+           "cli"  → encontra
+           "ente" → não encontra
 
-        }
-    );
+           IP: 192.168.1.10
 
+           "192" → encontra
+           "168" → não encontra
+        */
 
-    if (encontrados.length === 0) {
-
-        adicionarHistorico(
-            pesquisa.value.trim()
+        return (
+            ppoe.startsWith(termo) ||
+            ip.startsWith(termo)
         );
 
+    });
+
+    if (encontrados.length === 0) {
 
         resultado.innerHTML = `
             <div class="nao-encontrado">
@@ -622,12 +645,12 @@ function pesquisarCliente() {
 
                 <p>
                     Nenhum cliente corresponde a
-                    <strong>${escaparHTML(pesquisa.value)}</strong>.
+                    <strong>${escaparHTML(termoOriginal)}</strong>.
                 </p>
 
                 <div class="dica">
-                    Verifique se o PPOE ou IP foi
-                    digitado corretamente.
+                    Digite os primeiros caracteres do PPOE
+                    ou do IP.
                 </div>
 
             </div>
@@ -636,19 +659,46 @@ function pesquisarCliente() {
         return;
     }
 
+    adicionarHistorico(termoOriginal);
 
-    adicionarHistorico(
-        pesquisa.value.trim()
-    );
+    /*
+       Se houver muitos resultados, mostra aviso
+       em vez de jogar uma lista gigante na tela.
+    */
 
+    if (encontrados.length > 20) {
+
+        resultado.innerHTML = `
+            <div class="nao-encontrado">
+
+                <div class="icone">📋</div>
+
+                <h2>
+                    Muitos resultados
+                </h2>
+
+                <p>
+                    Foram encontrados
+                    <strong>${encontrados.length}</strong>
+                    clientes.
+                </p>
+
+                <div class="dica">
+                    Continue digitando para encontrar
+                    o cliente específico.
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
 
     resultado.innerHTML =
         encontrados
             .map(renderizarCliente)
             .join("");
-
 }
-
 
 /* =========================================================
    RENDERIZAR CLIENTE
