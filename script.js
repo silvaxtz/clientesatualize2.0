@@ -16,11 +16,9 @@ const CONFIG = {
 
     armazenamento: {
         usuario: "usuarioAtual",
-        historico: "historico_pesquisas",
         tema: "temaAtual"
     },
 
-    historicoLimite: 8,
     intervaloAtualizacao: 10000
 };
 
@@ -97,8 +95,6 @@ const usuarioLogado = $("usuarioLogado");
 const pesquisa = $("pesquisa");
 const resultado = $("resultado");
 
-const historicoPesquisas = $("historicoPesquisas");
-
 const inputExcel = $("inputExcel");
 const btnImportarExcel = $("btnImportarExcel");
 
@@ -133,8 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
     inicializarSistema();
 
     inicializarAdmin();
-
-    inicializarHistorico();
 
     inicializarAtualizacao();
 
@@ -299,7 +293,6 @@ function entrarNoSistema() {
 
     carregarClientes();
 
-    renderizarHistorico();
 
 }
 
@@ -659,13 +652,6 @@ function pesquisarCliente() {
         return;
     }
 
-    adicionarHistorico(termoOriginal);
-
-    /*
-       Se houver muitos resultados, mostra aviso
-       em vez de jogar uma lista gigante na tela.
-    */
-
     if (encontrados.length > 20) {
 
         resultado.innerHTML = `
@@ -863,170 +849,6 @@ function obterStatus(cliente) {
         texto: "⚪ Desconhecido",
         classe: "status-medio"
     };
-
-}
-
-
-/* =========================================================
-   HISTÓRICO
-========================================================= */
-
-function inicializarHistorico() {
-
-    renderizarHistorico();
-
-}
-
-
-function obterHistorico() {
-
-    try {
-
-        const dados = localStorage.getItem(
-            CONFIG.armazenamento.historico
-        );
-
-        if (!dados) {
-            return [];
-        }
-
-        const historico = JSON.parse(dados);
-
-        return Array.isArray(historico)
-            ? historico
-            : [];
-
-    } catch {
-
-        return [];
-
-    }
-
-}
-
-
-function salvarHistorico(historico) {
-
-    localStorage.setItem(
-        CONFIG.armazenamento.historico,
-        JSON.stringify(historico)
-    );
-
-}
-
-
-function adicionarHistorico(valor) {
-
-    const termo = String(
-        valor ?? ""
-    ).trim();
-
-
-    if (!termo) {
-        return;
-    }
-
-
-    let historico =
-        obterHistorico();
-
-
-    historico = historico.filter(
-        item =>
-            normalizar(item) !==
-            normalizar(termo)
-    );
-
-
-    historico.unshift(termo);
-
-
-    historico =
-        historico.slice(
-            0,
-            CONFIG.historicoLimite
-        );
-
-
-    salvarHistorico(
-        historico
-    );
-
-
-    renderizarHistorico();
-
-}
-
-
-function renderizarHistorico() {
-
-    if (!historicoPesquisas) {
-        return;
-    }
-
-
-    const historico =
-        obterHistorico();
-
-
-    if (!historico.length) {
-
-        historicoPesquisas.innerHTML = "";
-
-        return;
-    }
-
-
-    historicoPesquisas.innerHTML =
-        historico.map(
-            (item) => `
-                <button
-                    type="button"
-                    class="btn-historico"
-                    data-termo="${escaparHTML(item)}"
-                >
-                    ${escaparHTML(item)}
-                </button>
-            `
-        ).join("");
-
-
-    historicoPesquisas
-        .querySelectorAll(
-            ".btn-historico"
-        )
-        .forEach(
-            (botao) => {
-
-                botao.addEventListener(
-                    "click",
-                    () => {
-
-                        if (pesquisa) {
-
-                            pesquisa.value =
-                                botao.dataset.termo;
-
-                            pesquisarCliente();
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-function limparHistorico() {
-
-    localStorage.removeItem(
-        CONFIG.armazenamento.historico
-    );
-
-    renderizarHistorico();
 
 }
 
