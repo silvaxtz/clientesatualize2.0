@@ -177,21 +177,42 @@ img {
 }
 
 
-/* Logo do login */
+/* =========================================================
+   LOGO DO LOGIN
+========================================================= */
 
 .login-logo {
     width: 100%;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
-    margin-bottom: 25px;
+    text-align: center;
+
+    margin:
+        0
+        auto
+        25px;
+
+    padding: 0;
 }
 
 .login-logo .logo {
-    width: 205px;
-    max-width: 75%;
+    display: block;
+
+    width: 245px !important;
+    max-width: 245px !important;
+
+    height: 120px !important;
+    max-height: 120px !important;
+
+    margin:
+        0
+        auto;
+
+    object-fit: contain;
+    object-position: center center;
 
     filter:
         drop-shadow(
@@ -200,7 +221,7 @@ img {
 }
 
 
-/* Cabeçalho login */
+/* Cabeçalho */
 
 .login-header {
     text-align: center;
@@ -421,7 +442,7 @@ img {
 
 
 /* =========================================================
-   LOGIN ERRO / RODAPÉ
+   ERRO LOGIN
 ========================================================= */
 
 #erroLogin {
@@ -437,6 +458,11 @@ img {
 
     font-weight: 700;
 }
+
+
+/* =========================================================
+   RODAPÉ LOGIN
+========================================================= */
 
 .login-footer {
     margin-top: 25px;
@@ -540,7 +566,7 @@ img {
 
 
 /* =========================================================
-   BOTÕES DO TOPO
+   AÇÕES DO TOPO
 ========================================================= */
 
 .acoes-topo {
@@ -629,7 +655,7 @@ img {
 
 
 /* =========================================================
-   CABEÇALHO SISTEMA
+   CABEÇALHO DA PESQUISA
 ========================================================= */
 
 .sistema-header {
@@ -639,48 +665,48 @@ img {
     flex-direction: column;
 
     align-items: center;
+    justify-content: center;
 
     text-align: center;
 
-    margin-top: 8px;
-    margin-bottom: 26px;
+    margin:
+        8px
+        auto
+        26px;
 }
 
 
-/* LOGO DO SISTEMA */
+/* =========================================================
+   LOGO PRINCIPAL DO SISTEMA
+========================================================= */
 
-.logo-sistema {
-    width: 150px !important;
-    max-width: 150px !important;
+.sistema-header .logo-sistema {
+    display: block !important;
 
-    height: auto !important;
+    width: 185px !important;
+    max-width: 185px !important;
 
-    display: block;
+    height: 105px !important;
+    max-height: 105px !important;
 
     margin:
         0
         auto
-        16px;
+        17px !important;
 
-    object-fit: contain;
+    object-fit: contain !important;
+    object-position: center center !important;
+
+    transform: none !important;
 
     filter:
         drop-shadow(
-            0 9px 20px rgba(0, 0, 0, .20)
+            0 9px 20px rgba(0, 0, 0, .18)
         );
-
-    transition:
-        transform .25s ease,
-        filter .25s ease;
 }
 
-.logo-sistema:hover {
-    transform: translateY(-2px);
-
-    filter:
-        drop-shadow(
-            0 12px 25px rgba(0, 176, 80, .16)
-        );
+.sistema-header .logo-sistema:hover {
+    transform: none !important;
 }
 
 .sistema-header h1 {
@@ -782,7 +808,7 @@ img {
 
 
 /* =========================================================
-   RESULTADO DO CLIENTE
+   RESULTADO
 ========================================================= */
 
 #resultado {
@@ -830,7 +856,9 @@ img {
 }
 
 
-/* Cada informação */
+/* =========================================================
+   CAMPOS DO RESULTADO
+========================================================= */
 
 .campo {
     min-width: 0;
@@ -863,7 +891,9 @@ img {
 }
 
 
-/* Status */
+/* =========================================================
+   STATUS
+========================================================= */
 
 .status-bom,
 .status-medio,
@@ -902,6 +932,33 @@ img {
 
     background:
         rgba(220, 38, 38, .11);
+}
+
+
+/* =========================================================
+   ALERTA
+========================================================= */
+
+.alerta-critico {
+    grid-column: 1 / -1;
+
+    margin: 0;
+
+    padding: 11px 13px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(220, 38, 38, .07);
+
+    border:
+        1px solid rgba(220, 38, 38, .15);
+
+    color: var(--ruim);
+
+    font-size: 11px;
+
+    font-weight: 700;
 }
 
 
@@ -1413,7 +1470,7 @@ img {
 
 
 /* =========================================================
-   BANNER ATUALIZAÇÃO
+   BANNER DE ATUALIZAÇÃO
 ========================================================= */
 
 .update-banner {
@@ -1536,8 +1593,6 @@ body.dark-theme {
 }
 
 
-/* Cards */
-
 body.dark-mode .container,
 body.dark-theme .container {
     background: var(--card);
@@ -1547,15 +1602,6 @@ body.dark-theme .container {
     box-shadow: var(--sombra);
 }
 
-body.dark-mode .card-admin,
-body.dark-theme .card-admin {
-    background: var(--card2);
-
-    border-color: var(--borda);
-}
-
-
-/* Inputs */
 
 body.dark-mode #usuario,
 body.dark-mode #senha,
@@ -1582,11 +1628,16 @@ body.dark-theme #pesquisa:focus {
 }
 
 
-/* Resultado */
-
 body.dark-mode #resultado,
 body.dark-theme #resultado {
     background: #10171f;
+
+    border-color: #293746;
+}
+
+body.dark-mode .card-admin,
+body.dark-theme .card-admin {
+    background: #141d26;
 
     border-color: #293746;
 }
@@ -1599,19 +1650,6 @@ body.dark-theme .nao-encontrado {
 }
 
 
-/* Logo */
-
-body.dark-mode .logo,
-body.dark-theme .logo {
-    filter:
-        drop-shadow(
-            0 10px 25px rgba(0, 0, 0, .40)
-        );
-}
-
-
-/* Botão tema */
-
 body.dark-mode .btn-tema,
 body.dark-theme .btn-tema {
     background: #17222d;
@@ -1621,8 +1659,6 @@ body.dark-theme .btn-tema {
     color: #fff;
 }
 
-
-/* Fechar */
 
 body.dark-mode #fecharAdmin,
 body.dark-theme #fecharAdmin {
@@ -1634,13 +1670,22 @@ body.dark-theme #fecharAdmin {
 }
 
 
-/* Barras */
-
 body.dark-mode .barraPainel,
 body.dark-mode .barra-saude,
 body.dark-theme .barraPainel,
 body.dark-theme .barra-saude {
     background: #293746;
+}
+
+
+body.dark-mode .login-logo .logo,
+body.dark-theme .login-logo .logo,
+body.dark-mode .logo-sistema,
+body.dark-theme .logo-sistema {
+    filter:
+        drop-shadow(
+            0 10px 25px rgba(0, 0, 0, .40)
+        );
 }
 
 
@@ -1694,14 +1739,18 @@ body.dark-theme .barra-saude {
     }
 
 
-    /* Login */
+    /* LOGIN */
 
     .login-container {
         padding: 31px 21px;
     }
 
     .login-logo .logo {
-        width: 185px;
+        width: 205px !important;
+        max-width: 205px !important;
+
+        height: 100px !important;
+        max-height: 100px !important;
     }
 
     .login-header h1 {
@@ -1709,7 +1758,7 @@ body.dark-theme .barra-saude {
     }
 
 
-    /* Topo */
+    /* TOPO */
 
     .topo {
         align-items: flex-start;
@@ -1746,18 +1795,20 @@ body.dark-theme .barra-saude {
     }
 
 
-    /* Logo sistema */
+    /* LOGO SISTEMA */
 
-    .logo-sistema {
-        width: 145px !important;
+    .sistema-header .logo-sistema {
+        width: 155px !important;
+        max-width: 155px !important;
 
-        max-width: 145px !important;
+        height: 90px !important;
+        max-height: 90px !important;
 
-        margin-bottom: 14px;
+        margin-bottom: 14px !important;
     }
 
 
-    /* Título */
+    /* TÍTULO */
 
     .sistema-header h1 {
         font-size: 25px;
@@ -1768,7 +1819,7 @@ body.dark-theme .barra-saude {
     }
 
 
-    /* Pesquisa */
+    /* PESQUISA */
 
     #pesquisa {
         height: 56px;
@@ -1777,7 +1828,7 @@ body.dark-theme .barra-saude {
     }
 
 
-    /* Resultado */
+    /* RESULTADO */
 
     #resultado {
         grid-template-columns: 1fr;
@@ -1788,7 +1839,7 @@ body.dark-theme .barra-saude {
     }
 
 
-    /* Admin */
+    /* ADMIN */
 
     .cards-admin {
         grid-template-columns: 1fr;
@@ -1826,13 +1877,19 @@ body.dark-theme .barra-saude {
     }
 
     .login-logo .logo {
-        width: 165px;
+        width: 185px !important;
+        max-width: 185px !important;
+
+        height: 95px !important;
+        max-height: 95px !important;
     }
 
-    .logo-sistema {
-        width: 135px !important;
+    .sistema-header .logo-sistema {
+        width: 140px !important;
+        max-width: 140px !important;
 
-        max-width: 135px !important;
+        height: 82px !important;
+        max-height: 82px !important;
     }
 
     .topo {
@@ -1888,131 +1945,4 @@ input,
 .card-admin,
 #resultado {
     -webkit-tap-highlight-color: transparent;
-}
-
-/* =========================================================
-   CORREÇÃO FINAL DA LOGO DO SISTEMA
-========================================================= */
-
-.sistema-header {
-    position: relative !important;
-
-    width: 100% !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    align-items: center !important;
-    justify-content: center !important;
-
-    text-align: center !important;
-
-    margin-top: 10px !important;
-    margin-bottom: 28px !important;
-}
-
-
-/* Caixa da logo */
-
-.sistema-header .logo-sistema {
-    display: block !important;
-
-    width: 150px !important;
-    max-width: 150px !important;
-
-    height: 90px !important;
-    max-height: 90px !important;
-
-    margin: 0 auto 15px auto !important;
-
-    object-fit: contain !important;
-
-    object-position: center !important;
-
-    filter: none !important;
-}
-
-
-/* Impede a logo de ocupar a tela inteira */
-
-.sistema-header .logo {
-    flex-shrink: 0 !important;
-}
-
-
-/* Título */
-
-.sistema-header h1 {
-    margin: 0 0 8px 0 !important;
-
-    font-size: 29px !important;
-
-    line-height: 1.15 !important;
-}
-
-
-/* Subtítulo */
-
-.sistema-header p {
-    margin: 0 !important;
-
-    font-size: 12px !important;
-}
-
-
-/* =========================================================
-   TOPo NÃO PODE INTERFERIR NA LOGO
-========================================================= */
-
-.sistema-container > .topo {
-    position: relative !important;
-    z-index: 10 !important;
-
-    width: 100% !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-    justify-content: space-between !important;
-}
-
-
-/* =========================================================
-   BOTÕES DO TOPO
-========================================================= */
-
-.sistema-container .acoes-topo {
-    display: flex !important;
-
-    align-items: center !important;
-
-    gap: 8px !important;
-}
-
-
-/* =========================================================
-   LOGO NO DARK MODE
-========================================================= */
-
-body.dark-mode .sistema-header .logo-sistema {
-    filter: none !important;
-}
-
-
-/* =========================================================
-   CELULAR
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .sistema-header .logo-sistema {
-        width: 125px !important;
-        max-width: 125px !important;
-
-        height: 75px !important;
-        max-height: 75px !important;
-
-        margin-bottom: 12px !important;
-    }
-
 }
