@@ -670,70 +670,22 @@ body {
 }
 
 
-/* =========================================================
-   LOGO PRINCIPAL DO SISTEMA
-========================================================= */
-
 .logo-sistema {
-    width: 190px !important;
-
-    max-width: 190px;
-
+    width: 150px !important;
+    max-width: 150px;
     height: auto !important;
 
     display: block;
 
-    margin:
-        0
-        auto
-        18px;
+    margin: 0 auto 16px;
 
     object-fit: contain;
 
     filter:
         drop-shadow(
-            0 9px 20px rgba(0, 0, 0, .15)
-        );
-
-    transition:
-        transform .25s ease,
-        filter .25s ease;
-}
-
-.logo-sistema:hover {
-    transform: translateY(-2px);
-
-    filter:
-        drop-shadow(
-            0 12px 25px rgba(0, 176, 80, .15)
+            0 9px 20px rgba(0, 0, 0, .25)
         );
 }
-
-
-/* Título */
-
-.sistema-header h1 {
-    margin: 0 0 8px;
-
-    color: var(--texto);
-
-    font-size: 30px;
-
-    line-height: 1.15;
-
-    font-weight: 850;
-
-    letter-spacing: -.7px;
-}
-
-.sistema-header p {
-    color: var(--texto-2);
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
 
 /* =========================================================
    PESQUISA
